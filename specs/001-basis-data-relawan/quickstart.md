@@ -34,7 +34,7 @@ pnpm db:seed
 pnpm dev
 ```
 
-Antarmuka di `http://localhost:5173`, API di `http://localhost:3000/api/v1`.
+Antarmuka di `http://localhost:5173`, API di `http://localhost:3000/api/v1` (NestJS).
 
 ## Menguji
 

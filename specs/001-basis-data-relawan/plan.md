@@ -9,7 +9,7 @@
 Aplikasi web untuk BPBD Kota Banjarmasin: relawan mendaftar dan mengelola profil serta bukti
 kompetensinya; admin BPBD memverifikasi, menelusuri relawan dalam galeri kartu beratribut,
 membandingkan, dan menyusun tim; peta sebaran dan ekspor tersedia. Pendekatan teknis: monorepo
-TypeScript berisi antarmuka React (Vite), API Fastify, dan paket bersama (skema + rumus atribut),
+TypeScript berisi antarmuka React (Vite), API NestJS, dan paket bersama (skema + rumus atribut),
 di atas PostgreSQL + PostGIS, dengan peta MapLibre memakai ubin PMTiles yang di-host sendiri.
 
 ## Technical Context
@@ -17,7 +17,7 @@ di atas PostgreSQL + PostGIS, dengan peta MapLibre memakai ubin PMTiles yang di-
 **Language/Version**: TypeScript pada Node.js LTS (server) dan peramban modern (antarmuka)
 
 **Primary Dependencies**: React, Vite, React Router, TanStack Query, Tailwind CSS, Radix UI,
-MapLibre GL JS, PMTiles; Fastify, Zod, Drizzle ORM, Argon2
+MapLibre GL JS, PMTiles; NestJS, Zod, Drizzle ORM, Argon2
 
 **Storage**: PostgreSQL + PostGIS; berkas pada volume lokal di balik antarmuka penyimpanan
 
@@ -88,16 +88,20 @@ apps/
 │   │   ├── components/       # VolunteerCard, RadarChart, DataTable, …
 │   │   └── lib/              # klien API, sesi
 │   └── tests/                # Playwright (e2e + axe)
-└── api/                      # Fastify
+└── api/                      # NestJS
     ├── src/
-    │   ├── modules/          # auth, volunteers, evidences, review, teams,
-    │   │                     # organizations, map, exports, admin
-    │   ├── policies/         # matriks izin per peran
-    │   ├── audit/            # penulisan audit_log dalam transaksi
+    │   ├── modules/          # satu modul Nest per domain: auth, volunteers,
+    │   │                     # evidences, review, teams, organizations, map,
+    │   │                     # exports, admin (controller + service + dto)
+    │   ├── common/
+    │   │   ├── guards/       # SessionGuard, RolesGuard (default ditolak)
+    │   │   ├── interceptors/ # AuditInterceptor
+    │   │   ├── pipes/        # validasi Zod dari packages/shared
+    │   │   └── filters/      # bentuk galat seragam
     │   ├── crypto/           # enkripsi kolom, indeks buta
     │   ├── storage/          # antarmuka penyimpanan berkas
     │   └── db/               # skema Drizzle, migrasi, seed
-    └── tests/                # integrasi terhadap PostGIS
+    └── test/                 # integrasi/e2e API terhadap PostGIS
 packages/
 └── shared/                   # skema Zod, tipe, rumus atribut + uji unit
 infra/

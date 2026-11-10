@@ -6,20 +6,27 @@ lockfile.
 
 ## R1. Lapisan server/API (menyelesaikan TODO(BACKEND_STACK))
 
-- **Decision**: API REST dengan Node.js (LTS) + TypeScript + Fastify, validasi skema dengan Zod,
-  akses basis data dengan Drizzle ORM dan SQL mentah untuk kueri PostGIS.
-- **Rationale**: satu bahasa (TypeScript) untuk antarmuka dan server memudahkan tim kecil; skema
-  Zod dan rumus atribut dapat dibagi lewat paket bersama; dapat dijalankan di VM pemerintah
-  dengan Docker Compose; enkripsi tingkat kolom dan jejak audit mudah dikendalikan di lapisan
-  aplikasi.
+- **Decision** (ditetapkan pemilik proyek): API REST dengan NestJS (TypeScript, Node.js LTS).
+  Otorisasi lewat guard global (`SessionGuard`, `RolesGuard` dengan dekorator `@Roles`; rute
+  tanpa dekorator ditolak). Jejak audit lewat interceptor ber-dekorator `@Audit` yang menulis
+  dalam transaksi yang sama. Validasi lewat pipe Zod memakai skema di `packages/shared`.
+  Akses basis data dengan Drizzle ORM dan SQL mentah untuk kueri PostGIS. Dokumen OpenAPI
+  dihasilkan dari kode.
+- **Rationale**: satu bahasa untuk antarmuka dan server; struktur modul, guard, dan interceptor
+  NestJS memaksa pola seragam untuk kontrol akses dan audit (Prinsip II) dan memudahkan serah
+  terima ke pengembang lain; dapat dijalankan di VM pemerintah dengan Docker Compose.
+- **Keputusan turunan**:
+  - Validasi memakai Zod, bukan `class-validator`, agar skema dan rumus atribut tetap satu
+    sumber dengan antarmuka React.
+  - Drizzle, bukan Prisma/TypeORM: Prisma tidak memiliki tipe PostGIS bawaan; kueri spasial
+    tetap ditulis sebagai SQL dan diuji terhadap PostGIS sungguhan.
+  - Adaptor HTTP bawaan NestJS dipakai; tidak ada alasan kinerja pada skala A1 untuk menggantinya.
 - **Alternatives considered**:
+  - Fastify tanpa kerangka: lebih ringan, tetapi konvensi akses dan audit harus dibangun sendiri.
   - Supabase terkelola: tercepat dibangun, tetapi wilayah layanan terdekat berada di luar
-    Indonesia sehingga berisiko terhadap ketentuan penempatan data instansi publik; enkripsi NIK
-    tingkat kolom dan audit yang tak dapat diubah lebih rumit lewat RLS saja.
+    Indonesia sehingga berisiko terhadap ketentuan penempatan data instansi publik.
   - Supabase self-hosted: banyak layanan yang harus dioperasikan tim kecil (Prinsip VI).
-  - Laravel/PHP: matang dan umum di pemda, tetapi memecah bahasa dengan antarmuka React dan
-    menduplikasi skema validasi serta rumus atribut.
-  - PostgREST langsung: menaruh seluruh logika otorisasi dan enkripsi di SQL, sulit diuji.
+  - Laravel/PHP: memecah bahasa dengan antarmuka React dan menduplikasi skema serta rumus.
 
 ## R2. Autentikasi dan sesi
 
