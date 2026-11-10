@@ -112,8 +112,7 @@ Alasan: aplikasi akan dirawat tim kecil dengan anggaran terbatas dalam jangka pa
   dan kueri spasial WAJIB dijalankan di basis data, bukan di peramban.
 - Aplikasi peramban DILARANG terhubung langsung ke basis data dengan kredensial berhak istimewa;
   seluruh akses data WAJIB melewati lapisan server yang menegakkan Prinsip II.
-  TODO(BACKEND_STACK): teknologi lapisan server/API belum ditetapkan; diputuskan di
-  `/speckit-plan`.
+  Teknologi lapisan server ditetapkan di rencana implementasi fitur (`plan.md`).
 - Sumber ubin peta (tile) dan gaya peta WAJIB memiliki lisensi serta ketentuan pakai yang
   mengizinkan penggunaan oleh instansi pemerintah, dengan atribusi ditampilkan. Titik lokasi
   relawan perorangan DILARANG ditampilkan pada peta publik; tampilan publik WAJIB berupa agregat
@@ -146,4 +145,4 @@ Alasan: aplikasi akan dirawat tim kecil dengan anggaran terbatas dalam jangka pa
 - Kepatuhan diperiksa pada setiap tinjauan rencana dan pull request, serta ditinjau ulang
   menyeluruh sebelum setiap rilis produksi.
 
-**Version**: 1.1.0 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-10
+**Version**: 1.1.1 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-10
