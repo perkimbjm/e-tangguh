@@ -19,6 +19,7 @@ Data relawan dapat disajikan secara visual yang bagus mirip memilih pemain di ga
 - Q: Berapa lama data relawan nonaktif disimpan sebelum dianonimkan? → A: Mengikuti Jadwal Retensi Arsip Pemko/BPBD; pengaturan yang dapat diubah super admin, bawaan 5 tahun sampai angka resmi tersedia.
 - Q: Berapa usia minimum relawan? → A: 15 tahun; pendaftar berusia 15 sampai di bawah 18 tahun wajib menyertakan izin orang tua/wali.
 - Q: Apakah daftar awal 10 klaster keahlian dapat dipakai? → A: Ya, sebagai data awal yang dapat diubah super admin.
+- Q: Berapa jumlah relawan yang akan tercatat dalam 3 tahun pertama? → A: Sampai 2.000 relawan (binaan BPBD dan organisasi terdaftar), sekitar 50 pengguna bersamaan.
 
 ## Peran
 
@@ -156,7 +157,8 @@ Tim, Jejak Audit. Rinci di `data-model.md`.
 
 - **SC-001**: Relawan menyelesaikan pendaftaran hingga "diajukan" dalam ≤ 10 menit di ponsel.
 - **SC-002**: Admin menemukan relawan sesuai klaster, wilayah, dan ketersediaan dalam ≤ 30 detik.
-- **SC-003**: Hasil pencarian tampil ≤ 3 detik pada profil jaringan "Slow 4G".
+- **SC-003**: Hasil pencarian tampil ≤ 3 detik pada profil jaringan "Slow 4G" dengan 2.000
+  relawan tercatat dan 50 pengguna bersamaan.
 - **SC-004**: 100% tindakan pada FR-011 muncul di jejak audit (dibuktikan uji otomatis).
 - **SC-005**: Tidak ada NIK utuh atau data kesehatan pada respons API untuk peran yang tidak
   berwenang (dibuktikan uji otomatis).
@@ -164,7 +166,8 @@ Tim, Jejak Audit. Rinci di `data-model.md`.
 
 ## Assumptions (perlu konfirmasi BPBD)
 
-- **A1** (belum dikonfirmasi): Skala ≤ 10.000 relawan, ≤ 200 pengguna bersamaan.
+- **A1** (terkonfirmasi): Skala ≤ 2.000 relawan (binaan BPBD dan organisasi terdaftar), ≤ 50
+  pengguna bersamaan, dalam 3 tahun pertama.
 - **A2** (terkonfirmasi): Masa simpan data relawan nonaktif mengikuti Jadwal Retensi Arsip
   Pemko/BPBD. Nilainya berupa pengaturan yang dapat diubah super admin, bawaan 5 tahun sampai
   angka resmi tersedia; setelah lewat, data dianonimkan.

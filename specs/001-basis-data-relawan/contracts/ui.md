@@ -42,7 +42,7 @@ Aturan mengikat:
 |---|---|
 | JavaScript awal rute `/relawan` dan `/relawan/:id` | ≤ 250 KB gzip |
 | LCP rute `/relawan` pada profil "Slow 4G", ponsel kelas menengah | ≤ 3 detik |
-| `GET /volunteers` p95 pada 10.000 relawan | ≤ 500 ms |
+| `GET /volunteers` p95 pada 2.000 relawan, 50 pengguna bersamaan | ≤ 500 ms |
 | Foto kartu | ≤ 40 KB, WebP, dimuat malas |
 | MapLibre dan berkas PMTiles | hanya dimuat pada `/peta` |
 

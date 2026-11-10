@@ -131,7 +131,7 @@ lockfile.
 
 ## Sisa ketidakpastian (bukan penghalang rencana)
 
-Asumsi A1 (skala) pada `spec.md`, angka resmi Jadwal Retensi Arsip, sumber batas wilayah resmi,
+Angka resmi Jadwal Retensi Arsip, sumber batas wilayah resmi,
 dan spesifikasi server Diskominfo masih memerlukan konfirmasi. Relawan berusia 15-17 tahun
 menambah kewajiban pelindungan data anak (izin orang tua/wali); bentuk dokumen izinnya perlu
 ditinjau bagian hukum. Tidak ada NEEDS CLARIFICATION teknis yang tersisa.

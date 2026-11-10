@@ -29,13 +29,13 @@ dengan Docker Compose; peramban ponsel dan desktop
 
 **Project Type**: aplikasi web (antarmuka + API)
 
-**Performance Goals**: `GET /volunteers` p95 ≤ 500 ms pada 10.000 relawan; LCP `/relawan` ≤ 3
+**Performance Goals**: `GET /volunteers` p95 ≤ 500 ms pada 2.000 relawan dan 50 pengguna bersamaan; LCP `/relawan` ≤ 3
 detik pada "Slow 4G"
 
 **Constraints**: JavaScript awal rute kritis ≤ 250 KB gzip; WCAG 2.1 AA; data pribadi tidak
 di-cache persisten di perangkat; tanpa pengiriman data pribadi ke pihak ketiga
 
-**Scale/Scope**: ≤ 10.000 relawan, ≤ 200 pengguna bersamaan (asumsi A1); 13 rute antarmuka, 18
+**Scale/Scope**: ≤ 2.000 relawan, ≤ 50 pengguna bersamaan (A1, terkonfirmasi); 13 rute antarmuka, 18
 tabel
 
 Tidak ada NEEDS CLARIFICATION teknis; keputusan dan alternatif ada di [research.md](./research.md).
@@ -56,7 +56,8 @@ Dievaluasi terhadap konstitusi v1.1.1, sebelum riset dan diulang setelah desain.
 
 Gerbang: tidak ada pelanggaran. Pemeriksaan ulang pasca-desain: tetap LULUS.
 
-Hal yang dibawa ke implementasi sebagai syarat rilis, bukan pelanggaran: konfirmasi asumsi A1 (A2-A6 terkonfirmasi 2026-11-10), angka resmi Jadwal Retensi Arsip,
+Hal yang dibawa ke implementasi sebagai syarat rilis, bukan pelanggaran: angka resmi Jadwal
+Retensi Arsip (asumsi A1-A6 terkonfirmasi 2026-11-10),
 persetujuan BPBD atas ambang rumus atribut, sumber batas wilayah resmi, spesifikasi server
 dari Diskominfo.
 
