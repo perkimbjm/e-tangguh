@@ -126,9 +126,12 @@ lockfile.
   kedua; uji pemulihan terdokumentasi sebelum rilis produksi.
 - **Alternatives considered**: Kubernetes (berlebihan untuk skala A1); PaaS luar negeri
   (penempatan data).
-- **Perlu verifikasi**: lokasi hosting dan ketentuan penempatan data oleh Diskominfo.
+- **Terkonfirmasi (2026-11-10)**: hosting pada server milik/ditunjuk Pemko Banjarmasin
+  (Diskominfo). Spesifikasi server dan prosedur aksesnya masih perlu diperoleh.
 
 ## Sisa ketidakpastian (bukan penghalang rencana)
 
-Asumsi A1-A6 pada `spec.md`, sumber batas wilayah resmi, dan lokasi hosting memerlukan konfirmasi
-BPBD/Diskominfo. Tidak ada NEEDS CLARIFICATION teknis yang tersisa.
+Asumsi A1 (skala) pada `spec.md`, angka resmi Jadwal Retensi Arsip, sumber batas wilayah resmi,
+dan spesifikasi server Diskominfo masih memerlukan konfirmasi. Relawan berusia 15-17 tahun
+menambah kewajiban pelindungan data anak (izin orang tua/wali); bentuk dokumen izinnya perlu
+ditinjau bagian hukum. Tidak ada NEEDS CLARIFICATION teknis yang tersisa.

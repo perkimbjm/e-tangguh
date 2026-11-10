@@ -29,7 +29,10 @@ disebutkan lain. Kolom bertanda 🔒 dienkripsi di aplikasi (AES-256-GCM, lihat 
 | nik_enc 🔒 | bytea | 16 digit, tervalidasi |
 | nik_hash | bytea, unik | HMAC-SHA-256, untuk cegah duplikat |
 | nik_last4 | char(4) | untuk tampilan tersamar |
-| birth_date | date | usia ≥ 18 (asumsi A3) |
+| birth_date | date | usia ≥ 15; usia < 18 = relawan muda (FR-018) |
+| guardian_enc 🔒 | bytea, nullable | nama, hubungan, telepon orang tua/wali; wajib bila usia < 18 |
+| guardian_consent_file_id | uuid → files, nullable | dokumen izin; wajib bila usia < 18 |
+| guardian_consent_verified_at | timestamptz, nullable | diisi admin; syarat `terverifikasi` bagi relawan muda |
 | gender | enum | tidak dipakai dalam atribut |
 | photo_file_id | uuid → files | |
 | kelurahan_id | uuid → regions, nullable | null bila luar kota |
@@ -126,12 +129,21 @@ setelah berlaku; perubahan = versi baru.
 
 ### files
 
-`owner_user_id`, `kind` enum (`foto`, `bukti`), `mime`, `size`, `storage_key`, `sha256`.
+`owner_user_id`, `kind` enum (`foto`, `bukti`, `izin_wali`), `mime`, `size`, `storage_key`, `sha256`.
 
 ### data_requests
 
 `volunteer_id`, `type` enum (`hapus`, `tarik_persetujuan`, `salinan_data`), `status`,
 `handled_by`, `handled_at`.
+
+### app_settings
+
+`key` unik, `value jsonb`, `updated_by`. Memuat `retention_years` (bawaan 5, mengikuti Jadwal
+Retensi Arsip Pemko/BPBD). Hanya super admin; setiap perubahan tercatat di jejak audit.
+
+### password_resets
+
+`user_id`, `token_hash`, `expires_at`, `used_at`, `requested_via` enum (`email`, `admin`).
 
 ### audit_log (hanya-tambah)
 
@@ -158,6 +170,9 @@ Bukti   : diajukan → terverifikasi | ditolak        (kedaluwarsa = turunan dar
 ```
 
 - Hanya `admin_bpbd`/`super_admin` yang memindahkan ke `terverifikasi`/`ditolak`.
+- Relawan berusia < 18 tahun hanya dapat `terverifikasi` bila `guardian_consent_verified_at`
+  terisi. Saat mencapai 18 tahun, penanda relawan muda hilang dan persetujuan atas nama sendiri
+  diminta pada login berikutnya.
 - Perubahan NIK, nama, atau tanggal lahir oleh relawan terverifikasi mengembalikan status ke
   `diajukan`.
 - `dianonimkan`: kolom 🔒, nama, foto, kontak, lokasi dihapus; `nik_hash` dihapus; baris agregat

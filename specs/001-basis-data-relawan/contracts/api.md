@@ -14,6 +14,8 @@ Kolom "Audit" = tindakan dicatat di `audit_log`.
 | POST | /auth/register | P | ya | membuat user + relawan draf + persetujuan dasar |
 | POST | /auth/login | P | ya | laju dibatasi |
 | POST | /auth/logout | R O A S | ya | |
+| POST | /auth/password-reset/request | P | ya | kirim tautan ke email; respons sama untuk akun ada/tidak ada |
+| POST | /auth/password-reset/confirm | P | ya | token sekali pakai, kedaluwarsa |
 | GET | /auth/me | R O A S | | profil sesi dan peran |
 
 ## Relawan (diri sendiri)
@@ -92,6 +94,9 @@ Kolom "Audit" = tindakan dicatat di `audit_log`.
 | Metode | Jalur | Peran | Audit |
 |---|---|---|---|
 | GET/POST/PATCH | /admin/users | S | ya |
+| POST | /admin/users/:id/reset-password | A S | ya |
+| GET/PUT | /admin/settings | S | ya |
+| POST | /admin/volunteers/:id/guardian-consent/verify | A S | ya |
 | GET/POST/PATCH | /admin/skill-clusters | S | ya |
 | GET/POST | /admin/formula-versions | S | ya |
 | GET | /admin/audit-log | S | ya |

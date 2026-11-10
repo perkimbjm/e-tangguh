@@ -10,6 +10,16 @@ Data relawan dapat disajikan secara visual yang bagus mirip memilih pemain di ga
 > turunan dari masukan pengguna ditambah asumsi yang ditandai. Jalankan `/speckit-clarify`
 > untuk mengonfirmasi asumsi sebelum implementasi.
 
+## Clarifications
+
+### Session 2026-11-10
+
+- Q: Di mana aplikasi dan datanya akan di-hosting? → A: Server milik/ditunjuk Pemko Banjarmasin (Diskominfo) di Indonesia.
+- Q: Dengan cara apa pengguna masuk pada versi pertama? → A: Email atau nomor ponsel + kata sandi; pemulihan lewat email atau admin.
+- Q: Berapa lama data relawan nonaktif disimpan sebelum dianonimkan? → A: Mengikuti Jadwal Retensi Arsip Pemko/BPBD; pengaturan yang dapat diubah super admin, bawaan 5 tahun sampai angka resmi tersedia.
+- Q: Berapa usia minimum relawan? → A: 15 tahun; pendaftar berusia 15 sampai di bawah 18 tahun wajib menyertakan izin orang tua/wali.
+- Q: Apakah daftar awal 10 klaster keahlian dapat dipakai? → A: Ya, sebagai data awal yang dapat diubah super admin.
+
 ## Peran
 
 | Peran | Uraian |
@@ -92,13 +102,24 @@ Relawan mengatur status ketersediaan (siaga, terbatas, tidak tersedia) yang tamp
 - Relawan tanpa bukti kompetensi: kartu tampil dengan atribut terkait bernilai minimum, bukan
   kosong.
 - Sertifikat kedaluwarsa: tidak dihitung sejak tanggal kedaluwarsa.
-- Relawan di bawah 18 tahun: pendaftaran ditolak (asumsi A3).
+- Pendaftar di bawah 15 tahun: pendaftaran ditolak.
+- Pendaftar berusia 15 sampai di bawah 18 tahun tanpa dokumen izin orang tua/wali: profil tidak
+  dapat diajukan untuk verifikasi.
+- Relawan muda yang mencapai usia 18 tahun: penanda "relawan muda" hilang dan relawan diminta
+  memberi persetujuan atas namanya sendiri.
 - Domisili di luar Kota Banjarmasin: boleh mendaftar, ditandai "luar kota".
 - Unggahan bukan gambar/PDF atau melebihi batas ukuran: ditolak dengan pesan jelas.
 
 ## Requirements
 
 - **FR-001**: Sistem WAJIB menyediakan pendaftaran mandiri dengan persetujuan eksplisit berversi.
+- **FR-017**: Sistem WAJIB menyediakan masuk dengan email atau nomor ponsel + kata sandi serta
+  pemulihan kata sandi lewat email atau pengaturan ulang oleh admin (tercatat di jejak audit).
+- **FR-018**: Sistem WAJIB menolak pendaftar berusia di bawah 15 tahun. Untuk pendaftar berusia 15
+  sampai di bawah 18 tahun, sistem WAJIB meminta nama dan kontak orang tua/wali serta unggahan
+  dokumen izin, yang diverifikasi admin sebelum profil dapat berstatus terverifikasi, dan WAJIB
+  menampilkan penanda teks "relawan muda" pada kartu dan detail. Usia DILARANG memengaruhi nilai
+  atribut.
 - **FR-002**: Sistem WAJIB mencegah duplikasi relawan berdasarkan NIK tervalidasi (16 digit).
 - **FR-003**: Sistem WAJIB menyimpan NIK, data kesehatan, kontak darurat, dan alamat rinci
   terenkripsi dan menyamarkan NIK di semua tampilan selain layar verifikasi admin.
@@ -119,7 +140,9 @@ Relawan mengatur status ketersediaan (siaga, terbatas, tidak tersedia) yang tamp
   admin BPBD.
 - **FR-013**: Sistem WAJIB menyediakan ekspor CSV/XLSX/PDF bagi peran berwenang.
 - **FR-014**: Sistem WAJIB memproses penarikan persetujuan dan permintaan penghapusan, serta
-  menganonimkan relawan nonaktif setelah masa simpan.
+  menganonimkan relawan nonaktif setelah masa simpan. Masa simpan WAJIB berupa pengaturan yang
+  hanya dapat diubah super admin (bawaan 5 tahun), dan setiap perubahannya tercatat di jejak
+  audit.
 - **FR-015**: Sistem WAJIB mengelola organisasi relawan dan keanggotaannya.
 - **FR-016**: Antarmuka WAJIB berbahasa Indonesia, mobile-first, memenuhi WCAG 2.1 AA.
 
@@ -141,14 +164,19 @@ Tim, Jejak Audit. Rinci di `data-model.md`.
 
 ## Assumptions (perlu konfirmasi BPBD)
 
-- **A1**: Skala ≤ 10.000 relawan, ≤ 200 pengguna bersamaan.
-- **A2**: Masa simpan data relawan nonaktif 5 tahun, lalu dianonimkan.
-- **A3**: Usia minimum relawan 18 tahun.
-- **A4**: Daftar klaster keahlian awal: SAR dan Evakuasi, Medis/Kesehatan, Dapur Umum, Logistik,
+- **A1** (belum dikonfirmasi): Skala ≤ 10.000 relawan, ≤ 200 pengguna bersamaan.
+- **A2** (terkonfirmasi): Masa simpan data relawan nonaktif mengikuti Jadwal Retensi Arsip
+  Pemko/BPBD. Nilainya berupa pengaturan yang dapat diubah super admin, bawaan 5 tahun sampai
+  angka resmi tersedia; setelah lewat, data dianonimkan.
+- **A3** (terkonfirmasi): Usia minimum relawan 15 tahun; usia 15 sampai di bawah 18 tahun wajib
+  dengan izin orang tua/wali.
+- **A4** (terkonfirmasi): Daftar klaster keahlian awal: SAR dan Evakuasi, Medis/Kesehatan, Dapur Umum, Logistik,
   Kaji Cepat, Komunikasi dan Informasi, Dukungan Psikososial, Air Bersih dan Sanitasi, Hunian
   Darurat, Pemadam Kebakaran. Dapat diubah super admin.
-- **A5**: Masuk dengan email atau nomor ponsel + kata sandi; OTP dan SSO pemerintah menyusul.
-- **A6**: Hosting pada infrastruktur yang ditunjuk Pemko Banjarmasin/Diskominfo di Indonesia.
+- **A5** (terkonfirmasi): Masuk dengan email atau nomor ponsel + kata sandi; lupa kata sandi
+  dipulihkan lewat email atau oleh admin. OTP dan SSO pemerintah di luar MVP.
+- **A6** (terkonfirmasi): Hosting pada server milik/ditunjuk Pemko Banjarmasin (Diskominfo) di
+  Indonesia.
 
 ## Out of Scope (fitur berikutnya)
 

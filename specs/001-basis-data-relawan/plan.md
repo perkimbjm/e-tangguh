@@ -24,8 +24,8 @@ MapLibre GL JS, PMTiles; NestJS, Zod, Drizzle ORM, Argon2
 **Testing**: Vitest (unit), uji integrasi API terhadap PostgreSQL/PostGIS dalam kontainer,
 Playwright + axe (ujung-ke-ujung dan aksesibilitas)
 
-**Target Platform**: server Linux dengan Docker Compose pada infrastruktur pemerintah di
-Indonesia; peramban ponsel dan desktop
+**Target Platform**: server Linux milik/ditunjuk Pemko Banjarmasin (Diskominfo) di Indonesia
+dengan Docker Compose; peramban ponsel dan desktop
 
 **Project Type**: aplikasi web (antarmuka + API)
 
@@ -35,7 +35,7 @@ detik pada "Slow 4G"
 **Constraints**: JavaScript awal rute kritis ≤ 250 KB gzip; WCAG 2.1 AA; data pribadi tidak
 di-cache persisten di perangkat; tanpa pengiriman data pribadi ke pihak ketiga
 
-**Scale/Scope**: ≤ 10.000 relawan, ≤ 200 pengguna bersamaan (asumsi A1); 13 rute antarmuka, 16
+**Scale/Scope**: ≤ 10.000 relawan, ≤ 200 pengguna bersamaan (asumsi A1); 13 rute antarmuka, 18
 tabel
 
 Tidak ada NEEDS CLARIFICATION teknis; keputusan dan alternatif ada di [research.md](./research.md).
@@ -56,8 +56,9 @@ Dievaluasi terhadap konstitusi v1.1.1, sebelum riset dan diulang setelah desain.
 
 Gerbang: tidak ada pelanggaran. Pemeriksaan ulang pasca-desain: tetap LULUS.
 
-Hal yang dibawa ke implementasi sebagai syarat rilis, bukan pelanggaran: konfirmasi asumsi A1-A6,
-persetujuan BPBD atas ambang rumus atribut, sumber batas wilayah resmi, lokasi hosting.
+Hal yang dibawa ke implementasi sebagai syarat rilis, bukan pelanggaran: konfirmasi asumsi A1 (A2-A6 terkonfirmasi 2026-11-10), angka resmi Jadwal Retensi Arsip,
+persetujuan BPBD atas ambang rumus atribut, sumber batas wilayah resmi, spesifikasi server
+dari Diskominfo.
 
 ## Project Structure
 

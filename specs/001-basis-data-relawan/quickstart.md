@@ -71,6 +71,8 @@ pnpm check:bundle
 | 11 | Tarik persetujuan sebagai relawan | relawan hilang dari `/volunteers` | FR-014 |
 | 12 | Pindai aksesibilitas rute utama; aktifkan reduced-motion | nol pelanggaran serious/critical; animasi mati | FR-016, SC-006 |
 | 13 | Cadangkan, hapus basis data, pulihkan | data dan berkas kembali; langkah terdokumentasi | Prinsip V |
+| 14 | Daftar dengan tanggal lahir usia 14; lalu usia 16 tanpa dokumen izin wali | usia 14 ditolak; usia 16 tidak dapat diajukan sampai izin diunggah | FR-018 |
+| 15 | Minta pemulihan kata sandi untuk email terdaftar dan tidak terdaftar | respons identik; token sekali pakai | FR-017 |
 
-Skenario 1-12 WAJIB tercakup uji otomatis; skenario 13 dijalankan manual sebelum rilis produksi
+Skenario 1-12, 14, 15 WAJIB tercakup uji otomatis; skenario 13 dijalankan manual sebelum rilis produksi
 dan hasilnya dicatat.
