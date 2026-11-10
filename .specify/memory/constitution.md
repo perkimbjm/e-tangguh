@@ -104,9 +104,22 @@ Alasan: aplikasi akan dirawat tim kecil dengan anggaran terbatas dalam jangka pa
   BPBD/Diskominfo/bagian hukum sebelum rilis produksi; konstitusi ini bukan nasihat hukum.
 - Data produksi DILARANG dipakai di lingkungan pengembangan atau pengujian; data contoh WAJIB
   sintetis.
-- Pilihan tumpukan teknologi dan lokasi hosting ditetapkan di rencana implementasi
-  (`/speckit-plan`), bukan di konstitusi ini; hosting WAJIB memenuhi ketentuan penempatan data
-  instansi pemerintah yang berlaku.
+- Tumpukan teknologi yang ditetapkan: antarmuka WAJIB dibangun dengan React di atas Vite; basis
+  data WAJIB PostgreSQL dengan ekstensi PostGIS; peta WAJIB memakai MapLibre GL JS. Penggantian
+  salah satunya memerlukan amendemen konstitusi.
+- Data lokasi (domisili, wilayah tugas, batas kecamatan/kelurahan) WAJIB disimpan sebagai tipe
+  geometri/geografi PostGIS dengan SRID yang dinyatakan eksplisit (EPSG:4326 untuk penyimpanan),
+  dan kueri spasial WAJIB dijalankan di basis data, bukan di peramban.
+- Aplikasi peramban DILARANG terhubung langsung ke basis data dengan kredensial berhak istimewa;
+  seluruh akses data WAJIB melewati lapisan server yang menegakkan Prinsip II.
+  TODO(BACKEND_STACK): teknologi lapisan server/API belum ditetapkan; diputuskan di
+  `/speckit-plan`.
+- Sumber ubin peta (tile) dan gaya peta WAJIB memiliki lisensi serta ketentuan pakai yang
+  mengizinkan penggunaan oleh instansi pemerintah, dengan atribusi ditampilkan. Titik lokasi
+  relawan perorangan DILARANG ditampilkan pada peta publik; tampilan publik WAJIB berupa agregat
+  per wilayah.
+- Lokasi hosting ditetapkan di rencana implementasi (`/speckit-plan`) dan WAJIB memenuhi
+  ketentuan penempatan data instansi pemerintah yang berlaku.
 - Integrasi dengan layanan pihak ketiga (peta, notifikasi, pesan) DILARANG mengirim data pribadi
   melebihi yang diperlukan fungsi tersebut.
 
@@ -133,4 +146,4 @@ Alasan: aplikasi akan dirawat tim kecil dengan anggaran terbatas dalam jangka pa
 - Kepatuhan diperiksa pada setiap tinjauan rencana dan pull request, serta ditinjau ulang
   menyeluruh sebelum setiap rilis produksi.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-10
+**Version**: 1.1.0 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-10
