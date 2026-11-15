@@ -1,50 +1,148 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# e-Tangguh Constitution
+
+Basis data relawan kebencanaan untuk BPBD Kota Banjarmasin: memudahkan BPBD mengelola data
+relawan dan memudahkan relawan mengelola profil serta keterlibatannya.
+
+Kata kunci WAJIB, DILARANG, dan SEBAIKNYA dipakai dengan arti normatif (setara MUST, MUST NOT,
+SHOULD).
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Perlindungan Data Pribadi Sejak Rancangan (NON-NEGOTIABLE)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+- Setiap atribut data relawan WAJIB memiliki tujuan pemrosesan yang tertulis di spesifikasi;
+  atribut tanpa tujuan DILARANG dikumpulkan (minimisasi data).
+- Data pribadi WAJIB dikumpulkan dengan persetujuan eksplisit relawan yang tercatat (waktu,
+  versi pernyataan persetujuan), dan relawan WAJIB dapat melihat, memperbaiki, menarik
+  persetujuan, serta meminta penghapusan datanya.
+- Data sensitif (NIK, data kesehatan seperti golongan darah dan riwayat penyakit, kontak darurat,
+  alamat rinci, dokumen identitas) WAJIB dienkripsi saat disimpan dan saat dikirim, serta
+  DILARANG tampil di halaman publik, log aplikasi, URL, dan berkas ekspor tanpa hak akses khusus.
+- Tampilan publik atau lintas-organisasi WAJIB hanya memuat data yang disetujui relawan untuk
+  ditampilkan; NIK WAJIB disamarkan di semua tampilan selain layar verifikasi admin.
+- Masa simpan data WAJIB ditetapkan; data relawan nonaktif melewati masa simpan WAJIB dihapus
+  atau dianonimkan.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+Alasan: aplikasi menyimpan data pribadi warga, termasuk data kesehatan. Kebocoran merugikan
+relawan dan menimbulkan tanggung jawab hukum bagi BPBD selaku pengendali data.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. Akses Berbasis Peran dan Jejak Audit
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+- Setiap fitur WAJIB mendefinisikan peran yang boleh mengaksesnya (minimal: relawan, pengurus
+  organisasi relawan, admin BPBD, super admin); akses default adalah ditolak.
+- Otorisasi WAJIB ditegakkan di sisi server untuk setiap permintaan; penyembunyian elemen
+  antarmuka saja tidak dihitung sebagai kontrol akses.
+- Setiap pembuatan, perubahan, penghapusan, verifikasi, ekspor, dan pembukaan data sensitif
+  WAJIB tercatat di jejak audit (siapa, kapan, apa, dari mana) yang tidak dapat diubah oleh
+  pengguna aplikasi.
+- Kredensial dan rahasia DILARANG disimpan di repositori.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Alasan: data dipakai banyak pihak dengan kepentingan berbeda; akuntabilitas instansi pemerintah
+menuntut setiap akses dapat ditelusuri.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. Data Terverifikasi dan Atribut Berbasis Bukti
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+- Setiap data relawan WAJIB memiliki status verifikasi (mis. draf, diajukan, terverifikasi,
+  ditolak) dan hanya admin BPBD yang berwenang yang dapat memverifikasi.
+- Nilai atribut pada kartu relawan (gaya kartu pemain) WAJIB dihitung dari bukti yang dapat
+  diperiksa: sertifikat, riwayat pelatihan, riwayat penugasan, masa aktif. Rumus perhitungan
+  WAJIB terdokumentasi, deterministik, dan dapat dijelaskan kepada relawan yang bersangkutan.
+- Atribut DILARANG diturunkan dari karakteristik yang diskriminatif (agama, suku, jenis kelamin,
+  disabilitas, kondisi kesehatan) dan DILARANG ditampilkan sebagai penilaian atas pribadi
+  relawan; atribut menggambarkan kompetensi dan kesiapan, bukan nilai seseorang.
+- Relawan WAJIB dapat melihat dasar perhitungan atributnya dan mengajukan koreksi.
+- Duplikasi relawan WAJIB dicegah dengan pengenal unik yang tervalidasi.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Alasan: keputusan mobilisasi diambil dari data ini. Angka yang tidak berdasar bukti menyesatkan
+penugasan dan tidak adil bagi relawan.
+
+### IV. Antarmuka Visual yang Tetap Fungsional dan Aksesibel
+
+- Antarmuka WAJIB dirancang mobile-first dan berbahasa Indonesia.
+- Presentasi visual bergaya pemilihan pemain (kartu, atribut, diagram radar, filter cepat)
+  WAJIB selalu memiliki padanan tampilan tabel/daftar yang memuat informasi yang sama.
+- Informasi DILARANG disampaikan hanya lewat warna atau animasi; animasi WAJIB menghormati
+  preferensi reduced-motion; kontras dan navigasi keyboard WAJIB memenuhi WCAG 2.1 tingkat AA.
+- Halaman pencarian dan detail relawan WAJIB dapat dipakai pada koneksi seluler lambat; anggaran
+  kinerja (ukuran halaman, waktu muat) WAJIB ditetapkan di rencana implementasi dan diuji.
+- Desain visual WAJIB orisinal: DILARANG memakai nama, logo, aset, atau tata letak khas milik
+  gim komersial mana pun.
+
+Alasan: tampilan menarik meningkatkan adopsi, tetapi aplikasi ini dipakai saat darurat, di
+lapangan, pada perangkat dan jaringan seadanya.
+
+### V. Andal Saat Darurat dan Data Tidak Terkunci
+
+- Alur kritis (mencari relawan menurut keahlian/wilayah/ketersediaan dan melihat kontaknya)
+  WAJIB diidentifikasi di setiap spesifikasi dan memiliki perilaku terdefinisi saat layanan
+  pendukung gagal.
+- Data WAJIB dicadangkan terjadwal dan pemulihannya WAJIB pernah diuji sebelum rilis produksi.
+- Data WAJIB dapat diekspor dalam format terbuka (CSV/XLSX/PDF) oleh peran yang berwenang,
+  dengan ekspor tercatat di jejak audit.
+- Perubahan skema basis data WAJIB melalui migrasi berversi yang dapat diulang.
+
+Alasan: ketika bencana terjadi, kegagalan aplikasi berarti keterlambatan mobilisasi.
+
+### VI. Sederhana, Teruji, dan Dapat Dirawat
+
+- Solusi paling sederhana yang memenuhi spesifikasi WAJIB dipilih; kompleksitas tambahan WAJIB
+  dijustifikasi tertulis di rencana implementasi.
+- Aturan kontrol akses, perhitungan atribut, dan alur verifikasi WAJIB dicakup uji otomatis yang
+  berjalan di CI; perubahan yang menggagalkan uji DILARANG digabung.
+- Komponen pihak ketiga WAJIB berlisensi kompatibel dengan lisensi repositori dan masih
+  dipelihara aktif.
+- Cara instalasi, konfigurasi, dan pengoperasian WAJIB terdokumentasi dalam bahasa Indonesia
+  sehingga dapat dijalankan tim TI pemerintah daerah tanpa pengembang asli.
+
+Alasan: aplikasi akan dirawat tim kecil dengan anggaran terbatas dalam jangka panjang.
+
+## Batasan Tambahan
+
+- Kepatuhan regulasi: rancangan WAJIB mengacu pada UU No. 27 Tahun 2022 tentang Pelindungan
+  Data Pribadi, kebijakan SPBE dan Satu Data Indonesia, serta pedoman relawan penanggulangan
+  bencana BNPB. Rujukan pasal dan kewajiban rinci WAJIB dikonfirmasi oleh pejabat berwenang
+  BPBD/Diskominfo/bagian hukum sebelum rilis produksi; konstitusi ini bukan nasihat hukum.
+- Data produksi DILARANG dipakai di lingkungan pengembangan atau pengujian; data contoh WAJIB
+  sintetis.
+- Tumpukan teknologi yang ditetapkan: antarmuka WAJIB dibangun dengan React di atas Vite; basis
+  data WAJIB PostgreSQL dengan ekstensi PostGIS; peta WAJIB memakai MapLibre GL JS. Penggantian
+  salah satunya memerlukan amendemen konstitusi.
+- Data lokasi (domisili, wilayah tugas, batas kecamatan/kelurahan) WAJIB disimpan sebagai tipe
+  geometri/geografi PostGIS dengan SRID yang dinyatakan eksplisit (EPSG:4326 untuk penyimpanan),
+  dan kueri spasial WAJIB dijalankan di basis data, bukan di peramban.
+- Aplikasi peramban DILARANG terhubung langsung ke basis data dengan kredensial berhak istimewa;
+  seluruh akses data WAJIB melewati lapisan server yang menegakkan Prinsip II.
+  Teknologi lapisan server ditetapkan di rencana implementasi fitur (`plan.md`).
+- Sumber ubin peta (tile) dan gaya peta WAJIB memiliki lisensi serta ketentuan pakai yang
+  mengizinkan penggunaan oleh instansi pemerintah, dengan atribusi ditampilkan. Titik lokasi
+  relawan perorangan DILARANG ditampilkan pada peta publik; tampilan publik WAJIB berupa agregat
+  per wilayah.
+- Lokasi hosting ditetapkan di rencana implementasi (`/speckit-plan`) dan WAJIB memenuhi
+  ketentuan penempatan data instansi pemerintah yang berlaku.
+- Integrasi dengan layanan pihak ketiga (peta, notifikasi, pesan) DILARANG mengirim data pribadi
+  melebihi yang diperlukan fungsi tersebut.
+
+## Alur Kerja Pengembangan
+
+- Setiap fitur melalui urutan Spec Kit: spesifikasi, klarifikasi bila perlu, rencana, daftar
+  tugas, implementasi.
+- Setiap spesifikasi WAJIB memuat: peran yang terlibat, data pribadi yang disentuh beserta
+  tujuannya, dan alur kritisnya.
+- Setiap rencana WAJIB memuat pemeriksaan kesesuaian terhadap keenam prinsip; pelanggaran WAJIB
+  dicatat beserta justifikasi dan alternatif yang ditolak.
+- Perubahan masuk lewat pull request yang ditinjau minimal satu orang selain penulisnya dan lolos
+  CI.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- Konstitusi ini mengungguli praktik lain di proyek. Bila bertentangan, konstitusi yang berlaku
+  atau konstitusi diamendemen lebih dahulu.
+- Amendemen diajukan lewat pull request yang mengubah berkas ini, memuat alasan dan dampak ke
+  spesifikasi/rencana berjalan, dan disetujui pemilik proyek.
+- Versi mengikuti semantic versioning: MAJOR untuk penghapusan atau redefinisi prinsip yang tidak
+  kompatibel, MINOR untuk prinsip/bagian baru atau perluasan material, PATCH untuk klarifikasi
+  redaksi.
+- Kepatuhan diperiksa pada setiap tinjauan rencana dan pull request, serta ditinjau ulang
+  menyeluruh sebelum setiap rilis produksi.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.1.1 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-10
