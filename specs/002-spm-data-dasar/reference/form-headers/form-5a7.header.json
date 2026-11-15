@@ -1,0 +1,51 @@
+{
+  "form_code": "5.A.7",
+  "sheet_name": "5.A.7 DAFTAR KETERSEDIAAN PERAL",
+  "header_last_row": 3,
+  "cells": {
+    "A1": "NO.",
+    "B1": "NAMA PERALATAN",
+    "C1": "JUMLAH/ SATUAN",
+    "D1": "JENIS DUKUNGAN TERHADAP OPERASI TANGGAP DARURAT",
+    "I1": "LOKASI",
+    "K1": "KONDISI",
+    "D2": "KAJI CEPAT",
+    "E2": "PENCARIAN ORANG HILANG",
+    "F2": "PENANGANAN KORBAN MENINGGAL",
+    "G2": "PENANGANAN MEDIS",
+    "H2": "FASILITAS PENGUNGSIAN",
+    "I2": "POSISI",
+    "J2": "INSTITUSI PENANGGUNG JAWAB",
+    "K2": "BAIK",
+    "L2": "RUSAK",
+    "A3": "1",
+    "B3": "2",
+    "C3": "3",
+    "D3": "4",
+    "E3": "5",
+    "F3": "6",
+    "G3": "7",
+    "H3": "8",
+    "I3": "9",
+    "J3": "10",
+    "K3": "11",
+    "L3": "12"
+  },
+  "merged_ranges": [
+    "A1:A2",
+    "B1:B2",
+    "C1:C2",
+    "D1:H1",
+    "I1:J1",
+    "K1:L1"
+  ],
+  "column_notes": [
+    "Kolom 1 : Diisi dengan nomor urut",
+    "Kolom 2 : Diisi dengan nama peralatan pendukung operasi tanggap darurat bencana yang tersedia di daerah",
+    "Kolom 3 : Diisi dengan jumlah ketersediaan peralatan",
+    "Kolom 4 - 8 : Diisi dengan checklist",
+    "Kolom 9 : Diisi dengan lokasi posisi peralatan",
+    "Kolom 10 : Diisi dengan institusi penanggungjawab peralatan",
+    "Kolom 11-12 : Diisi dengan checklist sesua kondisi peralatan"
+  ]
+}

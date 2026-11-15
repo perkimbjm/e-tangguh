@@ -172,7 +172,7 @@ manual, dan kepala berkas ekspor sama dengan templat resmi.
 ### Tests for User Story 2
 
 - [ ] T076 [P] [US2] Uji integrasi rekap di `apps/api/test/spm/recap.int.spec.ts`: untuk setiap sel 5.A.3, 5.A.4, 5.A.6, jumlah `rows` hasil penelusuran sama dengan nilai sel; baris `menunggu` dan nonaktif tidak terhitung; orang tanpa NIK terhitung
-- [ ] T077 [P] [US2] Uji berkas emas di `apps/api/test/spm/export-golden.int.spec.ts`: struktur kepala XLSX (judul, sel gabung, penomoran kolom) Form 5.A.1-5.A.4 dan 5.A.6 sama dengan templat kosong di `apps/api/test/spm/golden/` (templat kosong tanpa data warga)
+- [ ] T077 [P] [US2] Uji berkas emas di `apps/api/test/spm/export-golden.int.spec.ts`: struktur kepala XLSX (judul, sel gabung, penomoran kolom) Form 5.A.1-5.A.4 dan 5.A.6 sama dengan rujukan `cells` dan `merged_ranges` di `specs/002-spm-data-dasar/reference/form-headers/form-5a*.header.json`
 
 ### Implementation for User Story 2
 
@@ -207,12 +207,12 @@ manual, dan kepala berkas ekspor sama dengan templat resmi.
 
 ### Implementation for User Story 3
 
-- [ ] T092 [US3] Buat skema `officer_records` di `apps/api/src/db/schema/officer-records.ts`: unik `(fiscal_year_id, person_id)`; `volunteer_id nullable`; `employment_status` enum `pns | tni | polri | satlinmas | kontrak | non_aparatur`; `certifications text`; `is_trc_klb`, `is_trc_pdb`, `is_ppe`, `is_ops`; `post_type` enum `posko | pos_lapangan` nullable; `post_kelurahan_id`; `hazard_mask`; `note`; migrasi dan pemicu kunci tahun
+- [ ] T092 [US3] Buat skema `officer_records` di `apps/api/src/db/schema/officer-records.ts`: unik `(fiscal_year_id, person_id)`; `volunteer_id nullable`; `position` enum `kasi_trantibumlinmas | babinsa | bhabinkamtibmas | linmas | relawan | lainnya`; `employment_status` enum `pns | tni | polri | satlinmas | kontrak | non_aparatur` (diisi otomatis dari jabatan: kasi → pns, babinsa → tni, bhabinkamtibmas → polri, linmas → satlinmas, relawan → non_aparatur); `duty_kelurahan_id` (wajib kecuali jabatan `lainnya`); `certifications text`; `is_trc_klb`, `is_trc_pdb`, `is_ppe`, `is_ops`; `post_type` enum `posko | pos_lapangan` nullable; `post_kelurahan_id`; `hazard_mask`; `note`; migrasi dan pemicu kunci tahun
 - [ ] T093 [P] [US3] Definisikan Form 5.A.5 di `packages/shared/src/spm/forms/form-5a5.ts` dan skema baris impor petugas di `packages/shared/src/spm/validation/officer-row.ts`
 - [ ] T094 [US3] Implementasikan modul petugas di `apps/api/src/modules/spm/officers/` (`officers.controller.ts`, `officers.service.ts`, `officers.repository.ts`): jalur `/:fy/officers*`; data diri diambil dari `persons`
 - [ ] T095 [US3] Implementasikan antarmuka sumber relawan di `apps/api/src/modules/spm/officers/volunteer-source.ts` (`VolunteerSource.getVerified(volunteerId) → { personId, certifications }`) dan `POST /:fy/officers/from-volunteer/:volunteerId`; implementasi nyata disambungkan saat modul relawan fitur 001 tersedia, sementara mengembalikan 501 dengan pesan jelas
 - [ ] T096 [P] [US3] Tambahkan impor Form 5.A.5 di `apps/api/src/modules/spm/imports/officer-import.ts` memakai pembaca dan alur pratinjau US1
-- [ ] T097 [P] [US3] Tambahkan penyedia ekspor di `apps/api/src/modules/spm/exports/providers/form-5a5.provider.ts` dan lengkapi predikat petugas pada `recap-5a4.ts` dan `recap-5a6.ts`
+- [ ] T097 [P] [US3] Tambahkan penyedia ekspor di `apps/api/src/modules/spm/exports/providers/form-5a5.provider.ts` dan lengkapi predikat petugas pada `recap-5a4.ts` dan `recap-5a6.ts`: kolom 4-8 Form 5.A.4 dihitung menurut `duty_kelurahan_id`, kolom 14 diisi "Relawan: n orang" dari jabatan `relawan`
 - [ ] T098 [P] [US3] Buat layar petugas di `apps/web/src/features/spm/officers/OfficersPage.tsx`, `OfficerForm.tsx`, `PickVolunteerDialog.tsx`
 
 **Checkpoint**: US3 berfungsi (quickstart skenario 10)
@@ -291,7 +291,7 @@ lagi; arsip revisi sebelumnya tetap dapat diunduh.
 
 - [ ] T122 [P] Uji matriks izin menyeluruh di `apps/api/test/spm/permission-matrix.int.spec.ts`: setiap jalur pada contracts/api.md × setiap peran, termasuk tepat satu entri audit per jalur bertanda "Audit: ya"
 - [ ] T123 [P] Uji beban rekap di `tools/spm-fixtures/load-test.ts` (skrip `spm:load-test --residents 200000`): rekap seluruh kota ≤ 5 detik; catat hasil di `specs/002-spm-data-dasar/load-test-result.md`
-- [ ] T124 [P] Lengkapi berkas emas untuk Form 5.A.5 dan 5.A.7-5.A.12 di `apps/api/test/spm/export-golden.int.spec.ts`
+- [ ] T124 [P] Lengkapi berkas emas untuk Form 5.A.5 dan 5.A.7-5.A.12 di `apps/api/test/spm/export-golden.int.spec.ts` terhadap rujukan di `specs/002-spm-data-dasar/reference/form-headers/`; Form 5.A.9 memakai `official_title`
 - [ ] T125 [P] Uji ujung-ke-ujung alur utama di `apps/web/tests/spm/import-approve-recap.e2e.ts` beserta pemindaian aksesibilitas (axe) pada layar warga, impor, rekap
 - [ ] T126 [P] Tulis panduan operator dan pendata dalam bahasa Indonesia di `docs/spm/panduan-pendata.md`, `docs/spm/panduan-operator.md`, `docs/spm/finalisasi-dan-revisi.md`
 - [ ] T127 Jalankan `pnpm lint` dan pecah setiap berkas yang melampaui 400 baris; pastikan pemeriksaan `max-lines` aktif di CI tanpa pengecualian selain migrasi
@@ -355,9 +355,10 @@ diuji dan dapat didemokan sendiri.
 
 ### Hal yang harus dikonfirmasi sebelum data nyata dimasukkan
 
-Dasar hukum pemrosesan data warga; persetujuan atas penyimpangan Prinsip I pada plan.md
-(penanda rekap tidak dienkripsi per kolom); tafsir kolom aparatur Form 5.A.4; judul resmi Form
-5.A.9; sumber batas wilayah dan daftar kelurahan resmi.
+Dasar hukum pemrosesan data warga (ditunda pemilik proyek); penempatan jumlah relawan pada kolom
+keterangan Form 5.A.4; sumber batas wilayah dan daftar kelurahan resmi. Sudah diputuskan
+2026-11-15: penyimpangan Prinsip I disetujui untuk fitur ini; aparatur Form 5.A.4 dihitung
+menurut kelurahan wilayah tugas; judul Form 5.A.9.
 
 ## Notes
 

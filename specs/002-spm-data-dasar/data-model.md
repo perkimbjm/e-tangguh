@@ -120,11 +120,13 @@ kerawanan = peringkat `hazard_mask` yang berbeda dalam satu tahun.
 |---|---|---|
 | fiscal_year_id, person_id | | unik berpasangan |
 | volunteer_id | uuid → volunteers, nullable | bila dipilih dari relawan |
-| employment_status | enum `pns`, `tni`, `polri`, `satlinmas`, `kontrak`, `non_aparatur` | |
+| position | enum `kasi_trantibumlinmas`, `babinsa`, `bhabinkamtibmas`, `linmas`, `relawan`, `lainnya` | jabatan |
+| employment_status | enum `pns`, `tni`, `polri`, `satlinmas`, `kontrak`, `non_aparatur` | diisi otomatis dari jabatan: kasi → `pns`, babinsa → `tni`, bhabinkamtibmas → `polri`, linmas → `satlinmas`, relawan → `non_aparatur`; bebas untuk `lainnya` |
+| duty_kelurahan_id | uuid → regions, nullable | kelurahan wilayah tugas; wajib kecuali jabatan `lainnya`; dasar hitungan Form 5.A.4 |
 | certifications | text | diisi otomatis dari `evidences` terverifikasi bila relawan |
 | is_trc_klb, is_trc_pdb, is_ppe, is_ops | boolean | jenis penugasan |
 | post_type | enum `posko`, `pos_lapangan`, nullable | |
-| post_kelurahan_id | uuid → regions, nullable | |
+| post_kelurahan_id | uuid → regions, nullable | lokasi posko/pos lapangan |
 | hazard_mask | smallint | jenis bencana yang ditangani (Form 5.A.6) |
 | note | text | |
 
