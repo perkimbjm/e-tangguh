@@ -58,7 +58,8 @@ Tidak ada NEEDS CLARIFICATION teknis; keputusan ada di [research.md](./research.
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Dievaluasi terhadap konstitusi v1.2.0.
+Dievaluasi terhadap konstitusi v1.2.0; aturan batas 400 baris per berkas kode (v1.3.0) dipenuhi
+lewat pemecahan berkas pada `tasks.md` dan pemeriksaan `max-lines` di CI.
 
 | Prinsip | Pemenuhan dalam rancangan | Status |
 |---|---|---|

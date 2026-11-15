@@ -103,6 +103,9 @@ Alasan: ketika bencana terjadi, kegagalan aplikasi berarti keterlambatan mobilis
   dijustifikasi tertulis di rencana implementasi.
 - Aturan kontrol akses, perhitungan atribut, dan alur verifikasi WAJIB dicakup uji otomatis yang
   berjalan di CI; perubahan yang menggagalkan uji DILARANG digabung.
+- Setiap berkas kode sumber DILARANG melampaui 400 baris (tidak termasuk baris kosong, komentar,
+  dan berkas migrasi hasil pembangkit). Berkas yang akan melampauinya WAJIB dipecah menurut
+  tanggung jawab sebelum ditambah isinya, dan batas ini WAJIB diperiksa otomatis di CI.
 - Komponen pihak ketiga WAJIB berlisensi kompatibel dengan lisensi repositori dan masih
   dipelihara aktif.
 - Cara instalasi, konfigurasi, dan pengoperasian WAJIB terdokumentasi dalam bahasa Indonesia
@@ -181,4 +184,4 @@ Angka yang tidak dapat ditelusuri atau format yang menyimpang membuat laporan di
 - Kepatuhan diperiksa pada setiap tinjauan rencana dan pull request, serta ditinjau ulang
   menyeluruh sebelum setiap rilis produksi.
 
-**Version**: 1.2.0 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-15
+**Version**: 1.3.0 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-15
