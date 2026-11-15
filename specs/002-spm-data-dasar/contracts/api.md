@@ -48,7 +48,7 @@ S = super_admin. Kolom "Audit" = tercatat di `audit_log`.
 | GET | /templates/:formCode | K O A S | | templat kosong ber-validasi |
 | POST | /:fy/imports | K O A S | ya | multipart; mengembalikan pratinjau |
 | GET | /:fy/imports/:id | pengunggah, O A S | | ringkasan dan galat |
-| GET | /:fy/imports/:id/errors.xlsx | pengunggah, O A S | | daftar baris ditolak |
+| GET | /:fy/imports/:id/errors.xlsx | pengunggah, O A S | ya | dibuat saat diminta, tidak disimpan; hanya tersedia sebelum konfirmasi/pembatalan |
 | POST | /:fy/imports/:id/region-mapping | pengunggah, O A S | | memilih padanan wilayah |
 | POST | /:fy/imports/:id/confirm | pengunggah, O A S | ya | |
 | POST | /:fy/imports/:id/cancel | pengunggah, O A S | ya | |
@@ -74,8 +74,15 @@ S = super_admin. Kolom "Audit" = tercatat di `audit_log`.
 |---|---|---|---|---|
 | GET | /:fy/recap/:formCode | K (kelurahannya) O A S | | `5.A.3`, `5.A.4`, `5.A.6`; tiap sel membawa `cell_key` |
 | GET | /:fy/recap/:formCode/cells/:cellKey/rows | K (kelurahannya) O A S | ya | baris penyusun; jumlah = nilai sel |
-| GET | /:fy/forms/:formCode/export?format=xlsx\|pdf&kelurahan=&event= | O A S; K hanya 5.A.1/5.A.2 kelurahannya | ya | |
+| GET | /:fy/forms/:formCode/export?format=xlsx\|pdf&kelurahan=&event= | O A S | ya | pendata kelurahan tidak dapat mengekspor (403) |
 | GET | /:fy/forms/export-all | O A S | ya | ZIP seluruh Form 5.A |
+
+## Masa simpan
+
+| Metode | Jalur | Peran | Audit | Keterangan |
+|---|---|---|---|---|
+| GET | /fiscal-years/:fy/retention | A S | | tanggal jatuh tempo anonimisasi |
+| POST | /fiscal-years/:fy/anonymize | S | ya | hanya setelah masa simpan terlewati; juga dijalankan tugas terjadwal |
 
 ## Jaminan kontrak (diuji otomatis)
 

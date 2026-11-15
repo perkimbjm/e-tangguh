@@ -10,7 +10,7 @@ pnpm db:seed:spm
 ```
 
 Membuat tahun anggaran 2026 berstatus terbuka, kawasan rawan pada tiga kelurahan, akun
-`pendata_kelurahan`, `operator_bpbd`, `admin_bpbd`, dan definisi Form 5.A.
+`pendata_kelurahan`, `operator_bpbd`, `admin_bpbd`.
 
 ```bash
 pnpm spm:gen-fixture --rows 1000 --errors 50 --out tmp/kelurahan-uji.xlsx

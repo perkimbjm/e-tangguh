@@ -1,7 +1,7 @@
 # Contract: Pemetaan Formulir 5.A ke Data
 
 Kontrak ini mengikat isi tiap formulir ekspor. Susunan kolom mengikuti berkas kerja SPM BPBD TA
-2026 (merujuk Permendagri No. 101 Tahun 2018) dan disimpan sebagai `form_definitions`. Kepala
+2026 (merujuk Permendagri No. 101 Tahun 2018) dan disimpan sebagai berkas definisi formulir berversi di `packages/shared/src/spm/forms/`. Kepala
 laporan tiap formulir: judul formulir, PROVINSI, KABUPATEN/KOTA, TAHUN ANGGARAN, lalu baris
 penomoran kolom. Hanya baris `disetujui` dan `is_active` yang masuk.
 

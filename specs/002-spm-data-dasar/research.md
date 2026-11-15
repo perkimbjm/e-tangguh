@@ -81,7 +81,9 @@ otomatis, lebih efisien, lebih efektif; setiap keputusan menyebut otomatisasi ya
 ## R7. Ekspor formulir resmi
 
 - **Decision**: susunan tiap formulir (judul, kepala bertingkat, sel gabung, penomoran kolom,
-  pemetaan kolom → sumber data) disimpan sebagai *definisi formulir* berversi di paket bersama.
+  pemetaan kolom → sumber data) disimpan sebagai *definisi formulir* berversi di paket bersama
+  (berkas data di repositori dengan `version` dan `regulationRef`; tanpa tabel basis data,
+  sesuai keputusan pemilik proyek dan konstitusi v2.0.0).
   Satu mesin ekspor menghasilkan XLSX (ExcelJS) dan PDF (pdfmake, lanskap) dari definisi yang
   sama. Tersedia ekspor satu formulir, satu kelurahan, atau satu paket seluruh Form 5.A (ZIP).
 - **Rationale**: perubahan format resmi cukup mengubah definisi, bukan kode; XLSX dan PDF tidak
@@ -145,6 +147,22 @@ otomatis, lebih efisien, lebih efektif; setiap keputusan menyebut otomatisasi ya
   uji "berkas emas" yang membandingkan struktur kepala ekspor XLSX dengan templat resmi kosong;
   uji beban rekap pada 200.000 baris sintetis.
 - **Data uji**: seluruhnya sintetis, dihasilkan skrip. Berkas kerja nyata tidak masuk repositori.
+
+## R14. Keputusan hasil analisis lintas artefak (2026-11-15)
+
+- **Berkas dan data mentah impor**: disimpan terenkripsi oleh aplikasi; berkas dihapus dan nilai
+  baris dikosongkan saat konfirmasi/pembatalan; arsip finalisasi dienkripsi; daftar galat tidak
+  disimpan.
+- **Ekspor**: hanya peran BPBD; pendata kelurahan tidak dapat mengekspor.
+- **Masa simpan**: pengaturan `spm_retention_years` (bawaan 5 tahun sejak finalisasi), lalu
+  anonimisasi terjadwal; rekap dan arsip rekapitulasi dipertahankan.
+- **Lokasi**: domisili = rujukan kelurahan + kawasan ber-geometri; titik rumah opsional
+  (`home_location`), dilindungi peran dan enkripsi volume. Batas wilayah resmi dimuat dari
+  berkas GeoJSON yang disediakan BPBD/Pemko.
+- **Relawan → petugas**: modul relawan fitur 001 dibangun sebelum User Story 3.
+- **Impor Form 5.A.2**: didukung; dicocokkan lewat NIK dan menimpa kerawanan otomatis.
+- **Infrastruktur**: compose produksi dengan proxy TLS, cadangan terenkripsi terjadwal, uji
+  pemulihan, dan enkripsi volume menjadi tugas eksplisit.
 
 ## Sisa ketidakpastian (bukan penghalang rencana)
 

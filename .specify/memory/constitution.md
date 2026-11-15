@@ -27,12 +27,25 @@ SHOULD).
   kondisi ekonomi, kebutuhan khusus/disabilitas, data anak, status korban, kontak darurat,
   alamat rinci, dokumen identitas) WAJIB dienkripsi saat disimpan dan saat dikirim, serta
   DILARANG tampil di halaman publik, log aplikasi, URL, dan berkas ekspor tanpa hak akses khusus.
+- Enkripsi saat disimpan WAJIB berupa enkripsi per kolom oleh aplikasi untuk pengenal dan
+  uraian (NIK, nomor KK, alamat rinci, kontak, uraian kesehatan dan jenis kebutuhan khusus).
+  Penanda yang harus dijumlahkan untuk rekapitulasi (kondisi ekonomi, berkebutuhan khusus,
+  kelompok umur, status korban) boleh disimpan tanpa enkripsi per kolom dengan syarat volume
+  basis data dan cadangannya terenkripsi serta aksesnya dibatasi peran.
+- Berkas yang memuat data sensitif (unggahan impor, arsip laporan, dokumen) WAJIB dienkripsi
+  oleh aplikasi sebelum disimpan atau dihapus segera setelah tidak diperlukan; salinan data
+  mentah impor DILARANG menyimpan NIK atau nomor KK setelah impor dikonfirmasi atau dibatalkan.
 - Tampilan publik atau lintas-organisasi WAJIB hanya memuat data yang disetujui relawan untuk
-  ditampilkan; NIK WAJIB disamarkan di semua tampilan selain layar verifikasi admin.
+  ditampilkan. NIK dan nomor KK WAJIB disamarkan pada semua tampilan daftar; nilai utuh hanya
+  boleh tampil pada layar rincian satu orang, layar verifikasi, dan ekspor formulir resmi,
+  bagi peran berwenang, dan setiap pembukaan atau ekspornya WAJIB tercatat di jejak audit.
 - Daftar perorangan (Form 5.A.1, 5.A.2, 5.A.5, 5.A.9, 5.A.10, 5.A.11) WAJIB hanya dapat dibuka
-  dan diekspor oleh peran BPBD yang berwenang; pihak lain hanya menerima rekapitulasi.
-- Masa simpan data WAJIB ditetapkan; data relawan nonaktif melewati masa simpan WAJIB dihapus
-  atau dianonimkan.
+  dan diekspor oleh peran BPBD yang berwenang. Pendata kelurahan boleh membuka dan mengisi
+  daftar warga kelurahannya sendiri tetapi DILARANG mengekspornya; pihak lain hanya menerima
+  rekapitulasi.
+- Masa simpan data WAJIB ditetapkan; data relawan nonaktif dan data perorangan pelaporan SPM
+  yang melewati masa simpan WAJIB dihapus atau dianonimkan, sedangkan angka rekapitulasi boleh
+  dipertahankan.
 
 Alasan: aplikasi menyimpan data pribadi warga dalam jumlah besar, termasuk data kesehatan,
 kondisi ekonomi, disabilitas, dan data anak. Kebocoran merugikan
@@ -125,8 +138,10 @@ Alasan: aplikasi akan dirawat tim kecil dengan anggaran terbatas dalam jangka pa
   angka yang dapat diturunkan DILARANG. Setiap angka rekapitulasi WAJIB dapat ditelusuri ke
   baris rincian penyusunnya.
 - Data rujukan pelaporan (jenis pelayanan dasar, kegiatan, sub kegiatan, keluaran, satuan,
-  koefisien dan bobot, jenis bencana) WAJIB disimpan sebagai data berversi yang merujuk
-  regulasi sumbernya, bukan ditanam di kode.
+  koefisien dan bobot, jenis bencana, susunan formulir) WAJIB disimpan sebagai data berversi
+  yang mencantumkan nomor versi dan regulasi sumbernya, terpisah dari logika program. Berkas
+  data berversi di repositori memenuhi ketentuan ini; versi yang sudah dipakai tahun anggaran
+  final DILARANG diubah, perubahan dibuat sebagai versi baru.
 - Data hasil impor WAJIB divalidasi (panjang dan keunikan NIK, kode wilayah, nilai pilihan)
   sebelum diterima; baris yang gagal WAJIB dilaporkan beserta alasannya, bukan dibuang diam-diam.
 
@@ -146,9 +161,12 @@ Angka yang tidak dapat ditelusuri atau format yang menyimpang membuat laporan di
 - Tumpukan teknologi yang ditetapkan: antarmuka WAJIB dibangun dengan React di atas Vite; basis
   data WAJIB PostgreSQL dengan ekstensi PostGIS; peta WAJIB memakai MapLibre GL JS. Penggantian
   salah satunya memerlukan amendemen konstitusi.
-- Data lokasi (domisili, wilayah tugas, batas kecamatan/kelurahan) WAJIB disimpan sebagai tipe
+- Batas kecamatan/kelurahan, kawasan, dan titik lokasi WAJIB disimpan sebagai tipe
   geometri/geografi PostGIS dengan SRID yang dinyatakan eksplisit (EPSG:4326 untuk penyimpanan),
-  dan kueri spasial WAJIB dijalankan di basis data, bukan di peramban.
+  dan kueri spasial WAJIB dijalankan di basis data, bukan di peramban. Domisili dan wilayah
+  tugas WAJIB berupa rujukan ke wilayah ber-geometri; titik koordinat rumah per orang bersifat
+  opsional, diisi bila datanya tersedia, hanya dapat dibuka peran BPBD berwenang, dan karena
+  bertipe geometri dilindungi saat disimpan dengan enkripsi volume.
 - Aplikasi peramban DILARANG terhubung langsung ke basis data dengan kredensial berhak istimewa;
   seluruh akses data WAJIB melewati lapisan server yang menegakkan Prinsip II.
   Teknologi lapisan server ditetapkan di rencana implementasi fitur (`plan.md`).
@@ -169,19 +187,20 @@ Angka yang tidak dapat ditelusuri atau format yang menyimpang membuat laporan di
   tujuannya, dan alur kritisnya.
 - Setiap rencana WAJIB memuat pemeriksaan kesesuaian terhadap ketujuh prinsip; pelanggaran WAJIB
   dicatat beserta justifikasi dan alternatif yang ditolak.
-- Perubahan masuk lewat pull request yang ditinjau minimal satu orang selain penulisnya dan lolos
-  CI.
+- Pull request dan tinjauan orang kedua tidak diwajibkan. Perubahan kode WAJIB lolos CI sebelum
+  digabung ke cabang utama, dan penggabungan dilakukan atau disetujui pemilik proyek.
 
 ## Governance
 
 - Konstitusi ini mengungguli praktik lain di proyek. Bila bertentangan, konstitusi yang berlaku
   atau konstitusi diamendemen lebih dahulu.
-- Amendemen diajukan lewat pull request yang mengubah berkas ini, memuat alasan dan dampak ke
+- Amendemen dilakukan lewat commit yang mengubah berkas ini, memuat alasan dan dampak ke
   spesifikasi/rencana berjalan, dan disetujui pemilik proyek.
 - Versi mengikuti semantic versioning: MAJOR untuk penghapusan atau redefinisi prinsip yang tidak
   kompatibel, MINOR untuk prinsip/bagian baru atau perluasan material, PATCH untuk klarifikasi
   redaksi.
-- Kepatuhan diperiksa pada setiap tinjauan rencana dan pull request, serta ditinjau ulang
+- Kepatuhan diperiksa pada setiap penyusunan rencana dan analisis lintas artefak
+  (`/speckit-analyze`) sebelum implementasi, serta ditinjau ulang
   menyeluruh sebelum setiap rilis produksi.
 
-**Version**: 1.3.0 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-15
+**Version**: 2.0.0 | **Ratified**: 2026-11-10 | **Last Amended**: 2026-11-15

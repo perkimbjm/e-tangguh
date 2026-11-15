@@ -21,6 +21,51 @@
 - Q: Siapa yang dihitung sebagai aparatur di kawasan rawan bencana (Form 5.A.4)? → A: Personel yang bertugas di kelurahan itu: Kasi Trantibumlinmas kelurahan, Babinsa (TNI), Bhabinkamtibmas (POLRI), Linmas di bawah Satpol PP, serta relawan kebencanaan.
 - Q: Apakah penanda rekap (miskin, berkebutuhan khusus, kelompok umur, status korban) boleh tidak dienkripsi per kolom? → A: Ya, disetujui pemilik proyek untuk fitur ini.
 - Q: Kapan dasar hukum pemrosesan data warga dipastikan? → A: Ditunda; tetap menjadi syarat sebelum data nyata dimasukkan.
+- Q: Di mana NIK dan nomor KK boleh tampil utuh? → A: Hanya pada layar rincian satu orang dan ekspor formulir resmi, bagi peran berwenang, tercatat di jejak audit; daftar selalu tersamar.
+- Q: Apa hak pendata kelurahan atas daftar warga kelurahannya? → A: Melihat dan mengisi, tanpa ekspor; ekspor formulir hanya oleh BPBD.
+- Q: Bagaimana salinan data ber-NIK di luar basis data utama dilindungi? → A: Lembar unggahan dihapus setelah impor dikonfirmasi/dibatalkan, data mentah impor terenkripsi dan NIK/KK-nya dikosongkan saat itu, daftar galat dibuat saat diminta tanpa disimpan, arsip finalisasi dienkripsi aplikasi.
+- Q: Di mana definisi formulir disimpan? → A: Berkas data berversi di repositori yang mencantumkan nomor versi dan regulasi sumber.
+- Q: Berapa lama data perorangan SPM disimpan? → A: Mengikuti Jadwal Retensi Arsip; pengaturan super admin, bawaan 5 tahun setelah finalisasi, lalu dianonimkan; angka rekap dan arsip laporan dipertahankan.
+- Q: Bagaimana lokasi domisili warga disimpan? → A: Rujukan ke kelurahan dan kawasan ber-geometri; titik koordinat rumah opsional bila datanya tersedia.
+- Q: Bagaimana kaitan relawan dengan petugas ditangani? → A: Modul relawan (fitur 001) dibangun lebih dulu; User Story 3 dikerjakan setelahnya.
+- Q: Apakah impor Form 5.A.2 diperlukan? → A: Ya; dicocokkan ke warga lewat NIK dan menimpa kerawanan yang terisi otomatis.
+
+## Peran, Data Pribadi, dan Alur Kritis
+
+### Peran
+
+| Peran | Hak pada fitur ini |
+|---|---|
+| Pendata kelurahan | melihat dan mengisi data warga kelurahannya sendiri, mengunggah lembar kerja, mengunduh templat dan daftar galat impornya; tidak dapat mengekspor formulir |
+| Operator BPBD | semua data semua kelurahan, menyetujui/mengembalikan data kelurahan, mengelola petugas, kejadian, inventaris, mengekspor formulir |
+| Admin BPBD | hak operator ditambah menetapkan kawasan rawan, membuka/memfinalkan/merevisi tahun anggaran, mengelola akun pendata dan operator |
+| Super admin | hak admin ditambah pengaturan (masa simpan, batas kelompok umur) dan jejak audit |
+| Peran lain (relawan, pengurus) | tidak memiliki akses ke daftar perorangan; hanya angka rekapitulasi bila diberikan |
+
+### Data pribadi yang diproses dan tujuannya
+
+| Data | Subjek | Tujuan |
+|---|---|---|
+| Nama, NIK, jenis kelamin, tempat dan tanggal lahir | warga, korban, petugas | identitas pada Form 5.A.1, 5.A.5, 5.A.9-5.A.11; mencegah catatan ganda; menghitung kelompok umur |
+| Nomor KK, kepala/anggota keluarga | warga | menghitung jumlah KK pada Form 5.A.3, 5.A.4, 5.A.6 |
+| Alamat, kelurahan, RT/RW | warga, petugas | menentukan kawasan rawan dan kelurahan pelaporan |
+| Titik koordinat rumah (opsional) | warga | pemetaan sebaran warga di kawasan rawan bila data tersedia |
+| Kondisi ekonomi, kebutuhan khusus dan jenisnya, kelompok umur rentan | warga, petugas | kolom kerentanan Form 5.A.1 dan rekap Form 5.A.4 |
+| Jenis kerawanan tempat tinggal | warga | Form 5.A.2, 5.A.3, 5.A.6 |
+| Status kepegawaian, jabatan, sertifikasi, penugasan | petugas | Form 5.A.5, 5.A.11 dan rekap aparatur/petugas |
+| Status korban dan riwayatnya | korban | Form 5.A.9, 5.A.10 |
+
+Tidak ada data lain yang dikumpulkan. Dasar pemrosesan: pelaksanaan kewenangan BPBD (lihat
+Assumptions).
+
+### Alur kritis
+
+1. Mencatat kejadian bencana, korban, dan petugas aktif, lalu mengekspor Form 5.A.9-5.A.12.
+2. Mencari seorang warga atau petugas dan membuka rinciannya.
+
+Bila penyimpanan berkas atau ekspor gagal, pencatatan data tetap dapat dilakukan dan ekspor
+dapat diulang; bila basis data tidak tersedia, sistem menolak tulis dengan pesan jelas tanpa
+kehilangan isian yang belum disimpan di layar.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -100,6 +145,8 @@ jumlah wajib latih; datanya bertumpang tindih dengan basis data relawan yang sud
 
 **Independent Test**: Tambah satu petugas baru dan satu petugas yang dipilih dari relawan
 terverifikasi; keduanya muncul pada Form 5.A.5 dan ikut terhitung pada 5.A.4 dan 5.A.6.
+Story ini dikerjakan setelah modul relawan fitur `001-basis-data-relawan` (pendaftaran dan
+verifikasi relawan) tersedia.
 
 **Acceptance Scenarios**:
 
@@ -245,7 +292,12 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
   kelurahan dan per tahun anggaran.
 - **FR-006**: Sistem WAJIB menerima unggahan lembar kerja berformat formulir resmi 5.A.1, 5.A.2,
   dan 5.A.5, memvalidasi tiap baris (panjang dan keunikan NIK, wilayah, nilai pilihan, tanggal),
-  menampilkan pratinjau hasil, dan baru menyimpan setelah dikonfirmasi.
+  menampilkan pratinjau hasil, dan baru menyimpan setelah dikonfirmasi. Baris Form 5.A.2
+  dicocokkan ke warga yang sudah tercatat pada tahun itu lewat NIK; baris tanpa padanan ditolak;
+  jenis kerawanan dari unggahan menimpa nilai yang terisi otomatis dari kawasan rawan.
+- **FR-032**: Lembar kerja yang diunggah WAJIB dihapus segera setelah impor dikonfirmasi atau
+  dibatalkan, dan paling lambat 7 hari setelah diunggah; daftar baris ditolak dibuat saat
+  diminta dan tidak disimpan.
 - **FR-007**: Sistem WAJIB melaporkan setiap baris yang ditolak beserta nomor baris, kolom, dan
   alasannya, serta menyediakan daftar itu untuk diunduh.
 - **FR-008**: Sistem WAJIB mencatat sumber setiap data (pendata atau instansi, tanggal, berkas
@@ -291,15 +343,22 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 
 - **FR-029**: Akun pendata kelurahan WAJIB dibuat oleh admin BPBD, terikat pada tepat satu
   kelurahan, dan dapat dinonaktifkan sewaktu-waktu.
-- **FR-022**: Daftar perorangan WAJIB hanya dapat dibuka dan diekspor oleh peran BPBD yang
-  berwenang; pendata kelurahan hanya dapat melihat dan mengisi kelurahannya sendiri; peran lain
-  hanya melihat rekapitulasi.
+- **FR-022**: Daftar perorangan WAJIB hanya dapat diekspor oleh operator BPBD, admin BPBD, dan
+  super admin; pendata kelurahan hanya dapat melihat dan mengisi kelurahannya sendiri dan tidak
+  dapat mengekspor formulir; peran lain hanya melihat rekapitulasi.
 - **FR-023**: NIK dan nomor KK WAJIB tersamar pada tampilan daftar; nilai utuh hanya tampil pada
   layar rincian dan berkas ekspor resmi bagi peran berwenang.
 - **FR-024**: Sistem WAJIB mencatat jejak audit untuk setiap penambahan, perubahan, penonaktifan,
   impor, ekspor, finalisasi, revisi, dan pembukaan data perorangan.
 - **FR-025**: Sistem WAJIB menyediakan pencatatan permintaan pembetulan data dari warga yang
   disampaikan melalui BPBD beserta tindak lanjutnya.
+- **FR-030**: Data perorangan suatu tahun anggaran WAJIB dianonimkan setelah masa simpan terlewati
+  sejak finalisasi. Masa simpan berupa pengaturan super admin (bawaan 5 tahun, mengikuti Jadwal
+  Retensi Arsip); angka rekapitulasi dan arsip laporan final dipertahankan; orang yang masih
+  tercatat pada tahun yang lebih baru tidak dianonimkan.
+- **FR-031**: Sistem WAJIB dapat menyimpan titik koordinat rumah warga secara opsional, lewat
+  isian maupun kolom tambahan pada lembar unggahan; titik hanya dapat dilihat operator BPBD,
+  admin BPBD, dan super admin.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -367,5 +426,6 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 - Integrasi dengan data kependudukan (Disdukcapil) untuk verifikasi NIK berada di luar lingkup.
 - Form 5.B sampai 5.E (perhitungan kebutuhan, rencana pemenuhan, realisasi, kinerja) berada di
   luar lingkup dan menjadi fitur berikutnya yang memakai data fitur ini.
-- Bergantung pada fitur `001-basis-data-relawan` untuk akun pengguna, peran, jejak audit, daftar
-  wilayah, dan data relawan terverifikasi.
+- Fondasi (akun pengguna, peran, jejak audit, daftar wilayah, berkas) dibangun pada fitur ini.
+  User Story 3 bergantung pada modul relawan fitur `001-basis-data-relawan`, yang dikerjakan
+  lebih dulu sesuai keputusan pemilik proyek.

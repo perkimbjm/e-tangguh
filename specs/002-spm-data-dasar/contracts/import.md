@@ -7,8 +7,10 @@
 - Formulir: 5.A.1 (warga), 5.A.2 (kerawanan), 5.A.5 (petugas).
 - Baris kepala ditemukan dari baris penomoran kolom; baris di atasnya (judul, provinsi, tahun)
   diabaikan kecuali tahun anggaran, yang harus sama dengan tahun tujuan bila tertulis.
-- Kolom di luar formulir (misalnya kolom bantu berisi rumus) diabaikan.
-- Susunan kolom yang tidak cocok dengan `form_definitions` menolak seluruh berkas dengan daftar
+- Kolom di luar formulir (misalnya kolom bantu berisi rumus) diabaikan, kecuali dua kolom
+  tambahan opsional berkepala `LINTANG` dan `BUJUR` (derajat desimal, WGS 84) pada Form 5.A.1
+  yang disimpan sebagai titik koordinat rumah.
+- Susunan kolom yang tidak cocok dengan definisi formulir berversi menolak seluruh berkas dengan daftar
   kolom yang tidak dikenali.
 
 ## Alur
@@ -55,10 +57,27 @@ itu galat. Pilihan operator berlaku untuk seluruh baris dengan ejaan yang sama.
 | `DI_LUAR_KAWASAN_RAWAN` | RT/RW belum ditetapkan sebagai kawasan rawan |
 | `PILIHAN_TIDAK_SAH` | nilai pilihan di luar daftar |
 | `KEBUTUHAN_KHUSUS_KOSONG` | "ya" tanpa jenis kebutuhan khusus |
+| `KOORDINAT_TIDAK_SAH` | lintang/bujur bukan angka atau di luar wilayah Kota Banjarmasin dan sekitarnya |
+| `WARGA_TIDAK_TERDAFTAR` | (Form 5.A.2) NIK tidak ditemukan pada daftar warga tahun itu |
+| `KERAWANAN_KOSONG` | (Form 5.A.2) tidak ada satu pun jenis kerawanan yang dicentang |
 
 Setiap galat memuat nomor baris lembar kerja, nomor kolom formulir, kode, dan pesan bahasa
 Indonesia. Peringatan (tidak menolak baris): KK yang sama di kelurahan berbeda; kemungkinan
 orang ganda tanpa NIK.
+
+## Impor Form 5.A.2
+
+Tiap baris dicocokkan ke `resident_records` tahun itu lewat `nik_hash`. Kolom 9-18 dibaca
+sebagai centang jenis kerawanan dan menimpa `hazard_mask` (dengan `hazard_source = impor`);
+kolom data diri hanya dipakai untuk pencocokan dan tidak mengubah data warga. Pratinjau
+menampilkan jumlah warga yang kerawanannya berubah.
+
+## Penanganan berkas
+
+Berkas unggahan disimpan terenkripsi, lalu dihapus saat impor dikonfirmasi atau dibatalkan.
+Nilai baris disimpan terenkripsi (`import_rows.payload_enc`) dan dikosongkan pada saat yang
+sama. Impor yang tidak ditindaklanjuti dibatalkan otomatis setelah 7 hari. Daftar galat dibuat
+saat diminta dan tidak disimpan.
 
 ## Idempotensi
 
@@ -76,5 +95,6 @@ disertakan pada lembar rujukan.
 
 - Tidak ada baris ditolak tanpa kode galat, nomor baris, dan nomor kolom.
 - Berkas campuran (benar + salah) menyimpan tepat baris yang benar.
-- NIK/KK pada `import_rows` terhapus setelah konfirmasi, pembatalan, atau 7 hari.
+- Setelah konfirmasi, pembatalan, atau 7 hari: berkas unggahan terhapus dan
+  `import_rows.payload_enc` kosong; tidak ada NIK/KK polos pada tabel impor kapan pun.
 - Impor 1.000 baris selesai tervalidasi dalam ≤ 15 detik pada lingkungan uji.

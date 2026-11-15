@@ -43,12 +43,14 @@ Perubahan pada fitur 001: `volunteers` memperoleh `person_id → persons`; kolom
 | age_reference_date | date | bawaan 31 Desember tahun itu |
 | age_bands | jsonb | bawaan: balita < 5, anak 5-<18, lansia ≥ 60 |
 | copied_from_id | uuid → fiscal_years, nullable | |
+| form_set_version | text | versi himpunan definisi formulir yang dipakai; dikunci saat final |
+| anonymized_at | timestamptz, nullable | diisi saat data perorangan tahun itu dianonimkan |
 | finalized_at, finalized_by | | |
 
 ### fiscal_year_snapshots (hanya-tambah)
 
 `fiscal_year_id`, `revision_no`, `reason` (wajib untuk revisi), `recap_json jsonb`,
-`archive_file_id → files` (ZIP seluruh ekspor), `sha256`, `created_by`, `created_at`.
+`archive_file_id → files` (ZIP seluruh ekspor, dienkripsi aplikasi), `sha256`, `created_by`, `created_at`.
 
 ## Kawasan rawan dan warga
 
@@ -84,12 +86,14 @@ Unik `(fiscal_year_id, kelurahan_id, rw, rt)`.
 | rw, rt | text | wajib; harus cocok dengan `hazard_zones` |
 | hazard_zone_id | uuid → hazard_zones | diisi otomatis |
 | address_enc 🔒 | bytea | alamat rinci |
+| home_location | geography(Point,4326), nullable | opsional; hanya untuk operator/admin BPBD; indeks GiST |
 | is_poor | boolean | kondisi ekonomi |
 | has_special_needs | boolean | |
 | special_needs_enc 🔒 | bytea, nullable | wajib bila `has_special_needs` |
 | age_group | enum `balita`, `anak`, `dewasa`, `lansia` | dihitung dari tanggal lahir |
 | age_group_override_reason | text, nullable | bila dikoreksi manual |
-| hazard_mask | smallint | awal dari kawasan; dapat dikoreksi |
+| hazard_mask | smallint | awal dari kawasan; dapat dikoreksi atau ditimpa impor Form 5.A.2 |
+| hazard_source | enum `kawasan`, `koreksi`, `impor` | asal nilai `hazard_mask` |
 | is_active | boolean | |
 | inactive_reason | enum `meninggal`, `pindah`, `lainnya`, nullable | |
 | inactive_date | date, nullable | |
@@ -185,24 +189,35 @@ Aturan: `qty_good + qty_broken ≤ quantity`.
 
 ### import_batches
 
-`fiscal_year_id`, `form_code` (`5.A.1`, `5.A.2`, `5.A.5`), `kelurahan_id` nullable, `file_id`,
+`fiscal_year_id`, `form_code` (`5.A.1`, `5.A.2`, `5.A.5`), `kelurahan_id` nullable, `file_id`
+(nullable; berkas terenkripsi, dihapus dan dikosongkan saat dikonfirmasi/dibatalkan),
 `file_sha256`, `status` (`divalidasi`, `dikonfirmasi`, `dibatalkan`), `rows_total`, `rows_new`,
 `rows_changed`, `rows_unchanged`, `rows_rejected`, `uploaded_by`, `confirmed_at`.
 
 ### import_rows
 
-`batch_id`, `row_number`, `raw jsonb`, `normalized jsonb`, `errors jsonb` (daftar
-`{column, code, message}`), `outcome` (`baru`, `berubah`, `sama`, `ditolak`), `target_id`.
-Nilai NIK/KK pada `raw` dan `normalized` dihapus setelah berkas dikonfirmasi atau dibatalkan,
-dan paling lambat 7 hari setelah diunggah.
+`batch_id`, `row_number`, `payload_enc 🔒 bytea nullable` (nilai mentah dan ternormalisasi satu
+baris, terenkripsi), `errors jsonb` (daftar `{column, code, message}` tanpa nilai sel), `outcome`
+(`baru`, `berubah`, `sama`, `ditolak`), `target_id`.
+`payload_enc` dikosongkan saat berkas dikonfirmasi atau dibatalkan; berkas yang tidak
+ditindaklanjuti dibatalkan otomatis 7 hari setelah diunggah.
 
 ## Rujukan pelaporan
 
-### form_definitions
+Definisi formulir (judul, kepala bertingkat, sel gabung, penomoran kolom, pemetaan kolom →
+sumber) dan jenis bencana tidak disimpan di basis data. Keduanya berupa berkas data berversi di
+`packages/shared/src/spm/forms/` dan `packages/shared/src/spm/hazards.ts`, masing-masing
+mencantumkan `version` dan `regulationRef`. `fiscal_years.form_set_version` mencatat versi yang
+dipakai; versi yang sudah dipakai tahun final tidak diubah, perubahan = versi baru.
 
-`form_code`, `version`, `regulation_ref`, `title`, `layout jsonb` (kepala bertingkat, sel gabung,
-penomoran kolom, pemetaan kolom → sumber), `effective_from`. Tidak diubah setelah dipakai pada
-tahun yang sudah final; perubahan = versi baru.
+## Masa simpan dan anonimisasi
+
+`app_settings.spm_retention_years` (bawaan 5). Setelah `finalized_at + masa simpan`, data
+perorangan tahun itu dianonimkan: `resident_records`, `officer_records`, `affected_persons` tahun
+tersebut dilepas dari `persons` (diarahkan ke satu catatan anonim), kolom 🔒 dan `home_location`
+dikosongkan; `persons`/`families` yang tidak lagi dirujuk tahun lain dan bukan relawan aktif
+dihapus. `fiscal_year_snapshots.recap_json` dipertahankan; arsip ZIP berisi daftar perorangan
+dihapus dan digantikan arsip berisi formulir rekapitulasi saja.
 
 ## Relasi ringkas
 
@@ -225,6 +240,8 @@ Berkas impor   : divalidasi → dikonfirmasi | dibatalkan
 - Tulis pada tabel ber-`fiscal_year_id` ditolak bila tahun berstatus `final` (layanan + pemicu).
 - Finalisasi ditolak bila masih ada baris `menunggu`.
 - Baris yang dibuat `operator_bpbd`/`admin_bpbd` langsung `disetujui`.
+- `files` memperoleh kolom `is_encrypted boolean`; berkas impor, arsip, dan dokumen penetapan
+  darurat disimpan terenkripsi (AES-256-GCM) dan didekripsi saat diunduh peran berwenang.
 - Membuka tahun baru menyalin `hazard_zones`, `resident_records` aktif yang disetujui,
   `officer_records`, `equipment`, `logistics_stock`; tidak menyalin kejadian dan korban.
   `age_group` dihitung ulang terhadap tanggal acuan tahun baru.
@@ -236,6 +253,8 @@ Berkas impor   : divalidasi → dikonfirmasi | dibatalkan
 | Daftar warga kelurahannya | ya | ya | ya | tidak |
 | Daftar warga kelurahan lain | tidak | ya | ya | tidak |
 | NIK/KK utuh | layar rincian kelurahannya, tercatat audit | layar rincian, ekspor resmi | ya | tidak |
+| Ekspor formulir | tidak | ya | ya | tidak |
+| Titik koordinat rumah | tidak | ya | ya | tidak |
 | Petugas, kejadian, korban | tidak | ya | ya | tidak |
 | Rekapitulasi 5.A.3/5.A.4/5.A.6 | kelurahannya | ya | ya | angka saja |
 | Penelusuran angka ke rincian | kelurahannya | ya | ya | tidak |

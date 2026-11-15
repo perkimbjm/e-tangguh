@@ -50,7 +50,7 @@ Compose; peramban desktop dan ponsel
 final; ekspor mengikuti susunan kolom resmi; data uji sintetis; tanpa layanan pihak ketiga
 
 **Scale/Scope**: hingga 200.000 warga per tahun anggaran (perkiraan batas atas), 52 kelurahan,
-≤ 100 akun pendata/operator; 12 formulir, 18 tabel baru, 2 peran baru
+≤ 100 akun pendata/operator; 12 formulir, 17 tabel baru, 2 peran baru
 
 Tidak ada NEEDS CLARIFICATION teknis; keputusan ada di [research.md](./research.md).
 
@@ -58,21 +58,21 @@ Tidak ada NEEDS CLARIFICATION teknis; keputusan ada di [research.md](./research.
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Dievaluasi terhadap konstitusi v1.2.0; aturan batas 400 baris per berkas kode (v1.3.0) dipenuhi
-lewat pemecahan berkas pada `tasks.md` dan pemeriksaan `max-lines` di CI.
+Dievaluasi ulang terhadap konstitusi v2.0.0 setelah analisis lintas artefak (2026-11-15).
 
 | Prinsip | Pemenuhan dalam rancangan | Status |
 |---|---|---|
-| I. Perlindungan data pribadi | dasar pemrosesan = kewenangan BPBD, sumber data tercatat per baris; NIK, KK, alamat, jenis kebutuhan khusus terenkripsi per kolom; daftar perorangan terbatas peran; NIK/KK tersamar di daftar; pembersihan data mentah impor ≤ 7 hari; jalur pembetulan (`data_corrections`) | LULUS dengan catatan (lihat Complexity Tracking) |
+| I. Perlindungan data pribadi | dasar pemrosesan = kewenangan BPBD, sumber data tercatat per baris; NIK, KK, alamat, jenis kebutuhan khusus terenkripsi per kolom; daftar perorangan terbatas peran; NIK/KK tersamar di daftar; berkas dan data mentah impor terenkripsi lalu dihapus saat konfirmasi; arsip terenkripsi; masa simpan dan anonimisasi (FR-030); pendata tanpa hak ekspor; jalur pembetulan (`data_corrections`) | LULUS |
 | II. Akses berbasis peran dan audit | matriks peran per titik akhir, pendata terikat satu kelurahan, default ditolak; audit pada semua tulis, impor, ekspor, finalisasi, pembukaan rincian | LULUS |
 | III. Data terverifikasi | satu orang per NIK (`persons`), penggabungan catatan ganda; persetujuan BPBD atas data kelurahan | LULUS |
 | IV. Visual fungsional dan aksesibel | layar tabel sebagai tampilan utama; pesan galat teks; mengikuti aturan aksesibilitas fitur 001 | LULUS |
-| V. Andal saat darurat | alur kritis = mencatat kejadian dan korban serta mengekspor daftar; tanpa ketergantungan layanan luar; arsip finalisasi tersimpan sebagai berkas; migrasi berversi | LULUS |
+| V. Andal saat darurat | alur kritis = mencatat kejadian dan korban serta mengekspor daftar; tanpa ketergantungan layanan luar; arsip finalisasi tersimpan sebagai berkas; cadangan terenkripsi terjadwal dan uji pemulihan sebagai tugas; migrasi berversi | LULUS |
 | VI. Sederhana, teruji, dapat dirawat | tanpa antrean, tanpa tabel rekap tersimpan, tanpa layanan baru; satu mesin ekspor; uji wajib untuk validasi, rekap, akses, penguncian | LULUS |
-| VII. Format dan ketertelusuran SPM | data terikat tahun anggaran dan terkunci saat final; revisi bernomor dengan arsip; formulir dari `form_definitions` berversi; rekap dihitung dan dapat ditelusuri per sel; impor tervalidasi dengan laporan galat | LULUS |
+| VII. Format dan ketertelusuran SPM | data terikat tahun anggaran dan terkunci saat final; revisi bernomor dengan arsip; definisi formulir sebagai berkas data berversi (`form_set_version` per tahun); rekap dihitung dan dapat ditelusuri per sel; impor tervalidasi dengan laporan galat | LULUS |
 | Batasan tumpukan teknologi | React + Vite, PostgreSQL + PostGIS, NestJS; kueri di basis data; data uji sintetis | LULUS |
 
-Gerbang: lulus dengan satu penyimpangan beralasan yang telah disetujui pemilik proyek. Pemeriksaan ulang pasca-desain: tidak berubah.
+Gerbang: lulus tanpa penyimpangan. Penanda rekap tanpa enkripsi per kolom kini diizinkan
+konstitusi v2.0.0 dengan syarat enkripsi volume dan pembatasan peran. Pemeriksaan ulang pasca-desain: tidak berubah.
 
 Syarat rilis yang dibawa ke implementasi: konfirmasi dasar hukum pemrosesan data warga (ditunda
 pemilik proyek, wajib sebelum data nyata dimasukkan), penempatan jumlah relawan pada Form 5.A.4,
@@ -130,24 +130,26 @@ rekap berada di `packages/shared` agar server dan antarmuka memakai sumber yang 
 
 1. **Fondasi bersama**: `persons`/`families` dan penyelarasan `volunteers`; peran baru dan
    cakupan kelurahan; `fiscal_years` beserta penguncian; `hazard_types`, `hazard_zones`;
-   `form_definitions`. Bergantung pada fondasi fitur 001 (autentikasi, audit, wilayah, berkas).
-2. **US1** isian warga, impor 5.A.1/5.A.2, persetujuan, templat, ringkasan kelengkapan.
+   registri definisi formulir; autentikasi, audit, wilayah (termasuk batas resmi), dan berkas
+   terenkripsi dibangun di sini.
+2. **US1** isian warga (termasuk titik koordinat opsional), impor 5.A.1/5.A.2, persetujuan,
+   templat, ringkasan kelengkapan.
 3. **US2** definisi sel rekap, layar rekap dan penelusuran, mesin ekspor XLSX/PDF. Titik ini
    adalah MVP SPM: Form 5.A.1 sampai 5.A.4 dapat dilaporkan.
-4. **US3** petugas, impor 5.A.5, pilih dari relawan; melengkapi 5.A.4 dan 5.A.6.
+4. **US3** petugas, impor 5.A.5, pilih dari relawan; melengkapi 5.A.4 dan 5.A.6. Dikerjakan
+   setelah modul relawan fitur 001 (pendaftaran dan verifikasi) selesai.
 5. **US4** kejadian, warga terdampak, status korban, petugas aktif.
 6. **US5** peralatan dan stok logistik.
-7. **US6** finalisasi, arsip, revisi, salin maju.
-8. **Pengerasan**: uji beban, berkas emas seluruh formulir, dokumentasi operator bahasa
-   Indonesia.
+7. **US6** finalisasi, arsip terenkripsi, revisi, salin maju, masa simpan dan anonimisasi.
+8. **Pengerasan**: compose produksi dengan TLS, cadangan terenkripsi dan uji pemulihan, uji
+   beban, berkas emas seluruh formulir, dokumentasi operator bahasa Indonesia.
 
-Urutan lintas fitur yang disarankan: fondasi 001 → fondasi bersama 002 → US1-US2 fitur 002 →
-sisa fitur 001 dan 002 sesuai prioritas BPBD, karena pelaporan SPM memiliki tenggat tahunan.
+Urutan lintas fitur (keputusan pemilik proyek 2026-11-15): fondasi → US1-US2 fitur 002 (MVP
+SPM) → modul relawan fitur 001 → US3 fitur 002 → sisa kedua fitur sesuai prioritas BPBD.
 
 ## Complexity Tracking
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| Penanda `is_poor`, `has_special_needs`, `age_group`, status korban tidak dienkripsi per kolom (Prinsip I mewajibkan data sensitif dienkripsi saat disimpan) | Form 5.A.4 dan 5.A.6 menjumlahkan penanda ini atas hingga 200.000 baris; nilai terenkripsi per kolom tidak dapat dijumlahkan di basis data | Mendekripsi seluruh baris di aplikasi tiap rekap melampaui target 5 detik dan memperluas paparan data. Mitigasi: enkripsi volume basis data dan cadangan, akses terbatas peran, jenis kebutuhan khusus tetap terenkripsi per kolom. Disetujui pemilik proyek pada 2026-11-15, terbatas pada fitur ini |
-| Definisi formulir dan sel rekap sebagai data berversi, bukan kode langsung | Prinsip VII mewajibkan rujukan berversi dan penelusuran per sel | Kueri rekap yang ditulis tangan per formulir akan membuat angka dan penelusuran menyimpang, serta menuntut perubahan kode tiap format berubah |
+| Definisi formulir dan sel rekap sebagai data berversi terpisah dari logika | Prinsip VII mewajibkan rujukan berversi dan penelusuran per sel | Kueri rekap yang ditulis tangan per formulir akan membuat angka dan penelusuran menyimpang, serta menuntut perubahan kode tiap format berubah |
 | Tabel antara impor (`import_batches`, `import_rows`) | pratinjau, laporan galat, dan idempotensi tanpa menyentuh data utama | Validasi langsung ke tabel utama tidak memberi pratinjau dan menyulitkan pembatalan |
