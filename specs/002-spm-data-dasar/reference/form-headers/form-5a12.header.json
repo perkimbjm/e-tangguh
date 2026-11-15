@@ -1,0 +1,38 @@
+{
+  "form_code": "5.A.12",
+  "sheet_name": "5.A.12 DAFTAR KEJADIAN BENCANA",
+  "header_last_row": 3,
+  "cells": {
+    "A1": "NO.",
+    "B1": "NAMA KEJADIAN BENCANA",
+    "C1": "TANGGAL KEJADIAN (DD/MM/YYYY)",
+    "D1": "WAKTU KEJADIAN (JAM:MENIT)",
+    "E1": "WAKTU LAPORAN KEJADIAN DITERIMA (JAM:MENIT)",
+    "F1": "LOKASI",
+    "G1": "STATUS DARURAT BENCANA",
+    "G2": "TIDAK DIKELUARKAN",
+    "H2": "DIKELUARKAN",
+    "H3": "DIKELUARKAN <24JAM",
+    "I3": "DIKELUARKAN >24 JAM"
+  },
+  "merged_ranges": [
+    "A1:A3",
+    "B1:B3",
+    "C1:C3",
+    "D1:D3",
+    "E1:E3",
+    "F1:F3",
+    "G1:I1",
+    "G2:G3",
+    "H2:I2"
+  ],
+  "column_notes": [
+    "Kolom 1 : Diisi dengan nomor urut",
+    "Kolom 2 : Diisi dengan nama kejadian bencana",
+    "Kolom 3 : Diisi dengan tanggal kejadian bencana",
+    "Kolom 4 : Diisi dengan pukul kejadian bencana",
+    "Kolom 5 : Diisi dengan pukul laporan kejadian diterima oleh pusdalops/BPBD",
+    "Kolom 6 : Diisi dengan lokasi kejadian bencana",
+    "Kolom 7 - 9 : Diisi dengan checklist sesuai kondisi"
+  ]
+}

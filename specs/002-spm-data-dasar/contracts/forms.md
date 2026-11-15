@@ -14,7 +14,7 @@ penomoran kolom. Hanya baris `disetujui` dan `is_active` yang masuk.
 | 5.A.5 | Petugas operasi | satu petugas | `officer_records` + `persons` | nama |
 | 5.A.7 | Peralatan | satu peralatan | `equipment` | nama |
 | 5.A.8 | Stok logistik pengungsian | satu barang | `logistics_stock` | nama |
-| 5.A.9 | Warga terdampak per kejadian | satu warga terdampak | `affected_persons` + `persons` | per kejadian |
+| 5.A.9 | Daftar warga negara yang menjadi korban bencana (per kejadian) | satu korban | `affected_persons` + `persons` | per kejadian |
 | 5.A.10 | Status korban per kejadian | satu warga terdampak | `affected_persons.status` | per kejadian |
 | 5.A.11 | Petugas aktif per kejadian | satu petugas | `event_officers` | per kejadian |
 | 5.A.12 | Kejadian bencana | satu kejadian | `disaster_events` | waktu kejadian |
@@ -29,6 +29,11 @@ Kolom centang diisi tanda centang, bukan teks. Kolom turunan yang tidak diketik 
 | 5.A.2 kol. 20-22 peran | warga = punya `resident_records`; aparatur = `employment_status ≠ non_aparatur`; petugas operasi = `is_ops` |
 | 5.A.10 kol. 13-18 peran | sama seperti di atas, ditambah `is_trc_klb`, `is_trc_pdb`, `is_ppe` |
 | 5.A.12 kol. 7-9 status darurat | selisih `emergency_declared_at` dan `reported_at` |
+
+## Judul yang tidak tertulis pada lembar kerja
+
+Lembar Form 5.A.9 pada templat tidak memuat baris judul. Judul resmi menurut BPBD: "DAFTAR
+WARGA NEGARA YANG MENJADI KORBAN BENCANA". Ekspor menuliskan judul ini.
 
 ## Formulir rekapitulasi (seluruhnya dihitung)
 
@@ -45,7 +50,8 @@ Baris = kelurahan.
 
 | Kolom | Rumus |
 |---|---|
-| 4-8 PNS, TNI, POLRI, Satlinmas, tenaga kontrak | jumlah `officer_records` per `employment_status`, menurut kelurahan penugasan, atau domisili bila penugasan kosong |
+| 4-8 PNS, TNI, POLRI, Satlinmas, tenaga kontrak | jumlah `officer_records` per `employment_status` menurut `duty_kelurahan_id` (kelurahan wilayah tugas): Kasi Trantibumlinmas → PNS, Babinsa → TNI, Bhabinkamtibmas → POLRI, Linmas → Satlinmas |
+| 14 keterangan | "Relawan: n orang" = jumlah `officer_records` berjabatan `relawan` di kelurahan itu (formulir tidak memiliki kolom relawan; tafsir penyusun) |
 | 9 jiwa | jumlah warga |
 | 10 KK | `count distinct family_id` |
 | 11 KK miskin | `count distinct family_id` yang kepala keluarganya `is_poor` |
@@ -73,7 +79,8 @@ dicatat untuk dikonfirmasi BPBD.
 
 - Setiap sel rekap memiliki definisi tunggal yang dipakai untuk angka dan untuk penelusuran;
   jumlah baris hasil penelusuran selalu sama dengan angka selnya.
-- Struktur kepala (judul, sel gabung, penomoran kolom) tiap ekspor XLSX sama dengan templat
-  resmi kosong ("berkas emas").
+- Struktur kepala (judul, sel gabung, penomoran kolom) tiap ekspor XLSX sama dengan rujukan di
+  `specs/002-spm-data-dasar/reference/form-headers/` ("berkas emas"), yang diekstrak dari
+  templat kosong BPBD TA 2026.
 - XLSX dan PDF satu formulir dihasilkan dari definisi yang sama dan memuat nilai yang sama.
 - Orang tanpa NIK tampil dengan kolom NIK kosong dan tetap terhitung.

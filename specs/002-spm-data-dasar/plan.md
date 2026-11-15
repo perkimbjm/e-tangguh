@@ -58,7 +58,8 @@ Tidak ada NEEDS CLARIFICATION teknis; keputusan ada di [research.md](./research.
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Dievaluasi terhadap konstitusi v1.2.0.
+Dievaluasi terhadap konstitusi v1.2.0; aturan batas 400 baris per berkas kode (v1.3.0) dipenuhi
+lewat pemecahan berkas pada `tasks.md` dan pemeriksaan `max-lines` di CI.
 
 | Prinsip | Pemenuhan dalam rancangan | Status |
 |---|---|---|
@@ -71,11 +72,12 @@ Dievaluasi terhadap konstitusi v1.2.0.
 | VII. Format dan ketertelusuran SPM | data terikat tahun anggaran dan terkunci saat final; revisi bernomor dengan arsip; formulir dari `form_definitions` berversi; rekap dihitung dan dapat ditelusuri per sel; impor tervalidasi dengan laporan galat | LULUS |
 | Batasan tumpukan teknologi | React + Vite, PostgreSQL + PostGIS, NestJS; kueri di basis data; data uji sintetis | LULUS |
 
-Gerbang: lulus dengan satu penyimpangan beralasan. Pemeriksaan ulang pasca-desain: tidak berubah.
+Gerbang: lulus dengan satu penyimpangan beralasan yang telah disetujui pemilik proyek. Pemeriksaan ulang pasca-desain: tidak berubah.
 
-Syarat rilis yang dibawa ke implementasi: konfirmasi dasar hukum pemrosesan data warga, tafsir
-kolom aparatur Form 5.A.4, judul resmi Form 5.A.9, kepastian format formulir yang berlaku, dan
-perkiraan jumlah warga di kawasan rawan.
+Syarat rilis yang dibawa ke implementasi: konfirmasi dasar hukum pemrosesan data warga (ditunda
+pemilik proyek, wajib sebelum data nyata dimasukkan), penempatan jumlah relawan pada Form 5.A.4,
+kepastian format formulir yang berlaku, dan perkiraan jumlah warga di kawasan rawan. Sudah
+terkonfirmasi 2026-11-15: tafsir kolom aparatur Form 5.A.4 dan judul Form 5.A.9.
 
 ## Project Structure
 
@@ -146,6 +148,6 @@ sisa fitur 001 dan 002 sesuai prioritas BPBD, karena pelaporan SPM memiliki teng
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| Penanda `is_poor`, `has_special_needs`, `age_group`, status korban tidak dienkripsi per kolom (Prinsip I mewajibkan data sensitif dienkripsi saat disimpan) | Form 5.A.4 dan 5.A.6 menjumlahkan penanda ini atas hingga 200.000 baris; nilai terenkripsi per kolom tidak dapat dijumlahkan di basis data | Mendekripsi seluruh baris di aplikasi tiap rekap melampaui target 5 detik dan memperluas paparan data. Mitigasi: enkripsi volume basis data dan cadangan, akses terbatas peran, jenis kebutuhan khusus tetap terenkripsi per kolom. Perlu persetujuan pemilik proyek; bila ditolak, konstitusi perlu diperjelas atau target kinerja dilonggarkan |
+| Penanda `is_poor`, `has_special_needs`, `age_group`, status korban tidak dienkripsi per kolom (Prinsip I mewajibkan data sensitif dienkripsi saat disimpan) | Form 5.A.4 dan 5.A.6 menjumlahkan penanda ini atas hingga 200.000 baris; nilai terenkripsi per kolom tidak dapat dijumlahkan di basis data | Mendekripsi seluruh baris di aplikasi tiap rekap melampaui target 5 detik dan memperluas paparan data. Mitigasi: enkripsi volume basis data dan cadangan, akses terbatas peran, jenis kebutuhan khusus tetap terenkripsi per kolom. Disetujui pemilik proyek pada 2026-11-15, terbatas pada fitur ini |
 | Definisi formulir dan sel rekap sebagai data berversi, bukan kode langsung | Prinsip VII mewajibkan rujukan berversi dan penelusuran per sel | Kueri rekap yang ditulis tangan per formulir akan membuat angka dan penelusuran menyimpang, serta menuntut perubahan kode tiap format berubah |
 | Tabel antara impor (`import_batches`, `import_rows`) | pratinjau, laporan galat, dan idempotensi tanpa menyentuh data utama | Validasi langsung ke tabel utama tidak memberi pratinjau dan menyulitkan pembatalan |

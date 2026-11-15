@@ -113,7 +113,8 @@ otomatis, lebih efisien, lebih efektif; setiap keputusan menyebut otomatisasi ya
   trigram.
 - **Rationale**: nilai terenkripsi per kolom tidak dapat dijumlahkan di basis data; mendekripsi
   200.000 baris di aplikasi untuk setiap rekap melanggar target kinerja dan memperluas paparan
-  data. Dicatat sebagai penyimpangan beralasan pada `plan.md`.
+  data. Dicatat sebagai penyimpangan beralasan pada `plan.md`
+  dan disetujui pemilik proyek pada 2026-11-15 untuk fitur ini.
 - **Alternatives considered**: mengenkripsi semua kolom sensitif (rekap tidak layak); tabel
   agregat terpisah (data ganda yang bisa menyimpang).
 
@@ -127,10 +128,15 @@ otomatis, lebih efisien, lebih efektif; setiap keputusan menyebut otomatisasi ya
 
 ## R12. Hitungan aparatur per kelurahan (Form 5.A.4)
 
-- **Decision**: jumlah PNS/TNI/POLRI/Satlinmas/tenaga kontrak per kelurahan dihitung dari
-  `officer_records` menurut kelurahan penugasan; bila kosong, menurut kelurahan domisili.
-- **Perlu konfirmasi BPBD**: apakah yang dimaksud formulir adalah aparatur yang bertugas di
-  kelurahan itu atau yang berdomisili di sana.
+- **Decision** (terkonfirmasi BPBD 2026-11-15): aparatur di kawasan rawan bencana adalah personel
+  yang bertugas di kelurahan itu. Tiap petugas memiliki jabatan dan kelurahan wilayah tugas;
+  hitungan memakai kelurahan wilayah tugas, bukan domisili. Pemetaan ke kolom formulir:
+  Kasi Trantibumlinmas kelurahan → PNS; Babinsa → TNI; Bhabinkamtibmas → POLRI; Linmas di bawah
+  Satpol PP → Satlinmas; tenaga kontrak → tenaga kontrak; relawan kebencanaan → non-aparatur.
+- **Tafsir penyusun**: Form 5.A.4 tidak memiliki kolom relawan, sehingga jumlah relawan per
+  kelurahan ditulis otomatis pada kolom keterangan ("Relawan: n orang"). Perlu dikonfirmasi.
+- **Otomatisasi**: memilih jabatan mengisi status kepegawaian secara otomatis; relawan
+  terverifikasi dari modul relawan dapat dijadikan petugas tanpa ketik ulang.
 
 ## R13. Pengujian
 
@@ -142,6 +148,6 @@ otomatis, lebih efisien, lebih efektif; setiap keputusan menyebut otomatisasi ya
 
 ## Sisa ketidakpastian (bukan penghalang rencana)
 
-Jumlah warga di kawasan rawan, tafsir kolom aparatur Form 5.A.4 (R12), judul resmi Form 5.A.9,
+Jumlah warga di kawasan rawan, penempatan jumlah relawan pada Form 5.A.4 (R12),
 kepastian format formulir yang berlaku, dan dasar hukum pemrosesan data warga. Tidak ada NEEDS
 CLARIFICATION teknis yang tersisa.

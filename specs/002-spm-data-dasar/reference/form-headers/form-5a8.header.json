@@ -1,0 +1,40 @@
+{
+  "form_code": "5.A.8",
+  "sheet_name": "5.A.8 DAFTAR KETERSEDIAAN STOK",
+  "header_last_row": 4,
+  "cells": {
+    "A1": "FORM 5.A.8 DAFTAR KETERSEDIAAN STOK LOGISTIK PENGUNGSIAN",
+    "A2": "NO.",
+    "B2": "NAMA BARANG",
+    "C2": "JUMLAH/ SATUAN",
+    "D2": "LOKASI",
+    "F2": "KONDISI",
+    "D3": "POSISI",
+    "E3": "INSTITUSI PENANGGUNGJAWAB",
+    "F3": "BAIK",
+    "G3": "RUSAK",
+    "A4": "1",
+    "B4": "2",
+    "C4": "3",
+    "D4": "4",
+    "E4": "5",
+    "F4": "6",
+    "G4": "7"
+  },
+  "merged_ranges": [
+    "A1:H1",
+    "A2:A3",
+    "B2:B3",
+    "C2:C3",
+    "D2:E2",
+    "F2:G2"
+  ],
+  "column_notes": [
+    "Kolom 1 : Diisi dengan nomor urut",
+    "Kolom 2 : Diisi dengan nama barang logistik pengungsian",
+    "Kolom 3 : Diisi dengan jumlah ketersediaan barang",
+    "Kolom 4 : Diisi dengan lokasi posisi barang",
+    "Kolom 5 : Diisi dengan institusi penanggungjawab barang",
+    "Kolom 6 – 7 : Diisi dengan jumlah sesuai kondisi barang"
+  ]
+}

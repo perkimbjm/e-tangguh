@@ -1,0 +1,50 @@
+{
+  "form_code": "5.A.6",
+  "sheet_name": "5.A.6 REKAPITULASI WARGA NEGARA",
+  "header_last_row": 3,
+  "cells": {
+    "A1": "NO.",
+    "B1": "JENIS BENCANA",
+    "C1": "PENDUDUK",
+    "F1": "PETUGAS (ORANG)",
+    "K1": "TOTAL WAJIB LATIH (ORANG)",
+    "C2": "JIWA",
+    "D2": "KK",
+    "E2": "DESA",
+    "F2": "PETUGAS TRC PDB",
+    "G2": "PETUGAS TRC KLB",
+    "H2": "PETUGAS PPE",
+    "I2": "PETUGAS OPERASI",
+    "J2": "JUMLAH PETUGAS",
+    "A3": "1",
+    "B3": "2",
+    "C3": "3",
+    "D3": "4",
+    "E3": "5",
+    "F3": "6",
+    "G3": "7",
+    "H3": "8",
+    "I3": "9",
+    "J3": "10",
+    "K3": "11 = 4 + 10"
+  },
+  "merged_ranges": [
+    "A1:A2",
+    "B1:B2",
+    "C1:E1",
+    "F1:J1",
+    "K1:K2"
+  ],
+  "column_notes": [
+    "Kolom 1 : Diisi dengan jenis bencana berdasarkan Permendagri Nomor 101 tahun 2018 tentang standar teknis pelayanan dasar pada standar pelayanan minimal sub- urusan bencana daerah Kabupaten/Kota",
+    "Kolom 2 : Diisi dengan jumlah penduduk yang berada di kawasan rawan bencana untuk jenis bencana terkait",
+    "Kolom 3 : Diisi dengan jumlah kk yang berada di kawasan rawan bencana untuk jenis bencana terkait",
+    "Kolom 4 : Diisi dengan jumlah desa yang berada di kawasan rawan bencana untuk jenis bencana terkait",
+    "Kolom 5 : Diisi dengan jumlah petugas Tim Reaksi Cepat (TRC) Penanganan Darurat Bencana (PDB) untuk jenis bencana terkait",
+    "Kolom 6 : Diisi dengan jumlah petugas TRC Kejadian Luar Biasa (KLB) untuk jenis bencana terkait",
+    "Kolom 7 : Diisi dengan jumlah petugas Pencarian, Penyelamatan, dan Evakuasi (PPE) untuk jenis bencana terkait",
+    "Kolom 8 : Diisi dengan jumlah petugas operasi",
+    "Kolom 9 : Diisi dengan total jumlah petugas untuk jenis bencana terkait",
+    "Kolom 10 : Diisi dengan total jumlah wajib latih untuk jenis bencana terkait (kolom 3 ditambah kolom 9)"
+  ]
+}

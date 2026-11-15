@@ -17,6 +17,10 @@
 - Q: Batas usia mana yang dipakai untuk kelompok umur rentan? → A: Balita (di bawah 5 tahun), anak (5 sampai di bawah 18 tahun), dan lanjut usia (60 tahun ke atas), dihitung dari tanggal lahir; batas dapat diubah admin.
 - Q: Bagaimana warga yang belum punya NIK diperlakukan? → A: Tetap dicatat dengan penanda "NIK belum ada", ikut dihitung dalam jumlah jiwa, dan jumlahnya ditampilkan terpisah.
 - Q: Daftar siapa yang dimaksud Form 5.A.9? → A: Warga terdampak/korban pada satu kejadian bencana; diisi per kejadian dan menjadi dasar Form 5.A.10.
+- Q: Apa judul resmi Form 5.A.9? → A: "DAFTAR WARGA NEGARA YANG MENJADI KORBAN BENCANA".
+- Q: Siapa yang dihitung sebagai aparatur di kawasan rawan bencana (Form 5.A.4)? → A: Personel yang bertugas di kelurahan itu: Kasi Trantibumlinmas kelurahan, Babinsa (TNI), Bhabinkamtibmas (POLRI), Linmas di bawah Satpol PP, serta relawan kebencanaan.
+- Q: Apakah penanda rekap (miskin, berkebutuhan khusus, kelompok umur, status korban) boleh tidak dienkripsi per kolom? → A: Ya, disetujui pemilik proyek untuk fitur ini.
+- Q: Kapan dasar hukum pemrosesan data warga dipastikan? → A: Ditunda; tetap menjadi syarat sebelum data nyata dimasukkan.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -115,7 +119,7 @@ atau lebih dari 24 jam), lalu mencatat warga terdampak, status tiap korban (meni
 butuh bantuan medis darurat, butuh bantuan medis lanjut, selamat), serta petugas yang aktif pada
 kejadian itu beserta lokasi penugasannya.
 
-**Why this priority**: Form 5.A.9 sampai 5.A.12 menjadi dasar pengukuran pelayanan penyelamatan
+**Why this priority**: Form 5.A.9 (daftar warga negara yang menjadi korban bencana) sampai 5.A.12 menjadi dasar pengukuran pelayanan penyelamatan
 dan evakuasi, tetapi baru terisi setelah ada kejadian sehingga tidak menghalangi pendataan awal.
 
 **Independent Test**: Catat satu kejadian dengan tiga warga terdampak berstatus berbeda dan dua
@@ -251,9 +255,11 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 
 **Petugas, kejadian, inventaris**
 
-- **FR-010**: Sistem WAJIB mencatat petugas dengan status, sertifikasi, jenis penugasan, dan
-  lokasi penugasan sesuai Form 5.A.5, dan memungkinkan memilih relawan terverifikasi sebagai
-  petugas.
+- **FR-010**: Sistem WAJIB mencatat petugas dengan status, jabatan (Kasi Trantibumlinmas kelurahan,
+  Babinsa, Bhabinkamtibmas, Linmas, relawan kebencanaan, lainnya), kelurahan wilayah tugas,
+  sertifikasi, jenis penugasan, dan lokasi penugasan sesuai Form 5.A.5, dan memungkinkan memilih
+  relawan terverifikasi sebagai petugas. Jumlah aparatur per kelurahan pada Form 5.A.4 dihitung
+  menurut kelurahan wilayah tugas.
 - **FR-011**: Sistem WAJIB mencatat kejadian bencana sesuai Form 5.A.12, termasuk waktu kejadian,
   waktu laporan diterima, dan status darurat beserta rentang waktu penetapannya.
 - **FR-012**: Sistem WAJIB mencatat warga terdampak per kejadian bencana (Form 5.A.9) dan status
@@ -340,8 +346,10 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 
 - Format formulir mengikuti berkas kerja BPBD tahun anggaran 2026 yang merujuk Permendagri No.
   101 Tahun 2018; bila format resmi berubah, susunan kolom diperbarui sebagai data rujukan.
-- Form 5.A.9 adalah daftar warga terdampak/korban per kejadian bencana (terkonfirmasi); judul
-  resminya tetap dicocokkan dengan lampiran peraturan saat menyusun templat ekspor.
+- Form 5.A.9 berjudul "DAFTAR WARGA NEGARA YANG MENJADI KORBAN BENCANA" dan diisi per kejadian
+  bencana (terkonfirmasi).
+- Form 5.A.4 tidak memiliki kolom relawan; jumlah relawan kebencanaan per kelurahan ditulis pada
+  kolom keterangan (tafsir penyusun, perlu dikonfirmasi BPBD).
 - Hanya warga di kawasan yang ditetapkan rawan bencana yang dicatat (terkonfirmasi). Jumlahnya
   belum diketahui; rancangan diuji hingga 200.000 jiwa sebagai batas atas perkiraan. Asumsi
   skala 2.000 orang pada fitur relawan tidak berlaku untuk fitur ini.
@@ -352,7 +360,8 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 - Kondisi ekonomi (miskin/tidak miskin) diisi berdasarkan data yang dibawa pendata; integrasi
   dengan data kesejahteraan sosial berada di luar lingkup.
 - Dasar pemrosesan data warga adalah pelaksanaan kewenangan BPBD sesuai konstitusi proyek;
-  kepastian hukumnya dikonfirmasi bagian hukum sebelum data nyata dimasukkan.
+  kepastian hukumnya ditunda atas keputusan pemilik proyek dan tetap menjadi syarat sebelum
+  data nyata dimasukkan.
 - Data tahun sebelumnya yang sudah ada dalam bentuk lembar kerja dimasukkan lewat fitur impor
   yang sama; tidak ada migrasi khusus.
 - Integrasi dengan data kependudukan (Disdukcapil) untuk verifikasi NIK berada di luar lingkup.
