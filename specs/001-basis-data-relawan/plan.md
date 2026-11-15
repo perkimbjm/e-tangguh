@@ -131,6 +131,15 @@ antarmuka.
 8. **US7** ketersediaan relawan; permintaan data dan anonimisasi terjadwal.
 9. **Pengerasan**: anggaran kinerja, aksesibilitas, uji pemulihan cadangan, dokumentasi operasi.
 
+## Penyelarasan dengan fitur 002 (2026-11-15)
+
+Tujuan aplikasi diperluas menjadi basis data pelaporan SPM (konstitusi v1.2.0). Akibatnya:
+identitas orang pindah ke modul bersama `persons` (lihat `data-model.md`), dua peran baru
+ditambahkan, dan fondasi fitur ini (autentikasi, peran, audit, wilayah, berkas) menjadi
+prasyarat fitur `002-spm-data-dasar`. Pemeriksaan konstitusi di atas dilakukan terhadap v1.1.1;
+Prinsip VII tidak berlaku pada fitur ini karena tidak menghasilkan formulir SPM. Urutan lintas
+fitur ada di `specs/002-spm-data-dasar/plan.md`.
+
 ## Complexity Tracking
 
 | Penyimpangan dari yang paling sederhana | Mengapa diperlukan | Alternatif lebih sederhana yang ditolak |
