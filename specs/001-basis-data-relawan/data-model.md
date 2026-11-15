@@ -3,6 +3,15 @@
 PostgreSQL + PostGIS. Semua tabel memiliki `id uuid`, `created_at`, `updated_at` kecuali
 disebutkan lain. Kolom bertanda 🔒 dienkripsi di aplikasi (AES-256-GCM, lihat research R3).
 
+## Penyelarasan dengan fitur 002 (2026-11-15)
+
+Identitas orang dipakai bersama modul SPM. Tabel `persons` dan `families` didefinisikan di
+`specs/002-spm-data-dasar/data-model.md` dan menjadi sumber kebenaran untuk `full_name`, NIK
+(`nik_enc`, `nik_hash`, `nik_last4`), `birth_date`, dan `gender`. Tabel `volunteers` di bawah
+memperoleh `person_id uuid unik → persons`; kolom identitas yang tercantum pada `volunteers`
+dibaca sebagai kolom `persons`. Enum `users.role` bertambah `operator_bpbd` dan
+`pendata_kelurahan`, dan `users` memperoleh `kelurahan_id` (wajib bagi pendata kelurahan).
+
 ## Entitas
 
 ### users
