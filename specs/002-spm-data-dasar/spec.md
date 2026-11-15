@@ -8,11 +8,22 @@
 
 **Input**: User description: "Basis data dasar SPM sub-urusan bencana (Form 5.A.1–5.A.12 Permendagri 101/2018) per tahun anggaran untuk BPBD Kota Banjarmasin: satu catatan orang per NIK dengan peran warga kawasan rawan bencana, korban, petugas/aparatur, relawan; pendataan warga per kelurahan dengan impor XLSX tervalidasi; jenis kerawanan tempat tinggal; daftar petugas dengan sertifikasi dan penugasan; inventaris peralatan dan stok logistik; kejadian bencana, warga terdampak dan status korban; rekapitulasi 5.A.3, 5.A.4, 5.A.6 dihitung otomatis dan dapat ditelusuri; ekspor XLSX/PDF sesuai susunan kolom formulir resmi; penguncian data per tahun anggaran dengan revisi bernomor. Form 5.B–5.E (perhitungan kebutuhan, rencana, realisasi, kinerja) menjadi fitur terpisah berikutnya."
 
+## Clarifications
+
+### Session 2026-11-15
+
+- Q: Warga mana yang dicatat dalam daftar warga kawasan rawan bencana? → A: Hanya warga yang tinggal di RT/kawasan yang ditetapkan rawan bencana menurut Kajian Risiko Bencana atau penetapan BPBD.
+- Q: Siapa yang mengisi data warga kawasan rawan bencana? → A: Pendata kelurahan (terbatas pada kelurahannya) dan operator BPBD; data dari pendata kelurahan diperiksa dan disetujui operator BPBD sebelum dihitung dalam rekapitulasi.
+- Q: Batas usia mana yang dipakai untuk kelompok umur rentan? → A: Balita (di bawah 5 tahun), anak (5 sampai di bawah 18 tahun), dan lanjut usia (60 tahun ke atas), dihitung dari tanggal lahir; batas dapat diubah admin.
+- Q: Bagaimana warga yang belum punya NIK diperlakukan? → A: Tetap dicatat dengan penanda "NIK belum ada", ikut dihitung dalam jumlah jiwa, dan jumlahnya ditampilkan terpisah.
+- Q: Daftar siapa yang dimaksud Form 5.A.9? → A: Warga terdampak/korban pada satu kejadian bencana; diisi per kejadian dan menjadi dasar Form 5.A.10.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Pendataan warga di kawasan rawan bencana per kelurahan (Priority: P1)
 
-Operator BPBD membuka tahun anggaran berjalan, memilih satu kelurahan, lalu mengisi daftar warga
+Pendata kelurahan (untuk kelurahannya sendiri) atau operator BPBD membuka tahun anggaran
+berjalan, memilih satu kelurahan, lalu mengisi daftar warga
 (nama kepala keluarga dan anggota keluarga, NIK, nomor KK, jenis kelamin, tempat dan tanggal
 lahir, alamat, kondisi ekonomi, kebutuhan khusus, kelompok umur rentan) beserta jenis kerawanan
 tempat tinggalnya. Pengisian dapat dilakukan satu per satu atau dengan mengunggah lembar kerja
@@ -167,8 +178,11 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 
 ### Edge Cases
 
+- Data kelurahan masih menunggu persetujuan saat tahun anggaran hendak difinalkan: finalisasi
+  ditolak sampai seluruh data disetujui atau dikembalikan.
 - Warga tanpa NIK (bayi baru lahir, belum memiliki dokumen): dicatat dengan penanda "NIK belum
-  ada" dan tidak ikut pemeriksaan keunikan sampai NIK diisi; jumlahnya dilaporkan terpisah.
+  ada", ikut dihitung dalam jumlah jiwa, tidak ikut pemeriksaan keunikan NIK sampai NIK diisi,
+  dan jumlahnya ditampilkan terpisah pada ringkasan kelengkapan.
 - Satu keluarga dengan anggota di lebih dari satu kelurahan: tiap orang mengikuti kelurahan
   domisilinya; nomor KK yang sama boleh muncul di lebih dari satu kelurahan dengan peringatan.
 - Warga meninggal atau pindah keluar kota pada tahun berjalan: ditandai tidak aktif dengan
@@ -177,6 +191,8 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
   menampilkan semua variasi yang ada, tidak terbatas pada dua kolom contoh di formulir.
 - Petugas yang juga warga kawasan rawan bencana: dihitung pada kedua kelompok sesuai aturan
   formulir, tetapi sekali saja sebagai orang.
+- Alamat warga berada di RT/RW yang belum ditetapkan sebagai kawasan rawan: baris ditolak dan
+  operator diarahkan meminta penetapan kawasan kepada admin BPBD bila memang rawan.
 - Lembar kerja dengan susunan kolom tidak sesuai formulir resmi: ditolak seluruhnya dengan
   penjelasan kolom yang tidak dikenali.
 - Unggahan ulang lembar kerja yang sama: tidak menggandakan data; baris yang berubah ditampilkan
@@ -190,19 +206,37 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 
 ### Functional Requirements
 
+**Kawasan rawan bencana**
+
+- **FR-026**: Admin BPBD WAJIB dapat menetapkan kawasan rawan bencana per tahun anggaran pada
+  tingkat RT/RW di dalam kelurahan beserta jenis bencana yang mengancamnya dan dasar
+  penetapannya (Kajian Risiko Bencana atau keputusan BPBD).
+- **FR-027**: Sistem WAJIB hanya menerima warga yang alamatnya berada pada kawasan rawan bencana
+  yang telah ditetapkan; baris di luar kawasan itu ditolak saat pengisian dan impor dengan
+  alasan yang jelas. Jenis kerawanan tempat tinggal warga diisi awal dari jenis bencana
+  kawasannya dan dapat dikoreksi per warga.
+
 **Orang dan peran**
 
 - **FR-001**: Sistem WAJIB mencatat setiap orang satu kali berdasarkan NIK 16 digit yang
   tervalidasi, dengan peran (warga kawasan rawan bencana, korban, petugas, aparatur, relawan)
-  melekat pada orang yang sama.
+  melekat pada orang yang sama. Orang tanpa NIK WAJIB dapat dicatat dengan penanda "NIK belum
+  ada" beserta alasannya, dihitung dalam jumlah jiwa, dan diperiksa kemungkinan gandanya dari
+  nama, tanggal lahir, dan nomor KK; saat NIK diisi, catatan itu digabung bila NIK sudah ada.
 - **FR-002**: Sistem WAJIB mengaitkan warga dengan kepala keluarganya dan nomor KK sehingga jumlah
   KK dan jiwa dapat dihitung.
-- **FR-003**: Sistem WAJIB menentukan kelompok umur rentan dari tanggal lahir terhadap tahun
-  anggaran menurut batas usia yang dapat diatur admin, dan mengizinkan koreksi manual beralasan.
+- **FR-003**: Sistem WAJIB menentukan kelompok umur rentan dari tanggal lahir terhadap tanggal
+  acuan tahun anggaran: balita (di bawah 5 tahun), anak (5 sampai di bawah 18 tahun), lanjut
+  usia (60 tahun ke atas). Batas usia WAJIB berupa pengaturan yang dapat diubah admin dan
+  tercatat per tahun anggaran; koreksi manual per warga WAJIB disertai alasan.
 - **FR-004**: Sistem WAJIB hanya menerima nama kecamatan dan kelurahan dari daftar wilayah resmi.
 
 **Pendataan dan impor**
 
+- **FR-028**: Data yang diisi atau diunggah pendata kelurahan WAJIB berstatus "menunggu
+  persetujuan" sampai disetujui atau dikembalikan operator BPBD beserta catatannya; hanya data
+  yang disetujui yang dihitung dalam rekapitulasi dan ekspor resmi. Data yang diisi operator
+  BPBD langsung berstatus disetujui.
 - **FR-005**: Pengguna berwenang WAJIB dapat menambah, mengubah, dan menonaktifkan data warga per
   kelurahan dan per tahun anggaran.
 - **FR-006**: Sistem WAJIB menerima unggahan lembar kerja berformat formulir resmi 5.A.1, 5.A.2,
@@ -222,8 +256,9 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
   petugas.
 - **FR-011**: Sistem WAJIB mencatat kejadian bencana sesuai Form 5.A.12, termasuk waktu kejadian,
   waktu laporan diterima, dan status darurat beserta rentang waktu penetapannya.
-- **FR-012**: Sistem WAJIB mencatat warga terdampak dan status korban per kejadian sesuai Form
-  5.A.9 dan 5.A.10, dengan riwayat perubahan status.
+- **FR-012**: Sistem WAJIB mencatat warga terdampak per kejadian bencana (Form 5.A.9) dan status
+  korban tiap warga terdampak itu (Form 5.A.10), dengan riwayat perubahan status. Form 5.A.10
+  hanya memuat orang yang tercatat pada Form 5.A.9 kejadian yang sama.
 - **FR-013**: Sistem WAJIB mencatat petugas aktif per kejadian sesuai Form 5.A.11.
 - **FR-014**: Sistem WAJIB mencatat peralatan dan stok logistik sesuai Form 5.A.7 dan 5.A.8.
 
@@ -248,6 +283,8 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 
 **Akses dan perlindungan data**
 
+- **FR-029**: Akun pendata kelurahan WAJIB dibuat oleh admin BPBD, terikat pada tepat satu
+  kelurahan, dan dapat dinonaktifkan sewaktu-waktu.
 - **FR-022**: Daftar perorangan WAJIB hanya dapat dibuka dan diekspor oleh peran BPBD yang
   berwenang; pendata kelurahan hanya dapat melihat dan mengisi kelurahannya sendiri; peran lain
   hanya melihat rekapitulasi.
@@ -274,6 +311,8 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 - **Petugas Aktif**: kaitan petugas dengan kejadian dan lokasi penugasannya.
 - **Peralatan** dan **Stok Logistik**: barang, jumlah, lokasi, penanggung jawab, kondisi.
 - **Wilayah**: kecamatan dan kelurahan resmi.
+- **Kawasan Rawan Bencana**: RT/RW di dalam kelurahan yang ditetapkan rawan pada satu tahun
+  anggaran, jenis bencananya, dan dasar penetapannya.
 - **Berkas Impor**: unggahan, hasil validasi, dan daftar baris ditolak.
 - **Revisi**: nomor, alasan, pembuat, waktu, dan isi perubahan terhadap tahun yang sudah final.
 
@@ -286,10 +325,11 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 - **SC-002**: 100% baris yang ditolak saat impor memiliki alasan yang menyebut baris dan kolomnya.
 - **SC-003**: Angka pada Form 5.A.3, 5.A.4, dan 5.A.6 sama persis dengan hitungan ulang dari data
   rincian pada setiap pengujian.
-- **SC-004**: Tidak ada orang yang tercatat lebih dari satu kali untuk NIK yang sama.
+- **SC-004**: Tidak ada orang yang tercatat lebih dari satu kali untuk NIK yang sama, dan jumlah
+  warga tanpa NIK selalu terlihat pada ringkasan kelengkapan tiap kelurahan.
 - **SC-005**: Berkas ekspor tiap formulir 5.A diterima tanpa perbaikan susunan kolom saat
   dibandingkan dengan formulir resmi.
-- **SC-006**: Rekapitulasi seluruh kota tampil dalam waktu kurang dari 5 detik dengan 700.000
+- **SC-006**: Rekapitulasi seluruh kota tampil dalam waktu kurang dari 5 detik dengan 200.000
   jiwa tercatat.
 - **SC-007**: Waktu penyusunan rekapitulasi tahunan 5.A turun dari hitungan hari menjadi kurang
   dari satu jam setelah data rincian lengkap.
@@ -300,15 +340,15 @@ revisi dengan alasan, ubah satu baris, dan pastikan versi final sebelumnya tetap
 
 - Format formulir mengikuti berkas kerja BPBD tahun anggaran 2026 yang merujuk Permendagri No.
   101 Tahun 2018; bila format resmi berubah, susunan kolom diperbarui sebagai data rujukan.
-- Judul lengkap Form 5.A.9 tidak terbaca utuh pada berkas contoh; diasumsikan "daftar warga
-  negara yang terdampak/menjadi korban bencana" per kejadian.
-- Seluruh kelurahan di Kota Banjarmasin diperlakukan dapat menjadi kawasan rawan bencana; skala
-  data hingga seluruh penduduk kota (sekitar 700.000 jiwa). Asumsi skala 2.000 orang pada fitur
-  relawan tidak berlaku untuk fitur ini.
-- Pengisian dilakukan operator BPBD; tersedia peran pendata kelurahan dengan akses terbatas pada
-  kelurahannya. Warga tidak mengisi data sendiri.
-- Kelompok umur rentan bawaan: balita (di bawah 5 tahun), anak (5 sampai di bawah 18 tahun), dan
-  lanjut usia (60 tahun ke atas); batasnya dapat diubah admin.
+- Form 5.A.9 adalah daftar warga terdampak/korban per kejadian bencana (terkonfirmasi); judul
+  resminya tetap dicocokkan dengan lampiran peraturan saat menyusun templat ekspor.
+- Hanya warga di kawasan yang ditetapkan rawan bencana yang dicatat (terkonfirmasi). Jumlahnya
+  belum diketahui; rancangan diuji hingga 200.000 jiwa sebagai batas atas perkiraan. Asumsi
+  skala 2.000 orang pada fitur relawan tidak berlaku untuk fitur ini.
+- Pengisian dilakukan pendata kelurahan dan operator BPBD dengan persetujuan operator BPBD
+  (terkonfirmasi). Warga tidak mengisi data sendiri.
+- Kelompok umur rentan: balita, anak, dan lanjut usia dengan batas pada FR-003 (terkonfirmasi).
+  Tanggal acuan perhitungan usia adalah 31 Desember tahun anggaran.
 - Kondisi ekonomi (miskin/tidak miskin) diisi berdasarkan data yang dibawa pendata; integrasi
   dengan data kesejahteraan sosial berada di luar lingkup.
 - Dasar pemrosesan data warga adalah pelaksanaan kewenangan BPBD sesuai konstitusi proyek;

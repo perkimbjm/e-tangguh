@@ -36,5 +36,6 @@
   export because the official forms are exchanged as spreadsheets; this is a user-facing
   requirement, kept deliberately. Reviewer to confirm it is acceptable.
 - No [NEEDS CLARIFICATION] markers were used; open policy points are recorded as assumptions
-  (scale of 700,000 residents, vulnerable age bands, kelurahan data-entry role, title of Form
-  5.A.9, legal basis) and should be confirmed through `/speckit-clarify`.
+  and were confirmed through `/speckit-clarify` on 2026-11-15 (coverage, data-entry role,
+  vulnerable age bands, residents without NIK, meaning of Form 5.A.9). Still open: the number of
+  residents in hazard areas and the legal basis for processing.
