@@ -43,15 +43,15 @@ Monorepo pnpm: `apps/api` (NestJS), `apps/web` (React + Vite), `packages/shared`
 
 **Purpose**: inisialisasi proyek dan perkakas
 
-- [ ] T001 Buat monorepo pnpm: `package.json`, `pnpm-workspace.yaml` (apps/*, packages/*, tools/*), `tsconfig.base.json` (strict), `.nvmrc` (Node LTS), `.editorconfig` di akar repositori
-- [ ] T002 [P] Inisialisasi API NestJS di `apps/api` (`package.json`, `tsconfig.json`, `nest-cli.json`, `src/main.ts`, `src/app.module.ts`) dengan prefiks global `/api/v1`
-- [ ] T003 [P] Inisialisasi antarmuka React + Vite + TypeScript di `apps/web` (`package.json`, `vite.config.ts`, `index.html`, `src/main.tsx`) dengan Tailwind CSS, React Router, TanStack Query; proxy `/api` ke port 3000
-- [ ] T004 Pasang ESLint + Prettier di `eslint.config.js` akar dengan aturan `max-lines: ["error", { max: 400, skipBlankLines: true, skipComments: true }]` untuk seluruh `*.ts`/`*.tsx` (kecuali `apps/api/src/db/migrations/**`), serta skrip `pnpm lint`
-- [ ] T005 [P] Inisialisasi paket bersama `packages/shared` (`package.json`, `tsconfig.json`, `src/index.ts`) dengan Zod sebagai dependensi
-- [ ] T006 [P] Buat `infra/docker-compose.yml` dengan layanan `db` (image PostgreSQL + PostGIS) dan `infra/db/init.sql` yang menjalankan `CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE EXTENSION IF NOT EXISTS citext;`
-- [ ] T007 [P] Buat `.env.example` (DATABASE_URL, SESSION_SECRET, FIELD_ENC_KEY, FIELD_ENC_KEY_VERSION, BLIND_INDEX_KEY, FILE_STORAGE_DIR) dan `apps/api/src/config/env.ts` yang memvalidasi variabel dengan Zod dan menggagalkan start bila tidak sah
-- [ ] T008 [P] Pasang Vitest di `apps/api/vitest.config.ts`, `packages/shared/vitest.config.ts`, dan Playwright di `apps/web/playwright.config.ts`; tambah skrip `test`, `test:integration`, `test:e2e` di `package.json` akar
-- [ ] T009 [P] Buat alur CI di `.github/workflows/ci.yml`: `pnpm lint`, `pnpm test`, `pnpm test:integration` dengan layanan PostGIS, dan build kedua aplikasi
+- [X] T001 Buat monorepo pnpm: `package.json`, `pnpm-workspace.yaml` (apps/*, packages/*, tools/*), `tsconfig.base.json` (strict), `.nvmrc` (Node LTS), `.editorconfig` di akar repositori
+- [X] T002 [P] Inisialisasi API NestJS di `apps/api` (`package.json`, `tsconfig.json`, `nest-cli.json`, `src/main.ts`, `src/app.module.ts`) dengan prefiks global `/api/v1`
+- [X] T003 [P] Inisialisasi antarmuka React + Vite + TypeScript di `apps/web` (`package.json`, `vite.config.ts`, `index.html`, `src/main.tsx`) dengan Tailwind CSS, React Router, TanStack Query; proxy `/api` ke port 3000
+- [X] T004 Pasang ESLint + Prettier di `eslint.config.js` akar dengan aturan `max-lines: ["error", { max: 400, skipBlankLines: true, skipComments: true }]` untuk seluruh `*.ts`/`*.tsx` (kecuali `apps/api/src/db/migrations/**`), serta skrip `pnpm lint`
+- [X] T005 [P] Inisialisasi paket bersama `packages/shared` (`package.json`, `tsconfig.json`, `src/index.ts`) dengan Zod sebagai dependensi
+- [X] T006 [P] Buat `infra/docker-compose.yml` dengan layanan `db` (image PostgreSQL + PostGIS) dan `infra/db/init.sql` yang menjalankan `CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE EXTENSION IF NOT EXISTS citext;`
+- [X] T007 [P] Buat `.env.example` (DATABASE_URL, SESSION_SECRET, FIELD_ENC_KEY, FIELD_ENC_KEY_VERSION, BLIND_INDEX_KEY, FILE_STORAGE_DIR) dan `apps/api/src/config/env.ts` yang memvalidasi variabel dengan Zod dan menggagalkan start bila tidak sah
+- [X] T008 [P] Pasang Vitest di `apps/api/vitest.config.ts`, `packages/shared/vitest.config.ts`, dan Playwright di `apps/web/playwright.config.ts`; tambah skrip `test`, `test:integration`, `test:e2e` di `package.json` akar
+- [X] T009 [P] Buat alur CI di `.github/workflows/ci.yml`: `pnpm lint`, `pnpm test`, `pnpm test:integration` dengan layanan PostGIS, dan build kedua aplikasi
 
 ---
 
@@ -63,49 +63,49 @@ Monorepo pnpm: `apps/api` (NestJS), `apps/web` (React + Vite), `packages/shared`
 
 ### Basis data dan utilitas inti
 
-- [ ] T010 Siapkan Drizzle: `apps/api/drizzle.config.ts`, `apps/api/src/db/client.ts` (pool + helper transaksi), `apps/api/src/db/schema/index.ts` (re-ekspor), skrip `db:generate`, `db:migrate`
-- [ ] T011 [P] Implementasikan `FieldCipher` (AES-256-GCM, keluaran `versi kunci | iv | tag | ciphertext`) di `apps/api/src/crypto/field-cipher.ts` dan uji unit di `apps/api/src/crypto/field-cipher.spec.ts`
-- [ ] T012 [P] Implementasikan `BlindIndex` (HMAC-SHA-256 atas nilai ternormalisasi, kunci terpisah) di `apps/api/src/crypto/blind-index.ts` dengan uji unit di `apps/api/src/crypto/blind-index.spec.ts`
-- [ ] T013 [P] Buat filter galat global di `apps/api/src/common/filters/api-exception.filter.ts` dengan bentuk `{ error: { code, message, fields } }` sesuai 001/contracts/api.md, termasuk status 423 untuk tahun final dan 409 untuk `row_version` usang
-- [ ] T014 [P] Buat `ZodValidationPipe` di `apps/api/src/common/pipes/zod-validation.pipe.ts` yang memetakan galat Zod ke `fields`
+- [X] T010 Siapkan Drizzle: `apps/api/drizzle.config.ts`, `apps/api/src/db/client.ts` (pool + helper transaksi), `apps/api/src/db/schema/index.ts` (re-ekspor), skrip `db:generate`, `db:migrate`
+- [X] T011 [P] Implementasikan `FieldCipher` (AES-256-GCM, keluaran `versi kunci | iv | tag | ciphertext`) di `apps/api/src/crypto/field-cipher.ts` dan uji unit di `apps/api/src/crypto/field-cipher.spec.ts`
+- [X] T012 [P] Implementasikan `BlindIndex` (HMAC-SHA-256 atas nilai ternormalisasi, kunci terpisah) di `apps/api/src/crypto/blind-index.ts` dengan uji unit di `apps/api/src/crypto/blind-index.spec.ts`
+- [X] T013 [P] Buat filter galat global di `apps/api/src/common/filters/api-exception.filter.ts` dengan bentuk `{ error: { code, message, fields } }` sesuai 001/contracts/api.md, termasuk status 423 untuk tahun final dan 409 untuk `row_version` usang
+- [X] T014 [P] Buat `ZodValidationPipe` di `apps/api/src/common/pipes/zod-validation.pipe.ts` yang memetakan galat Zod ke `fields`
 
 ### Pengguna, sesi, peran, audit
 
-- [ ] T015 Buat skema `users` di `apps/api/src/db/schema/users.ts`: `email citext unik nullable`, `phone text unik nullable` (minimal salah satu terisi), `password_hash`, `role` enum `relawan | pengurus | pendata_kelurahan | operator_bpbd | admin_bpbd | super_admin` (default `relawan`), `kelurahan_id uuid nullable` (wajib bila `role = pendata_kelurahan`), `is_active`, `last_login_at`
-- [ ] T016 [P] Buat skema `sessions` di `apps/api/src/db/schema/sessions.ts`: token acak disimpan sebagai hash, `user_id`, `expires_at`, `ip`, `user_agent`
-- [ ] T017 [P] Buat skema `regions` di `apps/api/src/db/schema/regions.ts`: `code`, `name`, `level` enum `kecamatan | kelurahan`, `parent_id`, `geom geometry(MultiPolygon,4326) nullable`; indeks GiST pada `geom` dan indeks trigram pada `name`
-- [ ] T018 [P] Buat skema `files` di `apps/api/src/db/schema/files.ts`: `owner_user_id`, `kind` enum `foto | bukti | izin_wali | impor | arsip | dokumen`, `mime`, `size`, `storage_key`, `sha256`
-- [ ] T019 [P] Buat skema `audit_log` di `apps/api/src/db/schema/audit-log.ts`: `id bigserial`, `at`, `actor_user_id`, `actor_role`, `action`, `entity`, `entity_id`, `ip`, `user_agent`, `detail jsonb`; tanpa `updated_at`
-- [ ] T020 [P] Buat skema `app_settings` di `apps/api/src/db/schema/app-settings.ts`: `key unik`, `value jsonb`, `updated_by`
-- [ ] T021 Buat migrasi awal untuk T015-T020 di `apps/api/src/db/migrations/` dan migrasi SQL `apps/api/src/db/migrations/0001_audit_immutable.sql` yang memasang pemicu penolak `UPDATE`/`DELETE` pada `audit_log`
-- [ ] T022 Implementasikan modul autentikasi di `apps/api/src/modules/auth/` (`auth.module.ts`, `auth.controller.ts`, `auth.service.ts`, `session.repository.ts`, `password.ts` dengan Argon2id): `POST /auth/login` (laju dibatasi), `POST /auth/logout`, `GET /auth/me`; cookie `httpOnly`, `Secure`, `SameSite=Lax`; token CSRF untuk metode pengubah
-- [ ] T023 Buat `SessionGuard` global di `apps/api/src/common/guards/session.guard.ts` dan `RolesGuard` di `apps/api/src/common/guards/roles.guard.ts` dengan dekorator `@Roles` dan `@Public` di `apps/api/src/common/decorators/roles.decorator.ts`; rute tanpa dekorator DITOLAK (403)
-- [ ] T024 Buat `KelurahanScope` di `apps/api/src/common/guards/kelurahan-scope.ts`: helper yang mengembalikan `kelurahan_id` wajib untuk `pendata_kelurahan` dan melempar 403 bila permintaan menyebut kelurahan lain; dipakai setiap repository yang memuat data warga
-- [ ] T025 Implementasikan audit di `apps/api/src/modules/audit/` (`audit.module.ts`, `audit.service.ts` yang menulis dalam transaksi berjalan, `audit.interceptor.ts`, dekorator `@Audit(action, entity)` di `audit.decorator.ts`); `detail` DILARANG memuat NIK, KK, alamat, atau data kesehatan
-- [ ] T026 [P] Implementasikan penyimpanan berkas di `apps/api/src/modules/files/` (`storage.interface.ts`, `local-storage.ts`, `files.service.ts`, `files.controller.ts`): nama acak, pemeriksaan tipe dari isi, unduh hanya setelah otorisasi
-- [ ] T027 [P] Implementasikan modul wilayah di `apps/api/src/modules/regions/` (`regions.controller.ts`, `regions.repository.ts`): daftar kecamatan/kelurahan dan fungsi `matchByName(name, level)` berbasis `similarity()` `pg_trgm` yang mengembalikan kandidat beserta skor
-- [ ] T028 [P] Implementasikan administrasi pengguna di `apps/api/src/modules/users/` (`users.controller.ts`, `users.service.ts`): super_admin dan admin_bpbd membuat/menonaktifkan akun; akun `pendata_kelurahan` wajib tepat satu `kelurahan_id` (FR-029)
+- [X] T015 Buat skema `users` di `apps/api/src/db/schema/users.ts`: `email citext unik nullable`, `phone text unik nullable` (minimal salah satu terisi), `password_hash`, `role` enum `relawan | pengurus | pendata_kelurahan | operator_bpbd | admin_bpbd | super_admin` (default `relawan`), `kelurahan_id uuid nullable` (wajib bila `role = pendata_kelurahan`), `is_active`, `last_login_at`
+- [X] T016 [P] Buat skema `sessions` di `apps/api/src/db/schema/sessions.ts`: token acak disimpan sebagai hash, `user_id`, `expires_at`, `ip`, `user_agent`
+- [X] T017 [P] Buat skema `regions` di `apps/api/src/db/schema/regions.ts`: `code`, `name`, `level` enum `kecamatan | kelurahan`, `parent_id`, `geom geometry(MultiPolygon,4326) nullable`; indeks GiST pada `geom` dan indeks trigram pada `name`
+- [X] T018 [P] Buat skema `files` di `apps/api/src/db/schema/files.ts`: `owner_user_id`, `kind` enum `foto | bukti | izin_wali | impor | arsip | dokumen`, `mime`, `size`, `storage_key`, `sha256`
+- [X] T019 [P] Buat skema `audit_log` di `apps/api/src/db/schema/audit-log.ts`: `id bigserial`, `at`, `actor_user_id`, `actor_role`, `action`, `entity`, `entity_id`, `ip`, `user_agent`, `detail jsonb`; tanpa `updated_at`
+- [X] T020 [P] Buat skema `app_settings` di `apps/api/src/db/schema/app-settings.ts`: `key unik`, `value jsonb`, `updated_by`
+- [X] T021 Buat migrasi awal untuk T015-T020 di `apps/api/src/db/migrations/` dan migrasi SQL `apps/api/src/db/migrations/0001_audit_immutable.sql` yang memasang pemicu penolak `UPDATE`/`DELETE` pada `audit_log`
+- [X] T022 Implementasikan modul autentikasi di `apps/api/src/modules/auth/` (`auth.module.ts`, `auth.controller.ts`, `auth.service.ts`, `session.repository.ts`, `password.ts` dengan Argon2id): `POST /auth/login` (laju dibatasi), `POST /auth/logout`, `GET /auth/me`; cookie `httpOnly`, `Secure`, `SameSite=Lax`; token CSRF untuk metode pengubah
+- [X] T023 Buat `SessionGuard` global di `apps/api/src/common/guards/session.guard.ts` dan `RolesGuard` di `apps/api/src/common/guards/roles.guard.ts` dengan dekorator `@Roles` dan `@Public` di `apps/api/src/common/decorators/roles.decorator.ts`; rute tanpa dekorator DITOLAK (403)
+- [X] T024 Buat `KelurahanScope` di `apps/api/src/common/guards/kelurahan-scope.ts`: helper yang mengembalikan `kelurahan_id` wajib untuk `pendata_kelurahan` dan melempar 403 bila permintaan menyebut kelurahan lain; dipakai setiap repository yang memuat data warga
+- [X] T025 Implementasikan audit di `apps/api/src/modules/audit/` (`audit.module.ts`, `audit.service.ts` yang menulis dalam transaksi berjalan, `audit.interceptor.ts`, dekorator `@Audit(action, entity)` di `audit.decorator.ts`); `detail` DILARANG memuat NIK, KK, alamat, atau data kesehatan
+- [X] T026 [P] Implementasikan penyimpanan berkas di `apps/api/src/modules/files/` (`storage.interface.ts`, `local-storage.ts`, `files.service.ts`, `files.controller.ts`): nama acak, pemeriksaan tipe dari isi, unduh hanya setelah otorisasi
+- [X] T027 [P] Implementasikan modul wilayah di `apps/api/src/modules/regions/` (`regions.controller.ts`, `regions.repository.ts`): daftar kecamatan/kelurahan dan fungsi `matchByName(name, level)` berbasis `similarity()` `pg_trgm` yang mengembalikan kandidat beserta skor
+- [X] T028 [P] Implementasikan administrasi pengguna di `apps/api/src/modules/users/` (`users.controller.ts`, `users.service.ts`): super_admin dan admin_bpbd membuat/menonaktifkan akun; akun `pendata_kelurahan` wajib tepat satu `kelurahan_id` (FR-029)
 
 ### Orang, tahun anggaran, rujukan SPM
 
-- [ ] T029 Buat skema `persons` di `apps/api/src/db/schema/persons.ts`: `nik_enc bytea nullable`, `nik_hash bytea unik bila terisi`, `nik_last4 char(4) nullable`, `no_nik_reason text nullable`, `full_name text wajib` (indeks trigram), `gender` enum `L | P`, `birth_place`, `birth_date date nullable` (tidak di masa depan), `merged_into_id`; CHECK: tepat satu dari `nik_hash` atau `no_nik_reason` terisi
-- [ ] T030 [P] Buat skema `families` di `apps/api/src/db/schema/families.ts`: `kk_enc bytea`, `kk_hash bytea unik`, `kk_last4`, `head_person_id → persons`
-- [ ] T031 [P] Buat skema `fiscal_years` di `apps/api/src/db/schema/fiscal-years.ts`: `year smallint unik`, `status` enum `terbuka | final | revisi`, `revision_no smallint` (0 saat final pertama), `age_reference_date date` (bawaan 31 Desember tahun itu), `age_bands jsonb` (bawaan balita < 5, anak 5-<18, lansia ≥ 60), `copied_from_id`, `finalized_at`, `finalized_by`
-- [ ] T032 [P] Buat skema `hazard_types` di `apps/api/src/db/schema/hazard-types.ts`: `code`, `name`, `bit` (0-9), `form_order`
-- [ ] T033 [P] Buat skema `form_definitions` di `apps/api/src/db/schema/form-definitions.ts`: `form_code`, `version`, `regulation_ref`, `title`, `layout jsonb`, `effective_from`
-- [ ] T034 Buat migrasi untuk T029-T033 dan fungsi SQL `spm_assert_year_writable(fiscal_year_id)` di `apps/api/src/db/migrations/0002_spm_year_lock.sql` yang melempar galat bila tahun berstatus `final`; fungsi ini dipasang sebagai pemicu pada setiap tabel ber-`fiscal_year_id` di migrasi story terkait
-- [ ] T035 Implementasikan modul orang di `apps/api/src/modules/persons/` (`persons.module.ts`, `persons.repository.ts`, `persons.service.ts`): `findOrCreateByNik` (cari lewat `nik_hash`), `createWithoutNik` (wajib `no_nik_reason`, kembalikan kandidat ganda dari nama + tanggal lahir + keluarga), `findOrCreateFamily` (lewat `kk_hash`)
-- [ ] T036 [P] Definisikan konstanta jenis bencana dan utilitas bitmask di `packages/shared/src/spm/hazards.ts` (`HAZARDS`, `toMask`, `fromMask`, `variationLabel`) dengan uji unit di `packages/shared/src/spm/hazards.spec.ts`; sepuluh kode: `gempa, tsunami, banjir, longsor, gunung_api, gelombang_ekstrim, angin_topan, kekeringan, karhutla, epidemi`
-- [ ] T037 [P] Implementasikan perhitungan kelompok umur di `packages/shared/src/spm/age-group.ts` (`ageGroup(birthDate, referenceDate, bands) → balita | anak | dewasa | lansia`) dengan uji batas (tepat 5, 18, 60 tahun) di `packages/shared/src/spm/age-group.spec.ts`
-- [ ] T038 Implementasikan layanan tahun anggaran dasar di `apps/api/src/modules/spm/fiscal-years/` (`fiscal-years.module.ts`, `fiscal-years.controller.ts`, `fiscal-years.service.ts`, `fiscal-years.repository.ts`): `GET /spm/fiscal-years`, `POST /spm/fiscal-years` (tanpa salin maju), `PATCH /spm/fiscal-years/:fy/settings`; helper `assertWritable(fy)` yang melempar 423
-- [ ] T039 Buat skrip seed di `apps/api/src/db/seed/` (`seed-reference.ts` untuk `hazard_types` dan wilayah contoh, `seed-spm.ts` untuk tahun 2026, tiga kelurahan, akun `pendata_kelurahan`, `operator_bpbd`, `admin_bpbd`); skrip `db:seed`, `db:seed:spm`
+- [X] T029 Buat skema `persons` di `apps/api/src/db/schema/persons.ts`: `nik_enc bytea nullable`, `nik_hash bytea unik bila terisi`, `nik_last4 char(4) nullable`, `no_nik_reason text nullable`, `full_name text wajib` (indeks trigram), `gender` enum `L | P`, `birth_place`, `birth_date date nullable` (tidak di masa depan), `merged_into_id`; CHECK: tepat satu dari `nik_hash` atau `no_nik_reason` terisi
+- [X] T030 [P] Buat skema `families` di `apps/api/src/db/schema/families.ts`: `kk_enc bytea`, `kk_hash bytea unik`, `kk_last4`, `head_person_id → persons`
+- [X] T031 [P] Buat skema `fiscal_years` di `apps/api/src/db/schema/fiscal-years.ts`: `year smallint unik`, `status` enum `terbuka | final | revisi`, `revision_no smallint` (0 saat final pertama), `age_reference_date date` (bawaan 31 Desember tahun itu), `age_bands jsonb` (bawaan balita < 5, anak 5-<18, lansia ≥ 60), `copied_from_id`, `finalized_at`, `finalized_by`
+- [X] T032 [P] Buat skema `hazard_types` di `apps/api/src/db/schema/hazard-types.ts`: `code`, `name`, `bit` (0-9), `form_order`
+- [X] T033 [P] Buat skema `form_definitions` di `apps/api/src/db/schema/form-definitions.ts`: `form_code`, `version`, `regulation_ref`, `title`, `layout jsonb`, `effective_from`
+- [X] T034 Buat migrasi untuk T029-T033 dan fungsi SQL `spm_assert_year_writable(fiscal_year_id)` di `apps/api/src/db/migrations/0002_spm_year_lock.sql` yang melempar galat bila tahun berstatus `final`; fungsi ini dipasang sebagai pemicu pada setiap tabel ber-`fiscal_year_id` di migrasi story terkait
+- [X] T035 Implementasikan modul orang di `apps/api/src/modules/persons/` (`persons.module.ts`, `persons.repository.ts`, `persons.service.ts`): `findOrCreateByNik` (cari lewat `nik_hash`), `createWithoutNik` (wajib `no_nik_reason`, kembalikan kandidat ganda dari nama + tanggal lahir + keluarga), `findOrCreateFamily` (lewat `kk_hash`)
+- [X] T036 [P] Definisikan konstanta jenis bencana dan utilitas bitmask di `packages/shared/src/spm/hazards.ts` (`HAZARDS`, `toMask`, `fromMask`, `variationLabel`) dengan uji unit di `packages/shared/src/spm/hazards.spec.ts`; sepuluh kode: `gempa, tsunami, banjir, longsor, gunung_api, gelombang_ekstrim, angin_topan, kekeringan, karhutla, epidemi`
+- [X] T037 [P] Implementasikan perhitungan kelompok umur di `packages/shared/src/spm/age-group.ts` (`ageGroup(birthDate, referenceDate, bands) → balita | anak | dewasa | lansia`) dengan uji batas (tepat 5, 18, 60 tahun) di `packages/shared/src/spm/age-group.spec.ts`
+- [X] T038 Implementasikan layanan tahun anggaran dasar di `apps/api/src/modules/spm/fiscal-years/` (`fiscal-years.module.ts`, `fiscal-years.controller.ts`, `fiscal-years.service.ts`, `fiscal-years.repository.ts`): `GET /spm/fiscal-years`, `POST /spm/fiscal-years` (tanpa salin maju), `PATCH /spm/fiscal-years/:fy/settings`; helper `assertWritable(fy)` yang melempar 423
+- [X] T039 Buat skrip seed di `apps/api/src/db/seed/` (`seed-reference.ts` untuk `hazard_types` dan wilayah contoh, `seed-spm.ts` untuk tahun 2026, tiga kelurahan, akun `pendata_kelurahan`, `operator_bpbd`, `admin_bpbd`); skrip `db:seed`, `db:seed:spm`
 
 ### Kerangka antarmuka
 
 - [ ] T040 [P] Buat klien API di `apps/web/src/lib/api-client.ts` (fetch + CSRF + pemetaan galat) dan penyedia sesi di `apps/web/src/lib/session.tsx`
 - [ ] T041 [P] Buat kerangka aplikasi di `apps/web/src/app/` (`router.tsx`, `AppLayout.tsx`, `RequireRole.tsx`) dan halaman masuk di `apps/web/src/features/auth/LoginPage.tsx`
 - [ ] T042 [P] Buat komponen dasar aksesibel di `apps/web/src/components/` (`DataTable.tsx`, `FormField.tsx`, `ConfirmDialog.tsx`, `Toast.tsx`, `FiscalYearSwitcher.tsx`), masing-masing satu berkas
-- [ ] T043 Uji integrasi fondasi di `apps/api/test/foundation/` (`auth.int.spec.ts`, `roles-default-deny.int.spec.ts`, `audit-immutable.int.spec.ts`): rute tanpa `@Roles` mengembalikan 403; `UPDATE`/`DELETE` pada `audit_log` ditolak basis data
+- [X] T043 Uji integrasi fondasi di `apps/api/test/foundation/` (`auth.int.spec.ts`, `roles-default-deny.int.spec.ts`, `audit-immutable.int.spec.ts`): rute tanpa `@Roles` mengembalikan 403; `UPDATE`/`DELETE` pada `audit_log` ditolak basis data
 
 **Checkpoint**: fondasi siap; user story dapat dimulai
 

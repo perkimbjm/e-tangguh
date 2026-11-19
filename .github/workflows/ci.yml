@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: etangguh
+          POSTGRES_PASSWORD: etangguh
+          POSTGRES_DB: etangguh_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U etangguh -d etangguh_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgres://etangguh:etangguh@localhost:5432/etangguh_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Lint (termasuk batas 400 baris per berkas)
+        run: pnpm lint
+      - name: Build
+        run: pnpm build
+      - name: Uji unit
+        run: pnpm test
+      - name: Uji integrasi
+        run: pnpm test:integration

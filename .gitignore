@@ -149,3 +149,9 @@ vite.config.ts.timestamp-*
 # Turbo Repo
 .turbo
 .claude
+# e-Tangguh
+storage/
+playwright-report/
+test-results/
+*.xlsx
+!specs/**/*.xlsx
