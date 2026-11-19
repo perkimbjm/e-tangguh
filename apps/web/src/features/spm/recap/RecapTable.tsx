@@ -19,18 +19,30 @@ export function RecapTable({ table, onCell }: Props) {
   let no = 0;
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-sm">
       <table className="min-w-full border-collapse text-sm">
-        <caption className="sr-only">Rekapitulasi Form {table.formCode} tahun anggaran {table.year}</caption>
+        <caption className="sr-only">
+          Rekapitulasi Form {table.formCode} tahun anggaran {table.year}
+        </caption>
         <thead className="bg-slate-50 text-xs">
           <tr>
             {labelCols.map((l) => (
-              <th key={l} rowSpan={2} scope="col" className="border border-slate-200 px-2 py-1 text-left">
+              <th
+                key={l}
+                rowSpan={2}
+                scope="col"
+                className="border border-slate-200 px-2 py-1 text-left"
+              >
                 {l}
               </th>
             ))}
             {groups.map((g, i) => (
-              <th key={i} colSpan={g.span} scope="colgroup" className="border border-slate-200 px-2 py-1">
+              <th
+                key={i}
+                colSpan={g.span}
+                scope="colgroup"
+                className="border border-slate-200 px-2 py-1"
+              >
                 {g.label}
               </th>
             ))}
@@ -38,7 +50,8 @@ export function RecapTable({ table, onCell }: Props) {
           <tr>
             {table.columns.map((c) => (
               <th key={c.key} scope="col" className="border border-slate-200 px-2 py-1 font-medium">
-                {c.group ? c.label : ''} <span className="block text-[10px] text-slate-500">({c.number})</span>
+                {c.group ? c.label : ''}{' '}
+                <span className="block text-[10px] text-slate-500">({c.number})</span>
               </th>
             ))}
           </tr>
@@ -49,24 +62,42 @@ export function RecapTable({ table, onCell }: Props) {
             if (r.kind === 'data') no++;
             return (
               <tr key={r.key} className={strong ? 'bg-sky-50 font-semibold' : 'hover:bg-slate-50'}>
-                <td className="border border-slate-200 px-2 py-1 tabular-nums">{r.kind === 'data' ? no : ''}</td>
+                <td className="border border-slate-200 px-2 py-1 tabular-nums">
+                  {r.kind === 'data' ? no : ''}
+                </td>
                 {byHazard ? (
-                  <th scope="row" className="border border-slate-200 px-2 py-1 text-left font-medium">
+                  <th
+                    scope="row"
+                    className="border border-slate-200 px-2 py-1 text-left font-medium"
+                  >
                     {r.label}
                   </th>
                 ) : (
                   <>
-                    <td className="border border-slate-200 px-2 py-1">{r.kind === 'total' ? 'Jumlah kota' : r.group}</td>
-                    <th scope="row" className="border border-slate-200 px-2 py-1 text-left font-medium">
+                    <td className="border border-slate-200 px-2 py-1">
+                      {r.kind === 'total' ? 'Jumlah kota' : r.group}
+                    </td>
+                    <th
+                      scope="row"
+                      className="border border-slate-200 px-2 py-1 text-left font-medium"
+                    >
                       {r.kind === 'data' ? r.label : r.kind === 'subtotal' ? 'Jumlah' : ''}
                     </th>
                   </>
                 )}
                 {table.columns.map((c) => {
                   const cell = r.cells[c.key];
-                  if (!cell || !('cellKey' in cell)) return <td key={c.key} className="border border-slate-200 px-2 py-1 text-xs">{cell && 'text' in cell ? cell.text : ''}</td>;
+                  if (!cell || !('cellKey' in cell))
+                    return (
+                      <td key={c.key} className="border border-slate-200 px-2 py-1 text-xs">
+                        {cell && 'text' in cell ? cell.text : ''}
+                      </td>
+                    );
                   return (
-                    <td key={c.key} className="border border-slate-200 px-1 py-0.5 text-right tabular-nums">
+                    <td
+                      key={c.key}
+                      className="border border-slate-200 px-1 py-0.5 text-right tabular-nums"
+                    >
                       {cell.value > 0 ? (
                         <button
                           type="button"

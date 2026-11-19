@@ -11,7 +11,15 @@ interface Props {
 }
 
 /** Dialog konfirmasi berbasis `<dialog>` bawaan (fokus terkunci, Esc menutup). */
-export function ConfirmDialog({ open, title, children, confirmLabel = 'Ya, lanjutkan', danger, onConfirm, onCancel }: Props) {
+export function ConfirmDialog({
+  open,
+  title,
+  children,
+  confirmLabel = 'Ya, lanjutkan',
+  danger,
+  onConfirm,
+  onCancel,
+}: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const d = ref.current;
@@ -36,7 +44,11 @@ export function ConfirmDialog({ open, title, children, confirmLabel = 'Ya, lanju
         </h2>
         <div className="mt-2 text-sm text-slate-700">{children}</div>
         <div className="mt-5 flex justify-end gap-2">
-          <button type="button" onClick={onCancel} className="rounded-md border border-slate-300 px-3 py-2 text-sm">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+          >
             Batal
           </button>
           <button

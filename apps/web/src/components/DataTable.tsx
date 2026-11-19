@@ -17,15 +17,26 @@ interface Props<T> {
 }
 
 /** Tabel data aksesibel: caption, `scope` kepala kolom, gulir horizontal di layar kecil. */
-export function DataTable<T>({ caption, columns, rows, rowKey, empty = 'Belum ada data', loading }: Props<T>) {
+export function DataTable<T>({
+  caption,
+  columns,
+  rows,
+  rowKey,
+  empty = 'Belum ada data',
+  loading,
+}: Props<T>) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-sm">
       <table className="min-w-full divide-y divide-slate-200 text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead className="bg-slate-50">
           <tr>
             {columns.map((c) => (
-              <th key={c.key} scope="col" className={`px-3 py-2 font-semibold text-slate-700 ${c.align === 'right' ? 'text-right' : 'text-left'}`}>
+              <th
+                key={c.key}
+                scope="col"
+                className={`px-3 py-2 font-semibold text-slate-700 ${c.align === 'right' ? 'text-right' : 'text-left'}`}
+              >
                 {c.header}
               </th>
             ))}
@@ -34,7 +45,11 @@ export function DataTable<T>({ caption, columns, rows, rowKey, empty = 'Belum ad
         <tbody className="divide-y divide-slate-100">
           {loading ? (
             <tr>
-              <td colSpan={columns.length} className="px-3 py-6 text-center text-slate-600" role="status">
+              <td
+                colSpan={columns.length}
+                className="px-3 py-6 text-center text-slate-600"
+                role="status"
+              >
                 Memuat…
               </td>
             </tr>
@@ -48,7 +63,10 @@ export function DataTable<T>({ caption, columns, rows, rowKey, empty = 'Belum ad
             rows.map((r) => (
               <tr key={rowKey(r)} className="hover:bg-slate-50">
                 {columns.map((c) => (
-                  <td key={c.key} className={`px-3 py-2 ${c.align === 'right' ? 'text-right tabular-nums' : ''}`}>
+                  <td
+                    key={c.key}
+                    className={`px-3 py-2 ${c.align === 'right' ? 'text-right tabular-nums' : ''}`}
+                  >
                     {c.cell(r)}
                   </td>
                 ))}

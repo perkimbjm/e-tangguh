@@ -28,7 +28,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       <div aria-live="polite" className="fixed bottom-4 right-4 z-50 flex w-80 flex-col gap-2">
         {items.map((t) => (
-          <div key={t.id} role={t.tone === 'galat' ? 'alert' : 'status'} className={`rounded-md border px-4 py-3 text-sm shadow ${TONE[t.tone]}`}>
+          <div
+            key={t.id}
+            role={t.tone === 'galat' ? 'alert' : 'status'}
+            className={`rounded-md border px-4 py-3 text-sm shadow ${TONE[t.tone]}`}
+          >
             {t.message}
           </div>
         ))}

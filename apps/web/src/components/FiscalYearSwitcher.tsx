@@ -3,7 +3,11 @@ import { useId } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useFiscalYears } from '../lib/fiscal-year';
 
-const STATUS_LABEL: Record<FiscalYearDto['status'], string> = { terbuka: 'terbuka', final: 'final (terkunci)', revisi: 'revisi' };
+const STATUS_LABEL: Record<FiscalYearDto['status'], string> = {
+  terbuka: 'terbuka',
+  final: 'final (terkunci)',
+  revisi: 'revisi',
+};
 
 /** Pemilih tahun anggaran; nilai disimpan pada parameter URL `ta`. */
 export function FiscalYearSwitcher() {

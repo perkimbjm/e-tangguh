@@ -17,7 +17,13 @@ const HIDDEN: Record<NonNullable<Props['from']>, string> = {
 };
 
 /** Memunculkan isi saat masuk layar. Konten tetap ada di DOM sehingga terbaca tanpa animasi. */
-export function Reveal({ children, as: Tag = 'div', delay = 0, className = '', from = 'bawah' }: Props) {
+export function Reveal({
+  children,
+  as: Tag = 'div',
+  delay = 0,
+  className = '',
+  from = 'bawah',
+}: Props) {
   const [ref, inView] = useInView<HTMLElement>({ threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
   const style: CSSProperties = { transitionDelay: `${delay}ms` };
   return (

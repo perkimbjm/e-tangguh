@@ -14,7 +14,10 @@ export function LandingPage() {
   }, []);
   return (
     <div className="bg-sungai-950 font-sans antialiased">
-      <a href="#cerita" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sungai-950">
+      <a
+        href="#cerita"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sungai-950"
+      >
         Lompat ke konten
       </a>
       <LandingNav />

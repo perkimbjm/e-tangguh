@@ -57,7 +57,7 @@ export function AffectedTable({
       {!locked && (
         <form
           onSubmit={add}
-          className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 bg-white p-3 text-sm"
+          className="flex flex-wrap items-end gap-2 rounded-2xl border border-slate-200/80 bg-white shadow-sm p-3 text-sm"
         >
           <label>
             Nama
@@ -119,7 +119,7 @@ export function AffectedTable({
           <button
             type="submit"
             disabled={m.addAffected.isPending}
-            className="rounded-md bg-sky-800 px-3 py-2 font-semibold text-white"
+            className="rounded-md bg-sungai-800 px-3 py-2 font-semibold text-white"
           >
             Tambah
           </button>

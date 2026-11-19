@@ -9,6 +9,9 @@ import { CopyForwardService } from './fiscal-years/copy-forward.service';
 import { FinalizeService } from './fiscal-years/finalize.service';
 import { FiscalYearsController } from './fiscal-years/fiscal-years.controller';
 import { RevisionService } from './fiscal-years/revision.service';
+import { DashboardController } from './dashboard/dashboard.controller';
+import { DashboardService } from './dashboard/dashboard.service';
+import { OfficerCardsService } from './officers/officer-cards.service';
 import { InventoryProvider } from './exports/providers/inventory.provider';
 import { EquipmentController } from './inventory/equipment.controller';
 import { InventoryRepository } from './inventory/inventory.repository';
@@ -69,6 +72,7 @@ import { ResidentsService } from './residents/residents.service';
     EventsController,
     EquipmentController,
     LogisticsController,
+    DashboardController,
   ],
   providers: [
     HazardZonesRepository,
@@ -110,6 +114,8 @@ import { ResidentsService } from './residents/residents.service';
     FinalizeService,
     RevisionService,
     CopyForwardService,
+    DashboardService,
+    OfficerCardsService,
     { provide: VolunteerSource, useClass: UnavailableVolunteerSource },
   ],
   exports: [HazardZonesService, ResidentsRepository, RecapService, ExportsService],

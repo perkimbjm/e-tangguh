@@ -2,3 +2,4 @@
 export * from './auth/roles';
 export * from './auth/schemas';
 export * from './spm';
+export * from './attributes';

@@ -32,7 +32,10 @@ export function useResidents(year: number | null, filters: ResidentFilters) {
     enabled: year !== null,
     initialPageParam: undefined as string | undefined,
     queryFn: ({ pageParam, signal }) =>
-      api.get<Paged<ResidentListItem>>(`/spm/${year}/residents${qs({ ...filters, cursor: pageParam, limit: 50 })}`, signal),
+      api.get<Paged<ResidentListItem>>(
+        `/spm/${year}/residents${qs({ ...filters, cursor: pageParam, limit: 50 })}`,
+        signal,
+      ),
     getNextPageParam: (last) => last.nextCursor ?? undefined,
   });
 }
@@ -60,7 +63,11 @@ export function useCreateResident(year: number | null) {
   const invalidate = useInvalidate();
   return useMutation({
     mutationFn: (body: CreateResidentRequest) =>
-      api.post<{ id: string; approvalStatus: ApprovalStatus; duplicateCandidates: { id: string; fullName: string; score: number }[] }>(`/spm/${year}/residents`, body),
+      api.post<{
+        id: string;
+        approvalStatus: ApprovalStatus;
+        duplicateCandidates: { id: string; fullName: string; score: number }[];
+      }>(`/spm/${year}/residents`, body),
     onSuccess: invalidate,
   });
 }
@@ -68,7 +75,8 @@ export function useCreateResident(year: number | null) {
 export function useUpdateResident(year: number | null) {
   const invalidate = useInvalidate();
   return useMutation({
-    mutationFn: ({ id, ...body }: { id: string; rowVersion: number } & Record<string, unknown>) => api.patch(`/spm/${year}/residents/${id}`, body),
+    mutationFn: ({ id, ...body }: { id: string; rowVersion: number } & Record<string, unknown>) =>
+      api.patch(`/spm/${year}/residents/${id}`, body),
     onSuccess: invalidate,
   });
 }
@@ -76,7 +84,15 @@ export function useUpdateResident(year: number | null) {
 export function useDeactivateResident(year: number | null) {
   const invalidate = useInvalidate();
   return useMutation({
-    mutationFn: ({ id, ...body }: { id: string; reason: string; date: string; rowVersion: number }) => api.post(`/spm/${year}/residents/${id}/deactivate`, body),
+    mutationFn: ({
+      id,
+      ...body
+    }: {
+      id: string;
+      reason: string;
+      date: string;
+      rowVersion: number;
+    }) => api.post(`/spm/${year}/residents/${id}/deactivate`, body),
     onSuccess: invalidate,
   });
 }
@@ -84,7 +100,8 @@ export function useDeactivateResident(year: number | null) {
 export function useApprove(year: number | null) {
   const invalidate = useInvalidate();
   return useMutation({
-    mutationFn: (body: { batchId?: string; kelurahanId?: string; ids?: string[] }) => api.post<{ approved: number }>(`/spm/${year}/residents/approve`, body),
+    mutationFn: (body: { batchId?: string; kelurahanId?: string; ids?: string[] }) =>
+      api.post<{ approved: number }>(`/spm/${year}/residents/approve`, body),
     onSuccess: invalidate,
   });
 }
@@ -92,7 +109,8 @@ export function useApprove(year: number | null) {
 export function useReturn(year: number | null) {
   const invalidate = useInvalidate();
   return useMutation({
-    mutationFn: (body: { ids: string[]; note: string }) => api.post<{ returned: number }>(`/spm/${year}/residents/return`, body),
+    mutationFn: (body: { ids: string[]; note: string }) =>
+      api.post<{ returned: number }>(`/spm/${year}/residents/return`, body),
     onSuccess: invalidate,
   });
 }
@@ -101,6 +119,9 @@ export function useCompleteness(year: number | null) {
   return useQuery({
     queryKey: ['completeness', year],
     enabled: year !== null,
-    queryFn: ({ signal }) => api.get<{ items: CompletenessRow[] }>(`/spm/${year}/completeness`, signal).then((r) => r.items),
+    queryFn: ({ signal }) =>
+      api
+        .get<{ items: CompletenessRow[] }>(`/spm/${year}/completeness`, signal)
+        .then((r) => r.items),
   });
 }

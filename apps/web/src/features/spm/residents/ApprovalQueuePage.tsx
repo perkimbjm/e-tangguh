@@ -32,14 +32,18 @@ export function ApprovalQueuePage() {
   if (!year) return <p role="status">Belum ada tahun anggaran.</p>;
   return (
     <section aria-labelledby="judul-setuju" className="space-y-4">
-      <h1 id="judul-setuju" className="text-xl font-semibold">
+      <h1 id="judul-setuju" className="text-2xl font-bold tracking-tight text-slate-900">
         Persetujuan data warga · {year}
       </h1>
       {locked && <p className="rounded-md bg-slate-100 p-3 text-sm">Tahun anggaran sudah final.</p>}
-      <div className="flex flex-wrap items-end gap-3 rounded-lg border border-slate-200 bg-white p-4">
+      <div className="flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4">
         <label className="text-sm">
           Kelurahan
-          <select value={kel} onChange={(e) => setKel(e.target.value)} className="mt-1 block rounded-md border border-slate-300 px-2 py-1.5">
+          <select
+            value={kel}
+            onChange={(e) => setKel(e.target.value)}
+            className="mt-1 block rounded-md border border-slate-300 px-2 py-1.5"
+          >
             <option value="">Semua</option>
             {kelurahan.map((k) => (
               <option key={k.id} value={k.id}>
@@ -51,7 +55,12 @@ export function ApprovalQueuePage() {
         <button
           type="button"
           disabled={locked || !kel || approve.isPending}
-          onClick={() => approve.mutate({ kelurahanId: kel }, { onSuccess: (r) => toast(`${r.approved} baris disetujui`, 'sukses'), onError: fail })}
+          onClick={() =>
+            approve.mutate(
+              { kelurahanId: kel },
+              { onSuccess: (r) => toast(`${r.approved} baris disetujui`, 'sukses'), onError: fail },
+            )
+          }
           className="rounded-md bg-emerald-700 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
         >
           Setujui semua di kelurahan ini
@@ -77,7 +86,11 @@ export function ApprovalQueuePage() {
         </button>
         <label className="min-w-[240px] flex-1 text-sm">
           Catatan pengembalian
-          <input value={note} onChange={(e) => setNote(e.target.value)} className="mt-1 block w-full rounded-md border border-slate-300 px-2 py-1.5" />
+          <input
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-slate-300 px-2 py-1.5"
+          />
         </label>
         <button
           type="button"
@@ -100,13 +113,27 @@ export function ApprovalQueuePage() {
           Kembalikan terpilih
         </button>
       </div>
-      <ResidentsTable rows={rows} loading={query.isLoading} onOpen={setOpenId} selectable={{ selected, toggle }} />
+      <ResidentsTable
+        rows={rows}
+        loading={query.isLoading}
+        onOpen={setOpenId}
+        selectable={{ selected, toggle }}
+      />
       {query.hasNextPage && (
-        <button type="button" onClick={() => void query.fetchNextPage()} className="rounded-md border border-slate-300 px-4 py-2 text-sm">
+        <button
+          type="button"
+          onClick={() => void query.fetchNextPage()}
+          className="rounded-md border border-slate-300 px-4 py-2 text-sm"
+        >
           Muat lebih banyak
         </button>
       )}
-      <ResidentDetailDrawer year={year} id={openId} locked={locked} onClose={() => setOpenId(null)} />
+      <ResidentDetailDrawer
+        year={year}
+        id={openId}
+        locked={locked}
+        onClose={() => setOpenId(null)}
+      />
     </section>
   );
 }

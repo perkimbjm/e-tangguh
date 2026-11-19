@@ -3,7 +3,9 @@ import { useEffect, useRef, useState, type RefObject } from 'react';
 /** `true` bila pengguna meminta gerak dikurangi (prefers-reduced-motion). */
 export function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -15,7 +17,9 @@ export function useReducedMotion(): boolean {
 }
 
 /** `true` setelah elemen pertama kali masuk layar (sekali saja). */
-export function useInView<T extends Element>(options: IntersectionObserverInit = { threshold: 0.2 }): [RefObject<T>, boolean] {
+export function useInView<T extends Element>(
+  options: IntersectionObserverInit = { threshold: 0.2 },
+): [RefObject<T>, boolean] {
   const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
   const { threshold, rootMargin } = options;
@@ -26,12 +30,15 @@ export function useInView<T extends Element>(options: IntersectionObserverInit =
       setInView(true);
       return;
     }
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry?.isIntersecting) {
-        setInView(true);
-        io.disconnect();
-      }
-    }, { threshold, rootMargin });
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold, rootMargin },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, [inView, threshold, rootMargin]);
@@ -69,7 +76,9 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
  * bagian bawah meninggalkan atas layar. `pin`: selama bagian lengket memenuhi layar. `leave`:
  * dari bagian atas di atas layar sampai seluruh bagian tergulir lewat.
  */
-export function useSectionProgress<T extends HTMLElement>(mode: 'enter' | 'pin' | 'leave' = 'enter'): [RefObject<T>, number] {
+export function useSectionProgress<T extends HTMLElement>(
+  mode: 'enter' | 'pin' | 'leave' = 'enter',
+): [RefObject<T>, number] {
   const ref = useRef<T>(null);
   const [progress, setProgress] = useState(0);
   useScrollFrame(() => {
@@ -126,7 +135,9 @@ export function useCountUp(target: number, active: boolean, durationMs = 1400): 
 }
 
 /** Indeks langkah yang sedang berada di tengah layar. */
-export function useActiveStep(count: number): [(index: number) => (el: HTMLElement | null) => void, number] {
+export function useActiveStep(
+  count: number,
+): [(index: number) => (el: HTMLElement | null) => void, number] {
   const [active, setActive] = useState(0);
   const elements = useRef<(HTMLElement | null)[]>([]);
   useEffect(() => {

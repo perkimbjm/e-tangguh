@@ -23,10 +23,24 @@ export function StoryVisual({ step }: { step: number }) {
         {/* Batas kelurahan */}
         <g style={{ opacity: asBars ? 0 : 1, transition: `opacity 600ms ${EASE}` }}>
           {[1, 2, 3, 4].map((i) => (
-            <line key={i} x1={30 + i * 68} x2={30 + i * 68} y1={30} y2={270} className="stroke-white/10" strokeDasharray="3 5" />
+            <line
+              key={i}
+              x1={30 + i * 68}
+              x2={30 + i * 68}
+              y1={30}
+              y2={270}
+              className="stroke-white/10"
+              strokeDasharray="3 5"
+            />
           ))}
           {ZONE_LABELS.map((l, i) => (
-            <text key={l} x={64 + i * 68} y={24} textAnchor="middle" className="fill-sungai-300/70 text-[9px] font-semibold">
+            <text
+              key={l}
+              x={64 + i * 68}
+              y={24}
+              textAnchor="middle"
+              className="fill-sungai-300/70 text-[9px] font-semibold"
+            >
               {l}
             </text>
           ))}
@@ -34,7 +48,12 @@ export function StoryVisual({ step }: { step: number }) {
 
         {/* Sungai dan kawasan rawan */}
         <g style={{ opacity: step === 1 ? 1 : 0, transition: `opacity 700ms ${EASE}` }}>
-          <path d={river} className="fill-none stroke-sungai-500/25" strokeWidth={72} strokeLinecap="round" />
+          <path
+            d={river}
+            className="fill-none stroke-sungai-500/25"
+            strokeWidth={72}
+            strokeLinecap="round"
+          />
           <path
             d={river}
             className="fill-none stroke-sungai-300"
@@ -42,19 +61,37 @@ export function StoryVisual({ step }: { step: number }) {
             strokeLinecap="round"
             pathLength={1}
             strokeDasharray={1}
-            style={{ strokeDashoffset: step >= 1 ? 0 : 1, transition: `stroke-dashoffset 1400ms ${EASE}` }}
+            style={{
+              strokeDashoffset: step >= 1 ? 0 : 1,
+              transition: `stroke-dashoffset 1400ms ${EASE}`,
+            }}
           />
         </g>
 
         {/* Sumbu rekap */}
-        <g style={{ opacity: step === 2 ? 1 : 0, transition: `opacity 600ms ${EASE} ${step === 2 ? '500ms' : '0ms'}` }}>
+        <g
+          style={{
+            opacity: step === 2 ? 1 : 0,
+            transition: `opacity 600ms ${EASE} ${step === 2 ? '500ms' : '0ms'}`,
+          }}
+        >
           <line x1={24} x2={376} y1={262} y2={262} className="stroke-white/30" />
           {counts.map((c, i) => (
             <g key={i}>
-              <text x={62 + i * 70} y={278} textAnchor="middle" className="fill-sungai-100 text-[9px] font-semibold">
+              <text
+                x={62 + i * 70}
+                y={278}
+                textAnchor="middle"
+                className="fill-sungai-100 text-[9px] font-semibold"
+              >
                 {ZONE_LABELS[i]}
               </text>
-              <text x={62 + i * 70} y={250 - Math.ceil(c.total / 3) * 12 - 4} textAnchor="middle" className="fill-senja-300 text-[12px] font-bold">
+              <text
+                x={62 + i * 70}
+                y={250 - Math.ceil(c.total / 3) * 12 - 4}
+                textAnchor="middle"
+                className="fill-senja-300 text-[12px] font-bold"
+              >
                 {c.rawan}/{c.total}
               </text>
             </g>
@@ -98,9 +135,13 @@ function FormCard({ visible }: { visible: boolean }) {
     >
       <div className="flex items-center justify-between">
         <p className="text-xs font-bold uppercase tracking-wider text-sungai-700">Form 5.A.3</p>
-        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">✓ Siap ekspor</span>
+        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+          ✓ Siap ekspor
+        </span>
       </div>
-      <p className="mt-1 text-sm font-bold leading-snug">Rekapitulasi warga di kawasan rawan bencana</p>
+      <p className="mt-1 text-sm font-bold leading-snug">
+        Rekapitulasi warga di kawasan rawan bencana
+      </p>
       <div className="mt-3 grid grid-cols-[1.4fr_repeat(3,1fr)] gap-px overflow-hidden rounded-md bg-slate-200 text-[10px]">
         {['Kelurahan', 'Variasi', 'KK', 'Jiwa'].map((h) => (
           <div key={h} className="bg-sungai-50 px-2 py-1 font-bold">

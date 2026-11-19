@@ -22,7 +22,17 @@ export function useFiscalYearMutations() {
   return {
     create: useMutation({
       mutationFn: (b: { year: number; copyFrom?: number }) =>
-        api.post<FiscalYearDto & { copied?: { hazardZones: number; residents: number; officers: number; equipment: number; logistics: number } }>('/spm/fiscal-years', b),
+        api.post<
+          FiscalYearDto & {
+            copied?: {
+              hazardZones: number;
+              residents: number;
+              officers: number;
+              equipment: number;
+              logistics: number;
+            };
+          }
+        >('/spm/fiscal-years', b),
       onSuccess: done,
     }),
     finalize: useMutation({

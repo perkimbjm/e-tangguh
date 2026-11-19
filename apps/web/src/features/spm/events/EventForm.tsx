@@ -106,7 +106,7 @@ export function EventForm({ year, onDone }: { year: number; onDone(id: string): 
         <button
           type="submit"
           disabled={create.isPending}
-          className="rounded-md bg-sky-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+          className="rounded-md bg-sungai-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
         >
           Simpan kejadian
         </button>

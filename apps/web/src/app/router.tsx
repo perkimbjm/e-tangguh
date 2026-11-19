@@ -9,6 +9,8 @@ import { EventDetailPage } from '../features/spm/events/EventDetailPage';
 import { EventsPage } from '../features/spm/events/EventsPage';
 import { InventoryPage } from '../features/spm/inventory/InventoryPage';
 import { FiscalYearsPage } from '../features/spm/fiscal-years/FiscalYearsPage';
+import { OfficerComparePage } from '../features/spm/officers/OfficerComparePage';
+import { OfficerDetailPage } from '../features/spm/officers/OfficerDetailPage';
 import { OfficersPage } from '../features/spm/officers/OfficersPage';
 import { HazardZonesPage } from '../features/spm/hazard-zones/HazardZonesPage';
 import { ImportPage } from '../features/spm/imports/ImportPage';
@@ -37,6 +39,22 @@ export const router = createBrowserRouter([
       { path: 'kawasan-rawan', element: <HazardZonesPage /> },
       { path: 'rekap', element: <RecapPage /> },
       { path: 'ekspor', element: <ExportsPage /> },
+      {
+        path: 'petugas/bandingkan',
+        element: (
+          <RequireRole roles={BPBD_ROLES}>
+            <OfficerComparePage />
+          </RequireRole>
+        ),
+      },
+      {
+        path: 'petugas/:id',
+        element: (
+          <RequireRole roles={BPBD_ROLES}>
+            <OfficerDetailPage />
+          </RequireRole>
+        ),
+      },
       {
         path: 'petugas',
         element: (

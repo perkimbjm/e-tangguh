@@ -21,10 +21,14 @@ export function RecapPage() {
   return (
     <section aria-labelledby="judul-rekap" className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 id="judul-rekap" className="text-xl font-semibold">
+        <h1 id="judul-rekap" className="text-2xl font-bold tracking-tight text-slate-900">
           Rekapitulasi · {year}
         </h1>
-        <div role="tablist" aria-label="Pilih formulir" className="flex gap-1 rounded-lg bg-slate-100 p-1">
+        <div
+          role="tablist"
+          aria-label="Pilih formulir"
+          className="flex gap-1 rounded-lg bg-slate-100 p-1"
+        >
           {FORMS.map((f) => (
             <button
               key={f.code}
@@ -43,9 +47,16 @@ export function RecapPage() {
           <ExportButton year={year} formCode={form} format="pdf" />
         </div>
       </div>
-      <p className="text-sm text-slate-700">Angka dihitung otomatis dari data rincian. Klik angka untuk melihat warga, KK, atau kelurahan penyusunnya.</p>
+      <p className="text-sm text-slate-700">
+        Angka dihitung otomatis dari data rincian. Klik angka untuk melihat warga, KK, atau
+        kelurahan penyusunnya.
+      </p>
       {isLoading && <p role="status">Menghitung…</p>}
-      {error && <p role="alert" className="text-red-700">{(error as Error).message}</p>}
+      {error && (
+        <p role="alert" className="text-red-700">
+          {(error as Error).message}
+        </p>
+      )}
       {data && (
         <>
           <RecapTable table={data} onCell={(key, label) => setCell({ key, label })} />
@@ -53,11 +64,19 @@ export function RecapPage() {
             {data.notes.map((n) => (
               <li key={n}>{n}</li>
             ))}
-            {data.rows.some((r) => Object.values(r.cells).some((c) => 'pending' in c && c.pending)) && <li>Tanda * = sumber data belum tersedia.</li>}
+            {data.rows.some((r) =>
+              Object.values(r.cells).some((c) => 'pending' in c && c.pending),
+            ) && <li>Tanda * = sumber data belum tersedia.</li>}
           </ul>
         </>
       )}
-      <CellDrilldownDrawer year={year} formCode={form} cellKey={cell?.key ?? null} label={cell?.label ?? ''} onClose={() => setCell(null)} />
+      <CellDrilldownDrawer
+        year={year}
+        formCode={form}
+        cellKey={cell?.key ?? null}
+        label={cell?.label ?? ''}
+        onClose={() => setCell(null)}
+      />
     </section>
   );
 }

@@ -27,7 +27,10 @@ export function LandingNav() {
           <ul className="flex gap-6 text-sm text-sungai-100">
             {LINKS.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="rounded hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-senja-300">
+                <a
+                  href={l.href}
+                  className="rounded hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-senja-300"
+                >
                   {l.label}
                 </a>
               </li>
@@ -41,7 +44,11 @@ export function LandingNav() {
           Masuk
         </Link>
       </div>
-      <div aria-hidden="true" className="h-0.5 origin-left bg-senja-400" style={{ transform: `scaleX(${progress})` }} />
+      <div
+        aria-hidden="true"
+        className="h-0.5 origin-left bg-senja-400"
+        style={{ transform: `scaleX(${progress})` }}
+      />
     </header>
   );
 }
@@ -49,9 +56,22 @@ export function LandingNav() {
 function Logo() {
   return (
     <svg viewBox="0 0 32 32" className="h-7 w-7" aria-hidden="true">
-      <path d="M16 3 L28 9 V17 C28 23.5 22.5 28 16 30 C9.5 28 4 23.5 4 17 V9 Z" className="fill-sungai-500" />
-      <path d="M8 19 C11 16.5 13 21.5 16 19 S21 16.5 24 19" className="fill-none stroke-white" strokeWidth="2" strokeLinecap="round" />
-      <path d="M8 23 C11 20.5 13 25.5 16 23 S21 20.5 24 23" className="fill-none stroke-senja-300" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M16 3 L28 9 V17 C28 23.5 22.5 28 16 30 C9.5 28 4 23.5 4 17 V9 Z"
+        className="fill-sungai-500"
+      />
+      <path
+        d="M8 19 C11 16.5 13 21.5 16 19 S21 16.5 24 19"
+        className="fill-none stroke-white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M8 23 C11 20.5 13 25.5 16 23 S21 20.5 24 23"
+        className="fill-none stroke-senja-300"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

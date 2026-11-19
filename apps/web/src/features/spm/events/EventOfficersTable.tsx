@@ -29,7 +29,7 @@ export function EventOfficersTable({
         Petugas aktif
       </h2>
       {!locked && (
-        <div className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 bg-white p-3 text-sm">
+        <div className="flex flex-wrap items-end gap-2 rounded-2xl border border-slate-200/80 bg-white shadow-sm p-3 text-sm">
           <label>
             Petugas (tercatat tahun ini)
             <select
@@ -61,7 +61,7 @@ export function EventOfficersTable({
                 { onSuccess: () => setPick(''), onError: fail },
               );
             }}
-            className="rounded-md bg-sky-800 px-3 py-2 font-semibold text-white disabled:opacity-50"
+            className="rounded-md bg-sungai-800 px-3 py-2 font-semibold text-white disabled:opacity-50"
           >
             Tambahkan
           </button>

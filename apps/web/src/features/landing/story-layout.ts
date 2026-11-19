@@ -19,7 +19,8 @@ export function riverY(x: number): number {
 
 export function riverPath(): string {
   const pts: string[] = [];
-  for (let x = 20; x <= 380; x += 10) pts.push(`${x === 20 ? 'M' : 'L'}${x} ${riverY(x).toFixed(1)}`);
+  for (let x = 20; x <= 380; x += 10)
+    pts.push(`${x === 20 ? 'M' : 'L'}${x} ${riverY(x).toFixed(1)}`);
   return pts.join(' ');
 }
 

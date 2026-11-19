@@ -10,7 +10,10 @@ const STAT = [
 
 export function ImportPreview({ preview, year }: { preview: Preview; year: number }) {
   return (
-    <section aria-labelledby="judul-pratinjau" className="space-y-3 rounded-lg border border-slate-200 bg-white p-4">
+    <section
+      aria-labelledby="judul-pratinjau"
+      className="space-y-3 rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4"
+    >
       <h2 id="judul-pratinjau" className="font-semibold">
         Pratinjau Form {preview.formCode} · {preview.rowsTotal} baris · status {preview.status}
       </h2>
@@ -24,7 +27,9 @@ export function ImportPreview({ preview, year }: { preview: Preview; year: numbe
       </dl>
       {preview.warnings.length > 0 && (
         <details className="rounded-md bg-amber-50 p-3 text-sm">
-          <summary className="cursor-pointer font-medium text-amber-900">{preview.warnings.length} peringatan (tidak menolak baris)</summary>
+          <summary className="cursor-pointer font-medium text-amber-900">
+            {preview.warnings.length} peringatan (tidak menolak baris)
+          </summary>
           <ul className="mt-2 list-disc pl-5">
             {preview.warnings.map((w, i) => (
               <li key={i}>{w}</li>
@@ -33,7 +38,10 @@ export function ImportPreview({ preview, year }: { preview: Preview; year: numbe
         </details>
       )}
       {preview.rowsRejected > 0 && (
-        <a href={errorsUrl(year, preview.id)} className="inline-block text-sm text-sky-800 underline">
+        <a
+          href={errorsUrl(year, preview.id)}
+          className="inline-block text-sm text-sky-800 underline"
+        >
           Unduh daftar baris ditolak (.xlsx)
         </a>
       )}

@@ -18,7 +18,11 @@ export abstract class VolunteerSource {
 export class UnavailableVolunteerSource extends VolunteerSource {
   getVerified(): Promise<VerifiedVolunteer> {
     return Promise.reject(
-      new ApiException(501, 'MODUL_RELAWAN_BELUM_TERSEDIA', 'Modul relawan belum tersedia. Tambahkan petugas secara manual atau lewat impor Form 5.A.5.'),
+      new ApiException(
+        501,
+        'MODUL_RELAWAN_BELUM_TERSEDIA',
+        'Modul relawan belum tersedia. Tambahkan petugas secara manual atau lewat impor Form 5.A.5.',
+      ),
     );
   }
 }

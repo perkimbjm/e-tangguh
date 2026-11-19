@@ -17,11 +17,20 @@ export function HazardZonesPage() {
 
   return (
     <section aria-labelledby="judul-kawasan" className="space-y-4">
-      <h1 id="judul-kawasan" className="text-xl font-semibold">
+      <h1 id="judul-kawasan" className="text-2xl font-bold tracking-tight text-slate-900">
         Kawasan rawan bencana {year ? `· ${year}` : ''}
       </h1>
-      <p className="text-sm text-slate-700">Hanya warga yang tinggal di RT/RW berikut yang dapat dicatat pada Form 5.A.1.</p>
-      {canEdit && <HazardZoneForm busy={m.create.isPending} onSubmit={(v) => m.create.mutateAsync(v).then(() => toast('Kawasan rawan ditambahkan', 'sukses'))} />}
+      <p className="text-sm text-slate-700">
+        Hanya warga yang tinggal di RT/RW berikut yang dapat dicatat pada Form 5.A.1.
+      </p>
+      {canEdit && (
+        <HazardZoneForm
+          busy={m.create.isPending}
+          onSubmit={(v) =>
+            m.create.mutateAsync(v).then(() => toast('Kawasan rawan ditambahkan', 'sukses'))
+          }
+        />
+      )}
       <DataTable
         caption="Daftar kawasan rawan bencana"
         loading={isLoading}
@@ -32,7 +41,11 @@ export function HazardZonesPage() {
           { key: 'rw', header: 'RW', cell: (r) => r.rw },
           { key: 'rt', header: 'RT', cell: (r) => r.rt ?? 'Seluruh RW' },
           { key: 'jenis', header: 'Jenis bencana', cell: (r) => variationLabel(r.hazardMask) },
-          { key: 'dasar', header: 'Dasar', cell: (r) => `${r.basis === 'krb' ? 'KRB' : 'Keputusan BPBD'} · ${r.basisRef}` },
+          {
+            key: 'dasar',
+            header: 'Dasar',
+            cell: (r) => `${r.basis === 'krb' ? 'KRB' : 'Keputusan BPBD'} · ${r.basisRef}`,
+          },
           ...(canEdit
             ? [
                 {
@@ -45,7 +58,13 @@ export function HazardZonesPage() {
                       onClick={() =>
                         m.remove.mutate(r.id, {
                           onSuccess: () => toast('Kawasan dihapus', 'info'),
-                          onError: (e) => toast(e instanceof ApiError ? e.message : 'Gagal (mungkin masih dipakai data warga)', 'galat'),
+                          onError: (e) =>
+                            toast(
+                              e instanceof ApiError
+                                ? e.message
+                                : 'Gagal (mungkin masih dipakai data warga)',
+                              'galat',
+                            ),
                         })
                       }
                     >

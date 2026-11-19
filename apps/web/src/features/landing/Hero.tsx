@@ -18,22 +18,44 @@ export function Hero() {
       className="relative flex min-h-[100svh] items-center overflow-hidden bg-gradient-to-b from-sungai-950 via-sungai-900 to-sungai-800 pt-20 text-white"
     >
       <Glow />
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-32" style={{ transform: `translateY(${shift}px)`, opacity: fade }}>
+      <div
+        className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-32"
+        style={{ transform: `translateY(${shift}px)`, opacity: fade }}
+      >
         <p className="animate-naik text-sm font-semibold uppercase tracking-[0.2em] text-senja-300">
           BPBD Kota Banjarmasin · Standar Pelayanan Minimal
         </p>
-        <h1 id="judul-hero" className="mt-4 max-w-4xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+        <h1
+          id="judul-hero"
+          className="mt-4 max-w-4xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
+        >
           {WORDS.map((w, i) => (
-            <span key={i} className="mr-[0.25em] inline-block animate-naik" style={{ animationDelay: `${150 + i * 90}ms` }}>
-              {w === 'tangguh' ? <span className="bg-gradient-to-r from-senja-300 to-senja-500 bg-clip-text text-transparent">{w}</span> : w}
+            <span
+              key={i}
+              className="mr-[0.25em] inline-block animate-naik"
+              style={{ animationDelay: `${150 + i * 90}ms` }}
+            >
+              {w === 'tangguh' ? (
+                <span className="bg-gradient-to-r from-senja-300 to-senja-500 bg-clip-text text-transparent">
+                  {w}
+                </span>
+              ) : (
+                w
+              )}
             </span>
           ))}
         </h1>
-        <p className="mt-6 max-w-2xl animate-naik text-lg text-sungai-100 sm:text-xl" style={{ animationDelay: '850ms' }}>
-          e-Tangguh menghimpun data warga kawasan rawan bencana, petugas, kejadian, dan logistik, lalu menyusun
-          laporan SPM sub-urusan bencana secara otomatis dan dapat ditelusuri.
+        <p
+          className="mt-6 max-w-2xl animate-naik text-lg text-sungai-100 sm:text-xl"
+          style={{ animationDelay: '850ms' }}
+        >
+          e-Tangguh menghimpun data warga kawasan rawan bencana, petugas, kejadian, dan logistik,
+          lalu menyusun laporan SPM sub-urusan bencana secara otomatis dan dapat ditelusuri.
         </p>
-        <div className="mt-8 flex animate-naik flex-wrap gap-3" style={{ animationDelay: '1000ms' }}>
+        <div
+          className="mt-8 flex animate-naik flex-wrap gap-3"
+          style={{ animationDelay: '1000ms' }}
+        >
           <a
             href="#cerita"
             className="rounded-full bg-senja-400 px-6 py-3 font-bold text-sungai-950 shadow-lg shadow-senja-500/20 transition hover:-translate-y-0.5 hover:bg-senja-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"

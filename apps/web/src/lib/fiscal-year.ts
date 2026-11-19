@@ -6,12 +6,17 @@ import { api } from './api-client';
 export function useFiscalYears() {
   return useQuery({
     queryKey: ['fiscal-years'],
-    queryFn: ({ signal }) => api.get<{ items: FiscalYearDto[] }>('/spm/fiscal-years', signal).then((r) => r.items),
+    queryFn: ({ signal }) =>
+      api.get<{ items: FiscalYearDto[] }>('/spm/fiscal-years', signal).then((r) => r.items),
   });
 }
 
 /** Tahun anggaran aktif: parameter URL `ta`, atau tahun terbaru. */
-export function useFiscalYear(): { year: number | null; info: FiscalYearDto | undefined; locked: boolean } {
+export function useFiscalYear(): {
+  year: number | null;
+  info: FiscalYearDto | undefined;
+  locked: boolean;
+} {
   const [params] = useSearchParams();
   const { data } = useFiscalYears();
   const fromUrl = Number(params.get('ta'));

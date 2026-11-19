@@ -65,7 +65,7 @@ export function InventoryPage({ kind }: { kind: InventoryKind }) {
   return (
     <section aria-labelledby="judul-inventaris" className="space-y-4">
       <div className="flex flex-wrap items-center gap-2">
-        <h1 id="judul-inventaris" className="text-xl font-semibold">
+        <h1 id="judul-inventaris" className="text-2xl font-bold tracking-tight text-slate-900">
           {isEq ? 'Peralatan operasi tanggap darurat' : 'Stok logistik pengungsian'} · {year}
         </h1>
         <div className="ml-auto flex gap-2">

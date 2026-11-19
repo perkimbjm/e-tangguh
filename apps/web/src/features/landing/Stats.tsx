@@ -3,12 +3,24 @@ import { useCountUp, useInView } from './hooks';
 
 const STATS = [
   { value: 12, suffix: '', label: 'formulir Form 5.A', note: 'warga, petugas, kejadian, logistik' },
-  { value: 10, suffix: '', label: 'jenis bencana', note: 'dikelompokkan menjadi variasi kerawanan' },
+  {
+    value: 10,
+    suffix: '',
+    label: 'jenis bencana',
+    note: 'dikelompokkan menjadi variasi kerawanan',
+  },
   { value: 52, suffix: '', label: 'kelurahan', note: 'tiap pendata hanya melihat kelurahannya' },
   { value: 5, suffix: ' dtk', label: 'target rekap sekota', note: 'untuk hingga 200.000 warga' },
 ];
 
-function Stat({ value, suffix, label, note, active, delay }: (typeof STATS)[number] & { active: boolean; delay: number }) {
+function Stat({
+  value,
+  suffix,
+  label,
+  note,
+  active,
+  delay,
+}: (typeof STATS)[number] & { active: boolean; delay: number }) {
   const n = useCountUp(value, active, 1200 + delay);
   return (
     <div className="rounded-2xl border border-sungai-100 bg-white p-6 shadow-sm">
@@ -34,7 +46,10 @@ export function Stats() {
     <section aria-labelledby="judul-angka" className="relative bg-sungai-50 py-24">
       <div className="mx-auto max-w-6xl px-4">
         <Reveal>
-          <h2 id="judul-angka" className="max-w-2xl text-3xl font-extrabold tracking-tight text-sungai-950 sm:text-4xl">
+          <h2
+            id="judul-angka"
+            className="max-w-2xl text-3xl font-extrabold tracking-tight text-sungai-950 sm:text-4xl"
+          >
             Satu basis data untuk seluruh siklus pelaporan tahunan.
           </h2>
         </Reveal>

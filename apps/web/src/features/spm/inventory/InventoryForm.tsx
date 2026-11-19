@@ -46,7 +46,7 @@ export function InventoryForm({ kind, year }: { kind: InventoryKind; year: numbe
     <form
       onSubmit={submit}
       noValidate
-      className="grid gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-4"
+      className="grid gap-3 rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4 sm:grid-cols-4"
     >
       {errors._ && (
         <p role="alert" className="text-sm text-red-700 sm:col-span-4">
@@ -89,7 +89,7 @@ export function InventoryForm({ kind, year }: { kind: InventoryKind; year: numbe
         <button
           type="submit"
           disabled={create.isPending}
-          className="rounded-md bg-sky-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+          className="rounded-md bg-sungai-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
         >
           Tambah
         </button>

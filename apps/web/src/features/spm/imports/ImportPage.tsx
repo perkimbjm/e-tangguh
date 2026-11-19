@@ -21,7 +21,9 @@ export function ImportPage() {
   const { user } = useSession();
   const [params] = useSearchParams();
   const isBpbd = !!user && (BPBD_ROLES as readonly string[]).includes(user.role);
-  const [formCode, setFormCode] = useState(params.get('form') === '5.A.5' && isBpbd ? '5.A.5' : '5.A.1');
+  const [formCode, setFormCode] = useState(
+    params.get('form') === '5.A.5' && isBpbd ? '5.A.5' : '5.A.1',
+  );
   const [preview, setPreview] = useState<Preview | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +45,10 @@ export function ImportPage() {
       const next = await action.mutateAsync({ id: preview.id, action: kind, body });
       setPreview(next);
       if (kind === 'confirm') {
-        toast(`${next.rowsNew} baris baru dan ${next.rowsChanged} baris berubah tersimpan`, 'sukses');
+        toast(
+          `${next.rowsNew} baris baru dan ${next.rowsChanged} baris berubah tersimpan`,
+          'sukses',
+        );
         void qc.invalidateQueries({ queryKey: ['residents'] });
       }
       if (kind === 'cancel') toast('Unggahan dibatalkan; data mentah dihapus', 'info');
@@ -53,12 +58,17 @@ export function ImportPage() {
   }
 
   if (!year) return <p role="status">Belum ada tahun anggaran yang dibuka.</p>;
-  if (locked) return <p className="rounded-md bg-slate-100 p-3">Tahun anggaran {year} sudah final; impor tidak tersedia.</p>;
+  if (locked)
+    return (
+      <p className="rounded-md bg-slate-100 p-3">
+        Tahun anggaran {year} sudah final; impor tidak tersedia.
+      </p>
+    );
   const open = preview?.status === 'divalidasi';
 
   return (
     <section aria-labelledby="judul-impor" className="space-y-4">
-      <h1 id="judul-impor" className="text-xl font-semibold">
+      <h1 id="judul-impor" className="text-2xl font-bold tracking-tight text-slate-900">
         Unggah lembar kerja · {year}
       </h1>
       <ol className="list-decimal space-y-1 pl-5 text-sm text-slate-700">
@@ -66,23 +76,42 @@ export function ImportPage() {
         <li>Unggah berkas; sistem memvalidasi tiap baris dan menampilkan pratinjau.</li>
         <li>Periksa galat, pilih padanan kelurahan bila diminta, lalu konfirmasi.</li>
       </ol>
-      <form onSubmit={onUpload} className="flex flex-wrap items-end gap-3 rounded-lg border border-slate-200 bg-white p-4">
+      <form
+        onSubmit={onUpload}
+        className="flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4"
+      >
         <label className="text-sm">
           Formulir
-          <select value={formCode} onChange={(e) => setFormCode(e.target.value)} className="mt-1 block rounded-md border border-slate-300 px-2 py-1.5">
+          <select
+            value={formCode}
+            onChange={(e) => setFormCode(e.target.value)}
+            className="mt-1 block rounded-md border border-slate-300 px-2 py-1.5"
+          >
             <option value="5.A.1">5.A.1 Daftar warga</option>
             <option value="5.A.2">5.A.2 Kerawanan tempat tinggal</option>
             {isBpbd && <option value="5.A.5">5.A.5 Petugas operasi</option>}
           </select>
         </label>
-        <a href={templateUrl(formCode, year)} className="rounded-md border border-slate-300 px-3 py-2 text-sm">
+        <a
+          href={templateUrl(formCode, year)}
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+        >
           Unduh templat
         </a>
         <label className="text-sm">
           Berkas (.xlsx, maks. 10 MB)
-          <input name="file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" className="mt-1 block text-sm" />
+          <input
+            name="file"
+            type="file"
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            className="mt-1 block text-sm"
+          />
         </label>
-        <button type="submit" disabled={upload.isPending} className="rounded-md bg-sky-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+        <button
+          type="submit"
+          disabled={upload.isPending}
+          className="rounded-md bg-sungai-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+        >
           {upload.isPending ? 'Memvalidasi…' : 'Unggah dan validasi'}
         </button>
       </form>
@@ -94,7 +123,13 @@ export function ImportPage() {
       {preview && (
         <>
           <ImportPreview preview={preview} year={year} />
-          {open && <RegionMappingDialog choices={preview.regionChoices} busy={action.isPending} onSubmit={(m) => void run('region-mapping', { mappings: m })} />}
+          {open && (
+            <RegionMappingDialog
+              choices={preview.regionChoices}
+              busy={action.isPending}
+              onSubmit={(m) => void run('region-mapping', { mappings: m })}
+            />
+          )}
           {open && (
             <div className="flex gap-2">
               <button
@@ -105,7 +140,12 @@ export function ImportPage() {
               >
                 Konfirmasi {preview.rowsNew + preview.rowsChanged} baris
               </button>
-              <button type="button" disabled={action.isPending} onClick={() => void run('cancel')} className="rounded-md border border-slate-300 px-4 py-2 text-sm">
+              <button
+                type="button"
+                disabled={action.isPending}
+                onClick={() => void run('cancel')}
+                className="rounded-md border border-slate-300 px-4 py-2 text-sm"
+              >
                 Batalkan
               </button>
             </div>

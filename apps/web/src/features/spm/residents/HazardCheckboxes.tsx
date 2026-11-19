@@ -21,7 +21,9 @@ export function HazardCheckboxes({ value, onChange, legend = 'Jenis kerawanan', 
                 type="checkbox"
                 checked={checked}
                 onChange={(e) => {
-                  const codes = HAZARDS.filter((x) => (x.code === h.code ? e.target.checked : value > 0 && hasHazard(value, x.code))).map((x) => x.code);
+                  const codes = HAZARDS.filter((x) =>
+                    x.code === h.code ? e.target.checked : value > 0 && hasHazard(value, x.code),
+                  ).map((x) => x.code);
                   onChange(toMask(codes));
                 }}
                 className="h-4 w-4 rounded border-slate-400 text-sky-700 focus:ring-sky-700"

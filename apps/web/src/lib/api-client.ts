@@ -38,7 +38,12 @@ export async function apiFetch<T>(path: string, opts: RequestOptions = {}): Prom
       method,
       headers,
       credentials: 'same-origin',
-      body: opts.body === undefined ? undefined : isForm ? (opts.body as FormData) : JSON.stringify(opts.body),
+      body:
+        opts.body === undefined
+          ? undefined
+          : isForm
+            ? (opts.body as FormData)
+            : JSON.stringify(opts.body),
       signal: opts.signal,
     });
   } catch {
@@ -48,8 +53,17 @@ export async function apiFetch<T>(path: string, opts: RequestOptions = {}): Prom
   if (res.status === 204) return undefined as T;
   const data: unknown = await res.json().catch(() => null);
   if (!res.ok) {
-    const err = (data as { error?: { code?: string; message?: string; fields?: Record<string, string> } } | null)?.error;
-    throw new ApiError(res.status, err?.code ?? 'GALAT', err?.message ?? 'Terjadi galat', err?.fields ?? {});
+    const err = (
+      data as {
+        error?: { code?: string; message?: string; fields?: Record<string, string> };
+      } | null
+    )?.error;
+    throw new ApiError(
+      res.status,
+      err?.code ?? 'GALAT',
+      err?.message ?? 'Terjadi galat',
+      err?.fields ?? {},
+    );
   }
   return data as T;
 }

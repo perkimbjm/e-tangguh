@@ -14,7 +14,11 @@ export function useDrilldown(year: number | null, formCode: string, cellKey: str
   return useQuery({
     queryKey: ['drill', year, formCode, cellKey],
     enabled: year !== null && cellKey !== null,
-    queryFn: ({ signal }) => api.get<DrillResult>(`/spm/${year}/recap/${formCode}/cells/${encodeURIComponent(cellKey!)}/rows`, signal),
+    queryFn: ({ signal }) =>
+      api.get<DrillResult>(
+        `/spm/${year}/recap/${formCode}/cells/${encodeURIComponent(cellKey!)}/rows`,
+        signal,
+      ),
     gcTime: 0,
   });
 }

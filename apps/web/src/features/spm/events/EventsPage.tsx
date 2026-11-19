@@ -17,21 +17,21 @@ export function EventsPage() {
   return (
     <section aria-labelledby="judul-kejadian" className="space-y-4">
       <div className="flex flex-wrap items-center gap-2">
-        <h1 id="judul-kejadian" className="text-xl font-semibold">
+        <h1 id="judul-kejadian" className="text-2xl font-bold tracking-tight text-slate-900">
           Kejadian bencana · {year}
         </h1>
         {!locked && (
           <button
             type="button"
             onClick={() => setAdding((a) => !a)}
-            className="ml-auto rounded-md bg-sky-800 px-3 py-2 text-sm font-semibold text-white"
+            className="ml-auto rounded-md bg-sungai-800 px-3 py-2 text-sm font-semibold text-white"
           >
             {adding ? 'Tutup formulir' : 'Catat kejadian'}
           </button>
         )}
       </div>
       {adding && (
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <div className="rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4">
           <EventForm year={year} onDone={(id) => navigate(`/app/kejadian/${id}?ta=${year}`)} />
         </div>
       )}

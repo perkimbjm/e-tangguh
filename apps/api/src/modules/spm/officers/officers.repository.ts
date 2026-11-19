@@ -25,7 +25,12 @@ export class OfficersRepository {
       .from(officerRecords)
       .innerJoin(persons, eq(persons.id, officerRecords.personId))
       .leftJoin(regions, eq(regions.id, officerRecords.dutyKelurahanId))
-      .where(and(eq(officerRecords.fiscalYearId, fiscalYearId), id ? eq(officerRecords.id, id) : undefined))
+      .where(
+        and(
+          eq(officerRecords.fiscalYearId, fiscalYearId),
+          id ? eq(officerRecords.id, id) : undefined,
+        ),
+      )
       .orderBy(asc(persons.fullName));
     return rows.map(({ o, ...r }) => ({
       id: o.id,
@@ -52,7 +57,12 @@ export class OfficersRepository {
   }
 
   async findById(fiscalYearId: string, id: string): Promise<OfficerRow | null> {
-    const [row] = await this.db.executor().select().from(officerRecords).where(and(eq(officerRecords.fiscalYearId, fiscalYearId), eq(officerRecords.id, id))).limit(1);
+    const [row] = await this.db
+      .executor()
+      .select()
+      .from(officerRecords)
+      .where(and(eq(officerRecords.fiscalYearId, fiscalYearId), eq(officerRecords.id, id)))
+      .limit(1);
     return row ?? null;
   }
 
@@ -61,7 +71,9 @@ export class OfficersRepository {
       .executor()
       .select()
       .from(officerRecords)
-      .where(and(eq(officerRecords.fiscalYearId, fiscalYearId), eq(officerRecords.personId, personId)))
+      .where(
+        and(eq(officerRecords.fiscalYearId, fiscalYearId), eq(officerRecords.personId, personId)),
+      )
       .limit(1);
     return row ?? null;
   }
@@ -72,7 +84,12 @@ export class OfficersRepository {
   }
 
   async update(id: string, values: Partial<OfficerInsert>): Promise<OfficerRow> {
-    const [row] = await this.db.executor().update(officerRecords).set(values).where(eq(officerRecords.id, id)).returning();
+    const [row] = await this.db
+      .executor()
+      .update(officerRecords)
+      .set(values)
+      .where(eq(officerRecords.id, id))
+      .returning();
     return row!;
   }
 

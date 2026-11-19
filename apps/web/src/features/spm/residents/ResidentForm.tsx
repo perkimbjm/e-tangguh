@@ -25,8 +25,14 @@ export function ResidentForm({ year, onDone }: { year: number; onDone(): void })
   async function checkNik(nik: string) {
     setNikNote(null);
     if (!/^\d{16}$/.test(nik.replace(/\D/g, ''))) return;
-    const res = await api.get<{ items: unknown[] }>(`/spm/${year}/residents?nik=${nik.replace(/\D/g, '')}&limit=1`).catch(() => null);
-    setNikNote(res && res.items.length > 0 ? 'NIK ini sudah tercatat pada tahun anggaran ini.' : 'Belum tercatat tahun ini. Bila orang sudah ada di modul lain, data dirinya dipakai ulang.');
+    const res = await api
+      .get<{ items: unknown[] }>(`/spm/${year}/residents?nik=${nik.replace(/\D/g, '')}&limit=1`)
+      .catch(() => null);
+    setNikNote(
+      res && res.items.length > 0
+        ? 'NIK ini sudah tercatat pada tahun anggaran ini.'
+        : 'Belum tercatat tahun ini. Bila orang sudah ada di modul lain, data dirinya dipakai ulang.',
+    );
   }
 
   async function submit(e: FormEvent<HTMLFormElement>) {
@@ -55,14 +61,25 @@ export function ResidentForm({ year, onDone }: { year: number; onDone(): void })
       hazardMask: mask > 0 ? mask : undefined,
     } satisfies Partial<Record<keyof CreateResidentRequest, unknown>>);
     if (!parsed.success) {
-      setErrors(Object.fromEntries(parsed.error.issues.map((i) => [String(i.path[0] ?? '_'), i.message])));
+      setErrors(
+        Object.fromEntries(parsed.error.issues.map((i) => [String(i.path[0] ?? '_'), i.message])),
+      );
       return;
     }
     setErrors({});
     try {
       const res = await create.mutateAsync(parsed.data);
-      toast(res.approvalStatus === 'menunggu' ? 'Tersimpan. Menunggu persetujuan BPBD.' : 'Tersimpan dan disetujui.', 'sukses');
-      if (res.duplicateCandidates.length) toast(`Periksa kemungkinan orang ganda: ${res.duplicateCandidates.map((d) => d.fullName).join(', ')}`, 'info');
+      toast(
+        res.approvalStatus === 'menunggu'
+          ? 'Tersimpan. Menunggu persetujuan BPBD.'
+          : 'Tersimpan dan disetujui.',
+        'sukses',
+      );
+      if (res.duplicateCandidates.length)
+        toast(
+          `Periksa kemungkinan orang ganda: ${res.duplicateCandidates.map((d) => d.fullName).join(', ')}`,
+          'info',
+        );
       onDone();
     } catch (err) {
       if (err instanceof ApiError) {
@@ -89,17 +106,42 @@ export function ResidentForm({ year, onDone }: { year: number; onDone(): void })
             <option value="L">Laki-laki</option>
             <option value="P">Perempuan</option>
           </select>
-          {errors.gender && <span className="mt-1 block text-sm text-red-700">{errors.gender}</span>}
+          {errors.gender && (
+            <span className="mt-1 block text-sm text-red-700">{errors.gender}</span>
+          )}
         </label>
         <div>
-          <FormField label="NIK" name="nik" inputMode="numeric" autoComplete="off" disabled={noNik} error={errors.nik} onBlur={(e) => void checkNik(e.target.value)} />
-          {nikNote && <p className="mt-1 text-xs text-slate-600" role="status">{nikNote}</p>}
+          <FormField
+            label="NIK"
+            name="nik"
+            inputMode="numeric"
+            autoComplete="off"
+            disabled={noNik}
+            error={errors.nik}
+            onBlur={(e) => void checkNik(e.target.value)}
+          />
+          {nikNote && (
+            <p className="mt-1 text-xs text-slate-600" role="status">
+              {nikNote}
+            </p>
+          )}
           <label className="mt-1 flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={noNik} onChange={(e) => setNoNik(e.target.checked)} /> NIK belum ada
+            <input type="checkbox" checked={noNik} onChange={(e) => setNoNik(e.target.checked)} />{' '}
+            NIK belum ada
           </label>
         </div>
-        {noNik ? <FormField label="Alasan NIK belum ada" name="noNikReason" error={errors.noNikReason} /> : <div />}
-        <FormField label="Nomor KK" name="kk" inputMode="numeric" autoComplete="off" error={errors.kk} />
+        {noNik ? (
+          <FormField label="Alasan NIK belum ada" name="noNikReason" error={errors.noNikReason} />
+        ) : (
+          <div />
+        )}
+        <FormField
+          label="Nomor KK"
+          name="kk"
+          inputMode="numeric"
+          autoComplete="off"
+          error={errors.kk}
+        />
         <label className="flex items-center gap-2 self-end pb-2 text-sm">
           <input type="checkbox" name="isFamilyHead" /> Kepala keluarga
         </label>
@@ -118,7 +160,9 @@ export function ResidentForm({ year, onDone }: { year: number; onDone(): void })
                 </option>
               ))}
             </select>
-            {errors.kelurahanId && <span className="mt-1 block text-sm text-red-700">{errors.kelurahanId}</span>}
+            {errors.kelurahanId && (
+              <span className="mt-1 block text-sm text-red-700">{errors.kelurahanId}</span>
+            )}
           </label>
         )}
         <div className="grid grid-cols-2 gap-2">
@@ -135,17 +179,40 @@ export function ResidentForm({ year, onDone }: { year: number; onDone(): void })
         </label>
         <div>
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={special} onChange={(e) => setSpecial(e.target.checked)} /> Berkebutuhan khusus
+            <input
+              type="checkbox"
+              checked={special}
+              onChange={(e) => setSpecial(e.target.checked)}
+            />{' '}
+            Berkebutuhan khusus
           </label>
-          {special && <FormField label="Jenis kebutuhan khusus" name="specialNeeds" error={errors.specialNeeds} />}
+          {special && (
+            <FormField
+              label="Jenis kebutuhan khusus"
+              name="specialNeeds"
+              error={errors.specialNeeds}
+            />
+          )}
         </div>
       </div>
-      <HazardCheckboxes value={mask} onChange={setMask} legend="Jenis kerawanan (kosongkan untuk mengikuti kawasan rawan RT/RW)" />
+      <HazardCheckboxes
+        value={mask}
+        onChange={setMask}
+        legend="Jenis kerawanan (kosongkan untuk mengikuti kawasan rawan RT/RW)"
+      />
       <div className="flex justify-end gap-2">
-        <button type="button" onClick={onDone} className="rounded-md border border-slate-300 px-4 py-2 text-sm">
+        <button
+          type="button"
+          onClick={onDone}
+          className="rounded-md border border-slate-300 px-4 py-2 text-sm"
+        >
           Batal
         </button>
-        <button type="submit" disabled={create.isPending} className="rounded-md bg-sky-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+        <button
+          type="submit"
+          disabled={create.isPending}
+          className="rounded-md bg-sungai-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+        >
           {create.isPending ? 'Menyimpan…' : 'Simpan'}
         </button>
       </div>

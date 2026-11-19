@@ -16,7 +16,10 @@ export function LoginPage() {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const parsed = loginRequestSchema.safeParse({ identifier: form.get('identifier'), password: form.get('password') });
+    const parsed = loginRequestSchema.safeParse({
+      identifier: form.get('identifier'),
+      password: form.get('password'),
+    });
     if (!parsed.success) {
       setFields(Object.fromEntries(parsed.error.issues.map((i) => [String(i.path[0]), i.message])));
       return;
@@ -45,8 +48,19 @@ export function LoginPage() {
         <h1 className="mt-3 text-2xl font-bold text-slate-900">Masuk e-Tangguh</h1>
         <p className="mt-1 text-sm text-slate-600">Khusus petugas BPBD dan pendata kelurahan.</p>
         <form className="mt-6 space-y-4" onSubmit={onSubmit} noValidate>
-          <FormField label="Email atau nomor ponsel" name="identifier" autoComplete="username" error={fields.identifier} />
-          <FormField label="Kata sandi" name="password" type="password" autoComplete="current-password" error={fields.password} />
+          <FormField
+            label="Email atau nomor ponsel"
+            name="identifier"
+            autoComplete="username"
+            error={fields.identifier}
+          />
+          <FormField
+            label="Kata sandi"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            error={fields.password}
+          />
           {error && (
             <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">
               {error}
@@ -55,7 +69,7 @@ export function LoginPage() {
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-md bg-sky-800 px-4 py-2.5 font-semibold text-white hover:bg-sky-900 disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+            className="w-full rounded-md bg-sungai-800 px-4 py-2.5 font-semibold text-white hover:bg-sungai-900 disabled:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
           >
             {busy ? 'Memproses…' : 'Masuk'}
           </button>

@@ -12,7 +12,8 @@ export interface Region {
 export function useKelurahan() {
   return useQuery({
     queryKey: ['regions', 'kelurahan'],
-    queryFn: ({ signal }) => api.get<{ items: Region[] }>('/regions?level=kelurahan', signal).then((r) => r.items),
+    queryFn: ({ signal }) =>
+      api.get<{ items: Region[] }>('/regions?level=kelurahan', signal).then((r) => r.items),
     staleTime: 10 * 60_000,
   });
 }

@@ -3,19 +3,32 @@ import { DataTable } from '../../../components/DataTable';
 import { useFiscalYear } from '../../../lib/fiscal-year';
 import { useCompleteness } from './api';
 
-const num = (key: keyof CompletenessRow, header: string) => ({ key, header, align: 'right' as const, cell: (r: CompletenessRow) => r[key] });
+const num = (key: keyof CompletenessRow, header: string) => ({
+  key,
+  header,
+  align: 'right' as const,
+  cell: (r: CompletenessRow) => r[key],
+});
 
 export function CompletenessPage() {
   const { year } = useFiscalYear();
   const { data = [], isLoading } = useCompleteness(year);
-  const total = data.reduce((a, r) => ({ total: a.total + r.total, pending: a.pending + r.pending, withoutNik: a.withoutNik + r.withoutNik }), { total: 0, pending: 0, withoutNik: 0 });
+  const total = data.reduce(
+    (a, r) => ({
+      total: a.total + r.total,
+      pending: a.pending + r.pending,
+      withoutNik: a.withoutNik + r.withoutNik,
+    }),
+    { total: 0, pending: 0, withoutNik: 0 },
+  );
   return (
     <section aria-labelledby="judul-lengkap" className="space-y-4">
-      <h1 id="judul-lengkap" className="text-xl font-semibold">
+      <h1 id="judul-lengkap" className="text-2xl font-bold tracking-tight text-slate-900">
         Kelengkapan data per kelurahan {year ? `· ${year}` : ''}
       </h1>
       <p className="text-sm text-slate-700">
-        Total {total.total} warga aktif, {total.pending} menunggu persetujuan, {total.withoutNik} tanpa NIK. “Belum lengkap” = tanpa nomor KK atau tempat lahir.
+        Total {total.total} warga aktif, {total.pending} menunggu persetujuan, {total.withoutNik}{' '}
+        tanpa NIK. “Belum lengkap” = tanpa nomor KK atau tempat lahir.
       </p>
       <DataTable
         caption="Kelengkapan data per kelurahan"
