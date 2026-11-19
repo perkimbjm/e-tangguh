@@ -1,41 +1,44 @@
 import { type FormDefinition, columnLetter, lastColumnIndex } from '@etangguh/shared';
 import type ExcelJS from 'exceljs';
 
-const THIN: Partial<ExcelJS.Borders> = {
+export const THIN: Partial<ExcelJS.Borders> = {
   top: { style: 'thin' },
   left: { style: 'thin' },
   bottom: { style: 'thin' },
   right: { style: 'thin' },
 };
 
-function shiftRef(ref: string, offset: number): string {
-  return ref.replace(/(\d+)/g, (n) => String(Number(n) + offset));
-}
+const mapRef = (ref: string, mapRow: (r: number) => number) => ref.replace(/(\d+)/g, (n) => String(mapRow(Number(n))));
 
 /**
- * Menggambar kepala resmi formulir (isi sel, sel gabung, penomoran kolom) persis seperti
- * `FormDefinition`, mulai baris `startRow`. Mengembalikan nomor baris data pertama.
+ * Menggambar kepala resmi (isi sel, sel gabung, penomoran kolom) persis seperti `FormDefinition`.
+ * `mapRow` memetakan nomor baris definisi ke nomor baris berkas.
  */
-export function drawFormHeader(ws: ExcelJS.Worksheet, def: FormDefinition, startRow = 1): number {
-  const offset = startRow - 1;
+export function drawFormBlock(ws: ExcelJS.Worksheet, def: FormDefinition, mapRow: (r: number) => number = (r) => r): void {
   const lastCol = lastColumnIndex(def);
   for (const c of def.columns) ws.getColumn(c.letter).width = c.width ?? 14;
   for (let r = 1; r <= def.headerLastRow; r++) {
+    const isTitle = r === 1 && /^FORM\s/i.test(def.cells.A1 ?? '');
     for (let col = 1; col <= lastCol; col++) {
-      const cell = ws.getCell(r + offset, col);
-      cell.border = THIN;
+      const cell = ws.getCell(mapRow(r), col);
+      if (!isTitle) cell.border = THIN;
       cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
       cell.font = { bold: r < def.headerLastRow, size: r === def.headerLastRow ? 9 : 10 };
       if (r === def.headerLastRow) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEFEFEF' } };
     }
   }
   for (const [ref, value] of Object.entries(def.cells)) {
-    const cell = ws.getCell(shiftRef(ref, offset));
-    cell.value = /^\d+$/.test(value) && ref.endsWith(String(def.headerLastRow)) ? Number(value) : value;
+    const cell = ws.getCell(mapRef(ref, mapRow));
+    cell.value = /^\d+$/.test(value) && Number(ref.replace(/\D/g, '')) === def.headerLastRow ? Number(value) : value;
   }
-  for (const range of def.merged) ws.mergeCells(shiftRef(range, offset));
-  ws.getRow(1 + offset).height = 24;
-  return def.headerLastRow + offset + 1;
+  for (const range of def.merged) ws.mergeCells(mapRef(range, mapRow));
+}
+
+/** Kepala resmi mulai baris `startRow` (templat). Mengembalikan baris data pertama. */
+export function drawFormHeader(ws: ExcelJS.Worksheet, def: FormDefinition, startRow = 1): number {
+  drawFormBlock(ws, def, (r) => r + startRow - 1);
+  ws.getRow(startRow).height = 24;
+  return def.headerLastRow + startRow;
 }
 
 /** Kolom bantu (mis. RT, RW) di kanan kolom formulir, tanpa nomor kolom resmi. */

@@ -21,6 +21,8 @@ export function AppLayout() {
     ...(isBpbd ? [{ to: '/app/persetujuan', label: 'Persetujuan' }] : []),
     { to: '/app/kelengkapan', label: 'Kelengkapan' },
     { to: '/app/kawasan-rawan', label: 'Kawasan rawan' },
+    { to: '/app/rekap', label: 'Rekapitulasi' },
+    { to: '/app/ekspor', label: 'Ekspor formulir' },
   ];
 
   return (

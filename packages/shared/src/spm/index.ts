@@ -10,3 +10,4 @@ export * from './validation/error-codes';
 export * from './validation/cell-values';
 export * from './validation/resident-row';
 export * from './validation/hazard-row';
+export * from './recap';

@@ -84,3 +84,18 @@ dicatat untuk dikonfirmasi BPBD.
   templat kosong BPBD TA 2026.
 - XLSX dan PDF satu formulir dihasilkan dari definisi yang sama dan memuat nilai yang sama.
 - Orang tanpa NIK tampil dengan kolom NIK kosong dan tetap terhitung.
+
+## Catatan implementasi US2 (perlu dikonfirmasi BPBD)
+
+- Tata letak ekspor: baris 1 judul formulir, baris 2-4 PROVINSI, KABUPATEN/KOTA, TAHUN ANGGARAN,
+  lalu kepala tabel resmi persis seperti rujukan. Uji berkas emas memetakan baris rujukan ke baris
+  berkas dengan aturan ini.
+- Form 5.A.3: kelompok kolom diberi label konkret "VARIASI 1 … VARIASI k" (rujukan menulis
+  "VARIASI n" untuk kelompok terakhir). Variasi diurutkan menurut nilai bitmask.
+- Warga tanpa nomor KK terhitung pada kolom jiwa, tetapi tidak pada kolom KK.
+- Kolom petugas/aparatur (5.A.2 kol. 21-22, 5.A.4 kol. 4-8 dan 14, 5.A.6 kol. 6-10) bernilai 0 atau
+  kosong sampai modul petugas (US3) tersedia; layar rekap menandainya dengan "*".
+- Ekspor Form 5.A.1/5.A.2 oleh pendata kelurahan menyamarkan NIK dan nomor KK (empat digit
+  terakhir), mengikuti tabel visibilitas data-model.md.
+- PDF memakai tanda "√" untuk kolom centang karena font tertanam tidak memuat "✓"; XLSX memakai "✓".
+- Paket ekspor seluruh formulir (ZIP) memuat berkas `SHA256SUMS.txt`.

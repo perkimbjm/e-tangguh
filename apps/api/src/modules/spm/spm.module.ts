@@ -1,4 +1,14 @@
 import { Module } from '@nestjs/common';
+import { ExportsController } from './exports/exports.controller';
+import { ExportsService } from './exports/exports.service';
+import { Form5A1Provider } from './exports/providers/form-5a1.provider';
+import { Form5A2Provider } from './exports/providers/form-5a2.provider';
+import { RecapProvider } from './exports/providers/recap.provider';
+import { ResidentRowsQuery } from './exports/providers/resident-rows.query';
+import { RecapContextLoader } from './recap/recap-context';
+import { RecapDrilldownService } from './recap/recap-drilldown.service';
+import { RecapController } from './recap/recap.controller';
+import { RecapService } from './recap/recap.service';
 import { HazardZonesController } from './hazard-zones/hazard-zones.controller';
 import { HazardZonesRepository } from './hazard-zones/hazard-zones.repository';
 import { HazardZonesService } from './hazard-zones/hazard-zones.service';
@@ -30,6 +40,8 @@ import { ResidentsService } from './residents/residents.service';
     CompletenessController,
     CorrectionsController,
     ImportsController,
+    RecapController,
+    ExportsController,
   ],
   providers: [
     HazardZonesRepository,
@@ -47,7 +59,15 @@ import { ResidentsService } from './residents/residents.service';
     ImportCleanup,
     ImportsService,
     TemplateBuilder,
+    RecapContextLoader,
+    RecapService,
+    RecapDrilldownService,
+    ResidentRowsQuery,
+    Form5A1Provider,
+    Form5A2Provider,
+    RecapProvider,
+    ExportsService,
   ],
-  exports: [HazardZonesService, ResidentsRepository],
+  exports: [HazardZonesService, ResidentsRepository, RecapService, ExportsService],
 })
 export class SpmModule {}

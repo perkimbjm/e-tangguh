@@ -46,3 +46,9 @@ export function validateAgeBands(b: AgeBands): string | null {
   }
   return null;
 }
+
+/** `YYYY-MM-DD` → `dd/mm/yyyy` (format formulir). */
+export function formatDateId(iso: string): string {
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}

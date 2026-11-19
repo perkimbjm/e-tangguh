@@ -171,24 +171,24 @@ manual, dan kepala berkas ekspor sama dengan templat resmi.
 
 ### Tests for User Story 2
 
-- [ ] T076 [P] [US2] Uji integrasi rekap di `apps/api/test/spm/recap.int.spec.ts`: untuk setiap sel 5.A.3, 5.A.4, 5.A.6, jumlah `rows` hasil penelusuran sama dengan nilai sel; baris `menunggu` dan nonaktif tidak terhitung; orang tanpa NIK terhitung
-- [ ] T077 [P] [US2] Uji berkas emas di `apps/api/test/spm/export-golden.int.spec.ts`: struktur kepala XLSX (judul, sel gabung, penomoran kolom) Form 5.A.1-5.A.4 dan 5.A.6 sama dengan rujukan `cells` dan `merged_ranges` di `specs/002-spm-data-dasar/reference/form-headers/form-5a*.header.json`
+- [X] T076 [P] [US2] Uji integrasi rekap di `apps/api/test/spm/recap.int.spec.ts`: untuk setiap sel 5.A.3, 5.A.4, 5.A.6, jumlah `rows` hasil penelusuran sama dengan nilai sel; baris `menunggu` dan nonaktif tidak terhitung; orang tanpa NIK terhitung
+- [X] T077 [P] [US2] Uji berkas emas di `apps/api/test/spm/export-golden.int.spec.ts`: struktur kepala XLSX (judul, sel gabung, penomoran kolom) Form 5.A.1-5.A.4 dan 5.A.6 sama dengan rujukan `cells` dan `merged_ranges` di `specs/002-spm-data-dasar/reference/form-headers/form-5a*.header.json`
 
 ### Implementation for User Story 2
 
-- [ ] T078 [P] [US2] Definisikan tipe dan pustaka sel rekap di `packages/shared/src/spm/recap/types.ts` (`CellDefinition { formCode, rowKey, colKey, predicate }`) dan pengode `cell_key` di `packages/shared/src/spm/recap/cell-key.ts`
-- [ ] T079 [P] [US2] Definisikan sel Form 5.A.3 di `packages/shared/src/spm/recap/recap-5a3.ts`: baris = kelurahan (dengan jumlah per kecamatan); kolom dinamis per `hazard_mask` berbeda: kelompok jenis, KK (`count distinct family_id`), jiwa; total = penjumlahan variasi
-- [ ] T080 [P] [US2] Definisikan sel Form 5.A.4 di `packages/shared/src/spm/recap/recap-5a4.ts` sesuai tabel rumus pada contracts/forms.md (kolom 4-13)
-- [ ] T081 [P] [US2] Definisikan sel Form 5.A.6 di `packages/shared/src/spm/recap/recap-5a6.ts` sesuai contracts/forms.md; total wajib latih mengikuti rumus kepala kolom (kolom 4 + kolom 10)
-- [ ] T082 [US2] Implementasikan penyusun kueri rekap di `apps/api/src/modules/spm/recap/recap-query.builder.ts`: menerjemahkan `predicate` menjadi klausa SQL yang dipakai sama untuk agregat dan untuk penelusuran; selalu menyaring `approval_status = disetujui` dan `is_active`
-- [ ] T083 [US2] Implementasikan layanan dan controller rekap di `apps/api/src/modules/spm/recap/recap.service.ts` dan `recap.controller.ts`: `GET /:fy/recap/:formCode` dan `GET /:fy/recap/:formCode/cells/:cellKey/rows` (tercatat audit, mengikuti `KelurahanScope`)
-- [ ] T084 [P] [US2] Definisikan Form 5.A.3, 5.A.4, 5.A.6 di `packages/shared/src/spm/forms/form-5a3.ts`, `form-5a4.ts`, `form-5a6.ts`
-- [ ] T085 [P] [US2] Implementasikan penulis XLSX di `apps/api/src/modules/spm/exports/xlsx-writer.ts`: menggambar kepala laporan (provinsi, kabupaten/kota, tahun anggaran), kepala bertingkat, sel gabung, penomoran kolom, dan baris data dari `FormDefinition`
-- [ ] T086 [P] [US2] Implementasikan penulis PDF di `apps/api/src/modules/spm/exports/pdf-writer.ts` dengan pdfmake (lanskap) dari `FormDefinition` yang sama
-- [ ] T087 [US2] Implementasikan penyedia data formulir di `apps/api/src/modules/spm/exports/providers/` (`form-5a1.provider.ts`, `form-5a2.provider.ts`, `recap.provider.ts`): urutan baris sesuai contracts/forms.md; kolom turunan (kelompok umur rentan, centang kerawanan, nomor variasi) dihitung
-- [ ] T088 [US2] Implementasikan layanan dan controller ekspor di `apps/api/src/modules/spm/exports/exports.service.ts` dan `exports.controller.ts`: `GET /:fy/forms/:formCode/export?format=xlsx|pdf&kelurahan=` dan `GET /:fy/forms/export-all` (ZIP); tercatat audit; pendata hanya 5.A.1/5.A.2 kelurahannya
-- [ ] T089 [P] [US2] Buat layar rekap di `apps/web/src/features/spm/recap/RecapPage.tsx`, `RecapTable.tsx`, `CellDrilldownDrawer.tsx` (klik angka → daftar penyusun)
-- [ ] T090 [P] [US2] Buat layar ekspor di `apps/web/src/features/spm/exports/ExportsPage.tsx` dan `ExportButton.tsx`
+- [X] T078 [P] [US2] Definisikan tipe dan pustaka sel rekap di `packages/shared/src/spm/recap/types.ts` (`CellDefinition { formCode, rowKey, colKey, predicate }`) dan pengode `cell_key` di `packages/shared/src/spm/recap/cell-key.ts`
+- [X] T079 [P] [US2] Definisikan sel Form 5.A.3 di `packages/shared/src/spm/recap/recap-5a3.ts`: baris = kelurahan (dengan jumlah per kecamatan); kolom dinamis per `hazard_mask` berbeda: kelompok jenis, KK (`count distinct family_id`), jiwa; total = penjumlahan variasi
+- [X] T080 [P] [US2] Definisikan sel Form 5.A.4 di `packages/shared/src/spm/recap/recap-5a4.ts` sesuai tabel rumus pada contracts/forms.md (kolom 4-13)
+- [X] T081 [P] [US2] Definisikan sel Form 5.A.6 di `packages/shared/src/spm/recap/recap-5a6.ts` sesuai contracts/forms.md; total wajib latih mengikuti rumus kepala kolom (kolom 4 + kolom 10)
+- [X] T082 [US2] Implementasikan penyusun kueri rekap di `apps/api/src/modules/spm/recap/recap-query.builder.ts`: menerjemahkan `predicate` menjadi klausa SQL yang dipakai sama untuk agregat dan untuk penelusuran; selalu menyaring `approval_status = disetujui` dan `is_active`
+- [X] T083 [US2] Implementasikan layanan dan controller rekap di `apps/api/src/modules/spm/recap/recap.service.ts` dan `recap.controller.ts`: `GET /:fy/recap/:formCode` dan `GET /:fy/recap/:formCode/cells/:cellKey/rows` (tercatat audit, mengikuti `KelurahanScope`)
+- [X] T084 [P] [US2] Definisikan Form 5.A.3, 5.A.4, 5.A.6 di `packages/shared/src/spm/forms/form-5a3.ts`, `form-5a4.ts`, `form-5a6.ts`
+- [X] T085 [P] [US2] Implementasikan penulis XLSX di `apps/api/src/modules/spm/exports/xlsx-writer.ts`: menggambar kepala laporan (provinsi, kabupaten/kota, tahun anggaran), kepala bertingkat, sel gabung, penomoran kolom, dan baris data dari `FormDefinition`
+- [X] T086 [P] [US2] Implementasikan penulis PDF di `apps/api/src/modules/spm/exports/pdf-writer.ts` dengan pdfmake (lanskap) dari `FormDefinition` yang sama
+- [X] T087 [US2] Implementasikan penyedia data formulir di `apps/api/src/modules/spm/exports/providers/` (`form-5a1.provider.ts`, `form-5a2.provider.ts`, `recap.provider.ts`): urutan baris sesuai contracts/forms.md; kolom turunan (kelompok umur rentan, centang kerawanan, nomor variasi) dihitung
+- [X] T088 [US2] Implementasikan layanan dan controller ekspor di `apps/api/src/modules/spm/exports/exports.service.ts` dan `exports.controller.ts`: `GET /:fy/forms/:formCode/export?format=xlsx|pdf&kelurahan=` dan `GET /:fy/forms/export-all` (ZIP); tercatat audit; pendata hanya 5.A.1/5.A.2 kelurahannya
+- [X] T089 [P] [US2] Buat layar rekap di `apps/web/src/features/spm/recap/RecapPage.tsx`, `RecapTable.tsx`, `CellDrilldownDrawer.tsx` (klik angka → daftar penyusun)
+- [X] T090 [P] [US2] Buat layar ekspor di `apps/web/src/features/spm/exports/ExportsPage.tsx` dan `ExportButton.tsx`
 
 **Checkpoint**: MVP SPM. Form 5.A.1-5.A.4 dan 5.A.6 dapat dilaporkan (quickstart skenario 7-9)
 

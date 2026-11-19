@@ -3,6 +3,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import { LoginPage } from '../features/auth/LoginPage';
 import { DashboardPage } from '../features/dashboard/DashboardPage';
 import { LandingPage } from '../features/landing/LandingPage';
+import { ExportsPage } from '../features/spm/exports/ExportsPage';
+import { RecapPage } from '../features/spm/recap/RecapPage';
 import { HazardZonesPage } from '../features/spm/hazard-zones/HazardZonesPage';
 import { ImportPage } from '../features/spm/imports/ImportPage';
 import { ApprovalQueuePage } from '../features/spm/residents/ApprovalQueuePage';
@@ -28,6 +30,8 @@ export const router = createBrowserRouter([
       { path: 'impor', element: <ImportPage /> },
       { path: 'kelengkapan', element: <CompletenessPage /> },
       { path: 'kawasan-rawan', element: <HazardZonesPage /> },
+      { path: 'rekap', element: <RecapPage /> },
+      { path: 'ekspor', element: <ExportsPage /> },
       {
         path: 'persetujuan',
         element: (
