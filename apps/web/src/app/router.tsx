@@ -8,6 +8,7 @@ import { RecapPage } from '../features/spm/recap/RecapPage';
 import { EventDetailPage } from '../features/spm/events/EventDetailPage';
 import { EventsPage } from '../features/spm/events/EventsPage';
 import { InventoryPage } from '../features/spm/inventory/InventoryPage';
+import { FiscalYearsPage } from '../features/spm/fiscal-years/FiscalYearsPage';
 import { OfficersPage } from '../features/spm/officers/OfficersPage';
 import { HazardZonesPage } from '../features/spm/hazard-zones/HazardZonesPage';
 import { ImportPage } from '../features/spm/imports/ImportPage';
@@ -73,6 +74,14 @@ export const router = createBrowserRouter([
         element: (
           <RequireRole roles={BPBD_ROLES}>
             <InventoryPage kind="logistics" />
+          </RequireRole>
+        ),
+      },
+      {
+        path: 'tahun-anggaran',
+        element: (
+          <RequireRole roles={BPBD_ROLES}>
+            <FiscalYearsPage />
           </RequireRole>
         ),
       },

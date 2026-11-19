@@ -8,7 +8,10 @@ import {
 import { ApiException } from '../../../common/errors/api-exception';
 import { type FiscalYearRow, FiscalYearsRepository } from './fiscal-years.repository';
 
-export function toFiscalYearDto(row: FiscalYearRow): FiscalYearDto {
+export function toFiscalYearDto(
+  row: FiscalYearRow,
+  copiedFromYear: number | null = null,
+): FiscalYearDto {
   return {
     id: row.id,
     year: row.year,
@@ -17,6 +20,8 @@ export function toFiscalYearDto(row: FiscalYearRow): FiscalYearDto {
     ageReferenceDate: row.ageReferenceDate,
     ageBands: row.ageBands,
     finalizedAt: row.finalizedAt ? row.finalizedAt.toISOString() : null,
+    revisionReason: row.revisionReason,
+    copiedFromYear,
   };
 }
 
@@ -25,7 +30,11 @@ export class FiscalYearsService {
   constructor(private readonly repo: FiscalYearsRepository) {}
 
   async list(): Promise<FiscalYearDto[]> {
-    return (await this.repo.list()).map(toFiscalYearDto);
+    const rows = await this.repo.list();
+    const yearOf = new Map(rows.map((r) => [r.id, r.year]));
+    return rows.map((r) =>
+      toFiscalYearDto(r, r.copiedFromId ? (yearOf.get(r.copiedFromId) ?? null) : null),
+    );
   }
 
   async get(year: number): Promise<FiscalYearRow> {
@@ -41,21 +50,17 @@ export class FiscalYearsService {
     return row;
   }
 
-  async create(input: CreateFiscalYearRequest, actorId: string): Promise<FiscalYearDto> {
-    if (input.copyFrom !== undefined) {
-      // Salin maju diimplementasikan pada US6 (T119).
-      throw new ApiException(501, 'BELUM_TERSEDIA', 'Salin maju dari tahun sebelumnya belum tersedia');
-    }
+  /** Membuka tahun anggaran kosong. Salin maju ditangani CopyForwardService. */
+  async create(input: CreateFiscalYearRequest, actorId: string): Promise<FiscalYearRow> {
     if (await this.repo.findByYear(input.year)) {
       throw ApiException.conflict('TAHUN_SUDAH_ADA', `Tahun anggaran ${input.year} sudah dibuka`);
     }
-    const row = await this.repo.insert({
+    return this.repo.insert({
       year: input.year,
       ageReferenceDate: `${input.year}-12-31`,
       ageBands: DEFAULT_AGE_BANDS,
       createdBy: actorId,
     });
-    return toFiscalYearDto(row);
   }
 
   async updateSettings(year: number, input: FiscalYearSettingsRequest): Promise<FiscalYearDto> {

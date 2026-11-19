@@ -18,7 +18,7 @@ export function AppLayout() {
     { to: '/app', label: 'Beranda', end: true },
     { to: '/app/warga', label: 'Data warga' },
     { to: '/app/impor', label: 'Unggah lembar kerja' },
-    ...(isBpbd ? [{ to: '/app/persetujuan', label: 'Persetujuan' }, { to: '/app/petugas', label: 'Petugas' }, { to: '/app/kejadian', label: 'Kejadian bencana' }, { to: '/app/peralatan', label: 'Peralatan' }, { to: '/app/logistik', label: 'Stok logistik' }] : []),
+    ...(isBpbd ? [{ to: '/app/persetujuan', label: 'Persetujuan' }, { to: '/app/petugas', label: 'Petugas' }, { to: '/app/kejadian', label: 'Kejadian bencana' }, { to: '/app/peralatan', label: 'Peralatan' }, { to: '/app/logistik', label: 'Stok logistik' }, { to: '/app/tahun-anggaran', label: 'Tahun anggaran' }] : []),
     { to: '/app/kelengkapan', label: 'Kelengkapan' },
     { to: '/app/kawasan-rawan', label: 'Kawasan rawan' },
     { to: '/app/rekap', label: 'Rekapitulasi' },

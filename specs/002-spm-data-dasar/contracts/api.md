@@ -84,3 +84,11 @@ S = super_admin. Kolom "Audit" = tercatat di `audit_log`.
 - Tidak ada respons daftar yang memuat NIK atau nomor KK utuh.
 - Setiap baris bertanda "Audit: ya" menghasilkan tepat satu entri audit per permintaan berhasil.
 - `rows` dari sebuah `cell_key` berjumlah sama dengan nilai sel pada permintaan yang sama.
+
+## Catatan implementasi US6
+
+- `POST /fiscal-years/:fy/finalize` mengembalikan `{ year, revisionNo, sha256, status }`; 409
+  `MASIH_ADA_MENUNGGU` bila masih ada baris warga berstatus menunggu, 409 `SUDAH_FINAL` bila sudah final.
+- `GET /fiscal-years/:fy/snapshots/:rev/archive` menyertakan header `X-Content-SHA256`.
+- `POST /fiscal-years` dengan `copyFrom` mengembalikan jumlah baris yang disalin (`copied`).
+- Cuplikan finalisasi dan berkas arsipnya tidak dapat diubah atau dihapus (pemicu basis data).

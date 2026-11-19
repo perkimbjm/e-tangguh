@@ -272,16 +272,16 @@ lagi; arsip revisi sebelumnya tetap dapat diunduh.
 
 ### Tests for User Story 6
 
-- [ ] T115 [P] [US6] Uji integrasi siklus tahun di `apps/api/test/spm/fiscal-year-cycle.int.spec.ts`: finalisasi ditolak bila ada baris `menunggu`; tulis pada tahun final → 423 (layanan) dan ditolak pemicu (SQL langsung); revisi menaikkan `revision_no`; arsip revisi 0 tetap ada; salin maju menyalin warga aktif yang disetujui, kawasan, petugas, inventaris, tidak menyalin kejadian, dan menghitung ulang `age_group`
+- [X] T115 [P] [US6] Uji integrasi siklus tahun di `apps/api/test/spm/fiscal-year-cycle.int.spec.ts`: finalisasi ditolak bila ada baris `menunggu`; tulis pada tahun final → 423 (layanan) dan ditolak pemicu (SQL langsung); revisi menaikkan `revision_no`; arsip revisi 0 tetap ada; salin maju menyalin warga aktif yang disetujui, kawasan, petugas, inventaris, tidak menyalin kejadian, dan menghitung ulang `age_group`
 
 ### Implementation for User Story 6
 
-- [ ] T116 [US6] Buat skema `fiscal_year_snapshots` di `apps/api/src/db/schema/fiscal-year-snapshots.ts` (hanya-tambah): `revision_no`, `reason` (wajib untuk revisi), `recap_json`, `archive_file_id`, `sha256`; migrasi dan pemicu penolak `UPDATE`/`DELETE`
-- [ ] T117 [US6] Implementasikan finalisasi di `apps/api/src/modules/spm/fiscal-years/finalize.service.ts`: periksa tidak ada baris `menunggu`, hasilkan ZIP seluruh ekspor lewat layanan ekspor, simpan cuplikan rekap dan sidik SHA-256, ubah status ke `final` dalam satu transaksi
-- [ ] T118 [US6] Implementasikan revisi di `apps/api/src/modules/spm/fiscal-years/revision.service.ts`: `POST /:fy/revisions` dengan `reason` wajib → status `revisi`, `revision_no + 1`; finalisasi berikutnya membuat cuplikan baru
-- [ ] T119 [US6] Implementasikan salin maju di `apps/api/src/modules/spm/fiscal-years/copy-forward.service.ts`: `INSERT ... SELECT` per tabel dalam satu transaksi sesuai aturan data-model.md
-- [ ] T120 [US6] Lengkapi controller di `apps/api/src/modules/spm/fiscal-years/fiscal-years.controller.ts` dengan `finalize`, `revisions`, `snapshots`, `snapshots/:rev/archive`, dan `copy_from` pada `POST /fiscal-years`
-- [ ] T121 [P] [US6] Buat layar tahun anggaran di `apps/web/src/features/spm/fiscal-years/FiscalYearsPage.tsx`, `FinalizeDialog.tsx`, `RevisionDialog.tsx`, `SnapshotsTable.tsx`
+- [X] T116 [US6] Buat skema `fiscal_year_snapshots` di `apps/api/src/db/schema/fiscal-year-snapshots.ts` (hanya-tambah): `revision_no`, `reason` (wajib untuk revisi), `recap_json`, `archive_file_id`, `sha256`; migrasi dan pemicu penolak `UPDATE`/`DELETE`
+- [X] T117 [US6] Implementasikan finalisasi di `apps/api/src/modules/spm/fiscal-years/finalize.service.ts`: periksa tidak ada baris `menunggu`, hasilkan ZIP seluruh ekspor lewat layanan ekspor, simpan cuplikan rekap dan sidik SHA-256, ubah status ke `final` dalam satu transaksi
+- [X] T118 [US6] Implementasikan revisi di `apps/api/src/modules/spm/fiscal-years/revision.service.ts`: `POST /:fy/revisions` dengan `reason` wajib → status `revisi`, `revision_no + 1`; finalisasi berikutnya membuat cuplikan baru
+- [X] T119 [US6] Implementasikan salin maju di `apps/api/src/modules/spm/fiscal-years/copy-forward.service.ts`: `INSERT ... SELECT` per tabel dalam satu transaksi sesuai aturan data-model.md
+- [X] T120 [US6] Lengkapi controller di `apps/api/src/modules/spm/fiscal-years/fiscal-years.controller.ts` dengan `finalize`, `revisions`, `snapshots`, `snapshots/:rev/archive`, dan `copy_from` pada `POST /fiscal-years`
+- [X] T121 [P] [US6] Buat layar tahun anggaran di `apps/web/src/features/spm/fiscal-years/FiscalYearsPage.tsx`, `FinalizeDialog.tsx`, `RevisionDialog.tsx`, `SnapshotsTable.tsx`
 
 **Checkpoint**: seluruh user story berfungsi (quickstart skenario 14-17)
 

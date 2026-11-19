@@ -5,6 +5,10 @@ import { Form5A1Provider } from './exports/providers/form-5a1.provider';
 import { Form5A2Provider } from './exports/providers/form-5a2.provider';
 import { Form5A5Provider } from './exports/providers/form-5a5.provider';
 import { OfficerImport } from './imports/officer-import';
+import { CopyForwardService } from './fiscal-years/copy-forward.service';
+import { FinalizeService } from './fiscal-years/finalize.service';
+import { FiscalYearsController } from './fiscal-years/fiscal-years.controller';
+import { RevisionService } from './fiscal-years/revision.service';
 import { InventoryProvider } from './exports/providers/inventory.provider';
 import { EquipmentController } from './inventory/equipment.controller';
 import { InventoryRepository } from './inventory/inventory.repository';
@@ -51,6 +55,7 @@ import { ResidentsService } from './residents/residents.service';
 /** Modul SPM sub-urusan bencana (Form 5.A). Tahun anggaran berada di FiscalYearsModule (global). */
 @Module({
   controllers: [
+    FiscalYearsController,
     HazardZonesController,
     // ApprovalController didaftarkan sebelum ResidentsController agar /approve tidak tertangkap /:id.
     ApprovalController,
@@ -102,6 +107,9 @@ import { ResidentsService } from './residents/residents.service';
     InventoryRepository,
     InventoryService,
     InventoryProvider,
+    FinalizeService,
+    RevisionService,
+    CopyForwardService,
     { provide: VolunteerSource, useClass: UnavailableVolunteerSource },
   ],
   exports: [HazardZonesService, ResidentsRepository, RecapService, ExportsService],

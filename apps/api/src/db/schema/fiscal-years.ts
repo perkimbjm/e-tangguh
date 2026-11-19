@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { type AnyPgColumn, check, date, jsonb, pgEnum, pgTable, smallint, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { type AnyPgColumn, check, date, jsonb, pgEnum, pgTable, smallint, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import type { AgeBands } from '@etangguh/shared';
 import { createdBy, id, timestamps } from './_columns';
 import { users } from './users';
@@ -17,6 +17,8 @@ export const fiscalYears = pgTable(
     ageBands: jsonb('age_bands').$type<AgeBands>().notNull(),
     copiedFromId: uuid('copied_from_id').references((): AnyPgColumn => fiscalYears.id),
     finalizedAt: timestamp('finalized_at', { withTimezone: true }),
+    /** Alasan revisi yang sedang berjalan; disalin ke cuplikan saat finalisasi berikutnya. */
+    revisionReason: text('revision_reason'),
     finalizedBy: uuid('finalized_by').references(() => users.id),
     createdBy: createdBy(),
     ...timestamps(),

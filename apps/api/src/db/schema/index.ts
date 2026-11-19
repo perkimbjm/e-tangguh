@@ -21,3 +21,4 @@ export * from './affected-status-history';
 export * from './event-officers';
 export * from './equipment';
 export * from './logistics-stock';
+export * from './fiscal-year-snapshots';

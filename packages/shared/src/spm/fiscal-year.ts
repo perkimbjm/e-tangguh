@@ -30,6 +30,25 @@ export const fiscalYearSettingsSchema = z
   .refine((v) => v.ageReferenceDate !== undefined || v.ageBands !== undefined, 'Tidak ada perubahan');
 export type FiscalYearSettingsRequest = z.infer<typeof fiscalYearSettingsSchema>;
 
+export const revisionSchema = z.object({ reason: z.string().trim().min(10, 'Uraikan alasan revisi (minimal 10 karakter)').max(2000) });
+export type RevisionRequest = z.infer<typeof revisionSchema>;
+
+export interface SnapshotDto {
+  revisionNo: number;
+  reason: string | null;
+  sha256: string;
+  archiveSize: number;
+  createdAt: string;
+  createdBy: string | null;
+}
+
+export interface FinalizeResult {
+  year: number;
+  revisionNo: number;
+  sha256: string;
+  status: FiscalYearStatus;
+}
+
 export interface FiscalYearDto {
   id: string;
   year: number;
@@ -38,4 +57,6 @@ export interface FiscalYearDto {
   ageReferenceDate: string;
   ageBands: { balitaMax: number; anakMax: number; lansiaMin: number };
   finalizedAt: string | null;
+  revisionReason: string | null;
+  copiedFromYear: number | null;
 }
