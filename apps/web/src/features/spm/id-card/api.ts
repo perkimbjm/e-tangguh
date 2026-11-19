@@ -1,4 +1,4 @@
-import type { IdCardDto, IdCardSettings, IdCardVerification } from '@etangguh/shared';
+import type { IdCardDto, IdCardSettings, IdCardVerification, PhotoFrame } from '@etangguh/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { api, apiFetch } from '../../../lib/api-client';
@@ -56,6 +56,11 @@ export function usePhotoMutations(year: number | null, id: string | undefined) {
         body.set('photo', blob, 'foto.webp');
         return apiFetch(`/spm/${year}/officers/${id}/photo`, { method: 'POST', body });
       },
+      onSuccess: done,
+    }),
+    frame: useMutation({
+      mutationFn: (f: PhotoFrame) =>
+        api.put<PhotoFrame>(`/spm/${year}/officers/${id}/photo-frame`, f),
       onSuccess: done,
     }),
     remove: useMutation({

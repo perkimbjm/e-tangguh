@@ -46,6 +46,16 @@ describe('kartu identitas virtual petugas/relawan', () => {
     expect((await op.agent.get(`/api/v1/spm/${y.year}/officers/${id}/id-card`)).body.hasPhoto).toBe(true);
   });
 
+  it('pembingkaian foto disimpan, divalidasi, dan direset saat foto diganti', async () => {
+    const url = `/api/v1/spm/${y.year}/officers/${id}`;
+    expect((await op.agent.get(`${url}/id-card`)).body.photoFrame).toEqual({ x: 50, y: 30, zoom: 1 });
+    await op.agent.put(`${url}/photo-frame`).set('x-csrf-token', op.csrf).send({ x: 40, y: 20, zoom: 4 }).expect(400);
+    await op.agent.put(`${url}/photo-frame`).set('x-csrf-token', op.csrf).send({ x: 40, y: 20, zoom: 1.6 }).expect(200);
+    expect((await op.agent.get(`${url}/id-card`)).body.photoFrame).toEqual({ x: 40, y: 20, zoom: 1.6 });
+    await op.agent.post(`${url}/photo`).set('x-csrf-token', op.csrf).attach('photo', PNG, 'foto.png').expect(200);
+    expect((await op.agent.get(`${url}/id-card`)).body.photoFrame).toEqual({ x: 50, y: 30, zoom: 1 });
+  });
+
   it('verifikasi publik tanpa masuk: nama, jabatan, status berlaku; kode salah → 404', async () => {
     const res = await request(t.app.getHttpServer()).get(`/api/v1/public/verify/${code.toLowerCase()}`).expect(200);
     expect(res.body).toMatchObject({ valid: true, status: 'berlaku', fullName: 'Nadia Relawan Sintetis', positionLabel: 'Relawan kebencanaan', year: y.year, agencyName: 'BPBD Kota Banjarmasin' });

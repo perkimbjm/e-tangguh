@@ -152,13 +152,3 @@ export function Chip() {
   );
 }
 
-/** Garis diagonal oranye khas kartu (aksen warna BPBD). */
-export function AccentStripe({ style }: { style: React.CSSProperties }) {
-  return (
-    <div
-      aria-hidden
-      className="absolute"
-      style={{ background: 'linear-gradient(180deg,#ffb85c,#f7931e 50%,#f26b0f)', ...style }}
-    />
-  );
-}

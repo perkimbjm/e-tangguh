@@ -1,0 +1,1 @@
+ALTER TABLE "officer_records" ADD COLUMN "photo_frame" jsonb;

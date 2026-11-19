@@ -1,4 +1,4 @@
-import { ADMIN_ROLES } from '@etangguh/shared';
+import { ADMIN_ROLES, type PhotoFrame } from '@etangguh/shared';
 import { toPng } from 'html-to-image';
 import {
   ArrowLeft,
@@ -23,6 +23,7 @@ import { IdCardFront } from './IdCardFront';
 import { IdCardSettingsForm } from './IdCardSettingsForm';
 import type { Orientation } from './geometry';
 import { preparePhoto } from './photo';
+import { PhotoFrameEditor } from './PhotoFrameEditor';
 import { useIdCard, usePhotoMutations, usePhotoUrl } from './api';
 
 const ORIENT_KEY = 'etg:kartu-orientasi';
@@ -48,6 +49,7 @@ export function IdCardPage() {
   const back = useRef<HTMLDivElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
+  const [draft, setDraft] = useState<PhotoFrame | null>(null);
 
   useEffect(() => {
     if (!card) return;
@@ -74,6 +76,7 @@ export function IdCardPage() {
       const blob = await preparePhoto(f);
       await photo.upload.mutateAsync(blob);
       setVersion((v) => v + 1);
+      setDraft(null);
       toast(`Foto tersimpan (${Math.round(blob.size / 1024)} KB)`, 'sukses');
     } catch (e) {
       toast(
@@ -111,7 +114,16 @@ export function IdCardPage() {
         {(error as Error)?.message ?? 'Kartu tidak tersedia'}
       </p>
     );
-  const faces = { card, orientation, photoUrl, qrSvg };
+  const frame = draft ?? card.photoFrame;
+  const faces = { card, orientation, photoUrl, qrSvg, frame };
+  const saveFrame = () =>
+    photo.frame.mutate(frame, {
+      onSuccess: () => {
+        setDraft(null);
+        toast('Pengaturan foto tersimpan', 'sukses');
+      },
+      onError: (e) => toast(e.message, 'galat'),
+    });
   const btn =
     'inline-flex h-10 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium hover:bg-slate-50 disabled:opacity-50';
 
@@ -218,10 +230,22 @@ export function IdCardPage() {
           <Download className="h-4 w-4" aria-hidden /> Unduh belakang (PNG)
         </button>
         <p className="w-full text-xs text-slate-500">
-          Foto dipotong 4:5 dan dipadatkan di perangkat Anda (≤ 40 KB) sebelum diunggah. PNG
-          diekspor ±450 dpi; cetak pada skala 100% untuk ukuran asli 85,6 × 54 mm.
+          Foto kasual close-up atau separuh badan dipadatkan di perangkat Anda (≤ 150 KB) sebelum
+          diunggah. PNG diekspor ±450 dpi; cetak pada skala 100% untuk ukuran asli 85,6 × 54 mm.
         </p>
       </div>
+
+      {card.hasPhoto && photoUrl && (
+        <PhotoFrameEditor
+          value={frame}
+          dirty={draft !== null}
+          saving={photo.frame.isPending}
+          disabled={locked}
+          onChange={setDraft}
+          onSave={saveFrame}
+          onReset={() => setDraft(null)}
+        />
+      )}
 
       {user && (ADMIN_ROLES as readonly string[]).includes(user.role) && (
         <div className="print:hidden">

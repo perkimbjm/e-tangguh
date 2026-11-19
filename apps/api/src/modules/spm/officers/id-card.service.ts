@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import {
   DEFAULT_ID_CARD_SETTINGS,
+  DEFAULT_PHOTO_FRAME,
   EMPLOYMENT_LABEL,
   HAZARDS,
   type IdCardDto,
   type IdCardSettings,
   type IdCardVerification,
+  type PhotoFrame,
   POSITION_LABEL,
   type SessionUser,
   formatCardNumber,
   idCardSettingsSchema,
+  photoFrameSchema,
 } from '@etangguh/shared';
 import { and, eq } from 'drizzle-orm';
 import { randomBytes } from 'node:crypto';
@@ -125,6 +128,7 @@ export class IdCardService {
       cardNumber: formatCardNumber(fy.year, code),
       issuedAt: (issuedAt ?? new Date()).toISOString(),
       hasPhoto: Boolean(o.photoFileId),
+      photoFrame: photoFrameSchema.safeParse(o.photoFrame).data ?? DEFAULT_PHOTO_FRAME,
       settings: await this.settings(),
     };
   }
@@ -148,12 +152,26 @@ export class IdCardService {
     await this.db
       .executor()
       .update(officerRecords)
-      .set({ photoFileId: file.id })
+      .set({ photoFileId: file.id, photoFrame: null })
       .where(eq(officerRecords.id, id));
     AuditContext.annotate({ entityId: id, detail: { photoSize: file.size } });
     // Foto lama yang tidak lagi dirujuk tahun anggaran mana pun dihapus.
     if (o.photoFileId) await this.removeIfUnused(o.photoFileId);
     return { hasPhoto: true };
+  }
+
+  /** Menyimpan pembingkaian foto (fokus + perbesaran) untuk kartu tahun ini. */
+  async setPhotoFrame(year: number, id: string, frame: PhotoFrame): Promise<PhotoFrame> {
+    const { fy, o } = await this.officer(year, id);
+    if (fy.status === 'final') throw ApiException.yearLocked(year);
+    if (!o.photoFileId) throw ApiException.validation({ photo: 'Unggah foto terlebih dahulu' });
+    await this.db
+      .executor()
+      .update(officerRecords)
+      .set({ photoFrame: frame })
+      .where(eq(officerRecords.id, id));
+    AuditContext.annotate({ entityId: id, detail: frame });
+    return frame;
   }
 
   async removePhoto(year: number, id: string): Promise<void> {
@@ -163,7 +181,7 @@ export class IdCardService {
     await this.db
       .executor()
       .update(officerRecords)
-      .set({ photoFileId: null })
+      .set({ photoFileId: null, photoFrame: null })
       .where(eq(officerRecords.id, id));
     await this.removeIfUnused(o.photoFileId);
   }

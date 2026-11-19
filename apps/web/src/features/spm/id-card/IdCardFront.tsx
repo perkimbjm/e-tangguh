@@ -1,7 +1,7 @@
-import type { IdCardDto } from '@etangguh/shared';
-import { AccentStripe, CardBackground, Chip, HoloStrip, Shield, THEME } from './CardArt';
+import { DEFAULT_PHOTO_FRAME, type IdCardDto, type PhotoFrame } from '@etangguh/shared';
+import { CardBackground, Chip, Shield, THEME } from './CardArt';
 import { type Orientation, size } from './geometry';
-import { Photo } from './Photo';
+import { HeroPhoto } from './HeroPhoto';
 
 const fmtDate = (iso: string) =>
   new Date(`${iso}T00:00:00`).toLocaleDateString('id-ID', {
@@ -16,6 +16,8 @@ export interface FaceProps {
   photoUrl: string | null;
   qrSvg?: string;
   seed?: number;
+  /** Pembingkaian foto sementara (pratinjau editor); bawaan dari data kartu. */
+  frame?: PhotoFrame;
 }
 
 function Ribbon({ card }: { card: IdCardDto }) {
@@ -61,11 +63,47 @@ function Duties({ card }: { card: IdCardDto }) {
   );
 }
 
-/** Sisi depan kartu identitas: identitas, kategori, wilayah tugas, nomor, masa berlaku. */
-export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps) {
-  const { w, h } = size(orientation);
+function Identity({ card, center = false }: { card: IdCardDto; center?: boolean }) {
   const t = THEME[card.category];
+  return (
+    <div className={center ? 'text-center' : ''}>
+      <p className="text-[13px] font-extrabold leading-[1.08] tracking-tight">{card.fullName}</p>
+      <p className="mt-[3px] text-[7.4px] font-semibold" style={{ color: t.accentSoft }}>
+        {card.positionLabel}
+      </p>
+      <p className="text-[6.4px] text-[#d3e4ff]">
+        {card.dutyKelurahanName
+          ? `Wilayah tugas · Kel. ${card.dutyKelurahanName}`
+          : card.employmentLabel}
+      </p>
+    </div>
+  );
+}
+
+function CardNumber({ card }: { card: IdCardDto }) {
+  return (
+    <div>
+      <p className="text-[5.2px] uppercase tracking-[0.2em] text-[#ffb85c]">No. kartu</p>
+      <p className="font-mono text-[7.6px] font-bold tracking-[0.06em]">{card.cardNumber}</p>
+      <p className="text-[5.6px] text-[#d3e4ff]">Berlaku s.d. {fmtDate(card.validUntil)}</p>
+    </div>
+  );
+}
+
+/** Sisi depan kartu identitas: foto kasual besar berlapis kurva vektor, identitas, dan nomor. */
+export function IdCardFront({ card, orientation, photoUrl, seed = 1, frame }: FaceProps) {
+  const { w, h } = size(orientation);
   const landscape = orientation === 'landscape';
+  const hero = (
+    <HeroPhoto
+      url={photoUrl}
+      initials={card.initials}
+      frame={frame ?? card.photoFrame ?? DEFAULT_PHOTO_FRAME}
+      category={card.category}
+      orientation={orientation}
+      year={card.year}
+    />
+  );
   return (
     <div
       className="etg-card relative overflow-hidden text-white"
@@ -77,113 +115,42 @@ export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps
       }}
     >
       <CardBackground w={w} h={h} category={card.category} seed={seed} />
-      <AccentStripe
-        style={
-          landscape
-            ? { right: 52, top: -20, width: 3, height: h + 40, transform: 'rotate(14deg)' }
-            : { right: 36, top: -20, width: 2.5, height: h + 40, transform: 'rotate(10deg)' }
-        }
-      />
-      <HoloStrip
-        style={
-          landscape
-            ? { right: 34, top: -20, width: 9, height: h + 40, transform: 'rotate(14deg)' }
-            : { right: 22, top: -20, width: 8, height: h + 40, transform: 'rotate(10deg)' }
-        }
-      />
+      {hero}
       {landscape ? (
-        <div className="absolute inset-0 flex flex-col p-[11px]">
-          <div className="flex items-start justify-between">
+        <>
+          <div className="absolute right-[11px] top-[11px]">
+            <Ribbon card={card} />
+          </div>
+          <div className="absolute bottom-[11px] left-[11px] top-[11px] flex w-[166px] flex-col">
             <Header card={card} />
-            <Ribbon card={card} />
-          </div>
-          <div className="mt-[9px] flex flex-1 gap-[10px]">
-            <div className="flex flex-col items-center gap-[4px]">
-              <Photo
-                url={photoUrl}
-                initials={card.initials}
-                w={72}
-                h={90}
-                category={card.category}
-              />
-              <span
-                className="text-[6px] font-bold tracking-[0.18em]"
-                style={{ color: t.accentSoft }}
-              >
-                TA {card.year}
-              </span>
+            <p className="mt-[16px] text-[5.6px] font-semibold uppercase tracking-[0.2em] text-[#ffb85c]">
+              Nama
+            </p>
+            <Identity card={card} />
+            <div className="mt-[6px]">
+              <Duties card={card} />
             </div>
-            <div className="flex min-w-0 flex-1 flex-col">
-              <p className="text-[5.6px] font-semibold uppercase tracking-[0.2em] text-[#ffb85c]">
-                Nama
-              </p>
-              <p className="text-[13px] font-extrabold leading-[1.1] tracking-tight">
-                {card.fullName}
-              </p>
-              <p className="mt-[3px] text-[7.4px] font-semibold" style={{ color: t.accentSoft }}>
-                {card.positionLabel}
-              </p>
-              <p className="text-[6.4px] text-[#d3e4ff]">
-                {card.dutyKelurahanName
-                  ? `Wilayah tugas · Kel. ${card.dutyKelurahanName}`
-                  : card.employmentLabel}
-              </p>
-              <div className="mt-[5px]">
-                <Duties card={card} />
-              </div>
-              <div className="mt-auto flex items-end justify-between">
-                <div>
-                  <p className="text-[5.2px] uppercase tracking-[0.2em] text-[#ffb85c]">
-                    No. kartu
-                  </p>
-                  <p className="font-mono text-[7.6px] font-bold tracking-[0.06em]">
-                    {card.cardNumber}
-                  </p>
-                  <p className="text-[5.6px] text-[#d3e4ff]">
-                    Berlaku s.d. {fmtDate(card.validUntil)}
-                  </p>
-                </div>
-                <Chip />
-              </div>
+            <div className="mt-auto flex items-end justify-between pr-[10px]">
+              <CardNumber card={card} />
+              <Chip />
             </div>
           </div>
-        </div>
+        </>
       ) : (
-        <div className="absolute inset-0 flex flex-col items-center p-[11px] text-center">
+        <div className="absolute inset-0 flex flex-col p-[11px]">
           <Header card={card} />
-          <div className="mt-[8px]">
+          <div className="mt-[165px]">
             <Ribbon card={card} />
           </div>
-          <div className="mt-[10px]">
-            <Photo
-              url={photoUrl}
-              initials={card.initials}
-              w={92}
-              h={112}
-              category={card.category}
-              radius={14}
-            />
+          <div className="mt-[5px]">
+            <Identity card={card} />
           </div>
-          <p className="mt-[8px] text-[13px] font-extrabold leading-[1.1] tracking-tight">
-            {card.fullName}
-          </p>
-          <p className="mt-[2px] text-[7.4px] font-semibold" style={{ color: t.accentSoft }}>
-            {card.positionLabel}
-          </p>
-          <p className="text-[6.4px] text-[#d3e4ff]">
-            {card.dutyKelurahanName
-              ? `Wilayah tugas · Kel. ${card.dutyKelurahanName}`
-              : card.employmentLabel}
-          </p>
-          <div className="mt-[6px] flex justify-center">
+          <div className="mt-[4px]">
             <Duties card={card} />
           </div>
-          <div className="mt-auto w-full rounded-[6px] border border-white/15 bg-black/20 px-[7px] py-[5px] text-left">
-            <p className="text-[5.2px] uppercase tracking-[0.2em] text-[#ffb85c]">
-              No. kartu · TA {card.year}
-            </p>
-            <p className="font-mono text-[7.6px] font-bold tracking-[0.06em]">{card.cardNumber}</p>
-            <p className="text-[5.6px] text-[#d3e4ff]">Berlaku s.d. {fmtDate(card.validUntil)}</p>
+          <div className="mt-auto flex items-end justify-between rounded-[6px] border border-white/15 bg-black/20 px-[7px] py-[4px]">
+            <CardNumber card={card} />
+            <Chip />
           </div>
         </div>
       )}

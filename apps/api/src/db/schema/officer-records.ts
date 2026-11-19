@@ -1,6 +1,6 @@
 import { EMPLOYMENT_STATUSES, OFFICER_POSITIONS, POST_TYPES } from '@etangguh/shared';
 import { sql } from 'drizzle-orm';
-import { boolean, check, index, pgEnum, pgTable, smallint, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
+import { boolean, check, index, jsonb, pgEnum, pgTable, smallint, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
 import { createdBy, id, timestamps } from './_columns';
 import { files } from './files';
 import { fiscalYears } from './fiscal-years';
@@ -38,6 +38,8 @@ export const officerRecords = pgTable(
     /** Kode verifikasi kartu identitas, acak dan unik; dibuat saat kartu pertama diterbitkan. */
     cardCode: text('card_code').unique(),
     cardIssuedAt: timestamp('card_issued_at', { withTimezone: true }),
+    /** Pembingkaian foto pada kartu: { x, y, zoom } (lihat photoFrameSchema). */
+    photoFrame: jsonb('photo_frame').$type<{ x: number; y: number; zoom: number }>(),
     createdBy: createdBy(),
     ...timestamps(),
   },

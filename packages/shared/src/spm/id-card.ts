@@ -11,6 +11,18 @@ export const idCardSettingsSchema = z.object({
 export type IdCardSettings = z.infer<typeof idCardSettingsSchema>;
 export const DEFAULT_ID_CARD_SETTINGS: IdCardSettings = { agencyName: 'BPBD Kota Banjarmasin', hotline: null, address: null, signatoryTitle: null, signatoryName: null };
 
+/**
+ * Pembingkaian foto pada kartu: titik fokus (persen) dan perbesaran.
+ * Memungkinkan foto close-up maupun separuh badan tanpa memotong berkas aslinya.
+ */
+export const photoFrameSchema = z.object({
+  x: z.number().min(0).max(100),
+  y: z.number().min(0).max(100),
+  zoom: z.number().min(1).max(2.5),
+});
+export type PhotoFrame = z.infer<typeof photoFrameSchema>;
+export const DEFAULT_PHOTO_FRAME: PhotoFrame = { x: 50, y: 30, zoom: 1 };
+
 /** Kategori kartu: relawan (jabatan relawan) atau petugas/aparatur (lainnya). */
 export type IdCardCategory = 'relawan' | 'petugas';
 
@@ -31,6 +43,7 @@ export interface IdCardDto {
   cardNumber: string;
   issuedAt: string;
   hasPhoto: boolean;
+  photoFrame: PhotoFrame;
   settings: IdCardSettings;
 }
 

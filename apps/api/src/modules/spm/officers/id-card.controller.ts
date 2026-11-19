@@ -20,6 +20,8 @@ import {
   BPBD_ROLES,
   idCardSettingsSchema,
   type IdCardSettings,
+  type PhotoFrame,
+  photoFrameSchema,
   type SessionUser,
 } from '@etangguh/shared';
 import type { Response } from 'express';
@@ -67,6 +69,17 @@ export class IdCardController {
     @UploadedFile() file: { buffer: Buffer } | undefined,
   ) {
     return this.service.setPhoto(fy, id, file?.buffer, user);
+  }
+
+  @Roles(...BPBD_ROLES)
+  @Put('spm/:fy/officers/:id/photo-frame')
+  @Audit('officer.photo_frame', 'officer_records')
+  photoFrame(
+    @Param('fy', ParseIntPipe) fy: number,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(new ZodValidationPipe(photoFrameSchema)) body: PhotoFrame,
+  ) {
+    return this.service.setPhotoFrame(fy, id, body);
   }
 
   @Roles(...BPBD_ROLES)

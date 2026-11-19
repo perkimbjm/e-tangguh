@@ -82,9 +82,9 @@ export class CopyForwardService {
 
     const officers = await run(sql`
       INSERT INTO officer_records (fiscal_year_id, person_id, volunteer_id, position, employment_status, duty_kelurahan_id, certifications,
-        is_trc_klb, is_trc_pdb, is_ppe, is_ops, post_type, post_kelurahan_id, hazard_mask, note, photo_file_id, created_by)
+        is_trc_klb, is_trc_pdb, is_ppe, is_ops, post_type, post_kelurahan_id, hazard_mask, note, photo_file_id, photo_frame, created_by)
       SELECT ${fy.id}, person_id, volunteer_id, position, employment_status, duty_kelurahan_id, certifications,
-        is_trc_klb, is_trc_pdb, is_ppe, is_ops, post_type, post_kelurahan_id, hazard_mask, note, photo_file_id, ${user.id}
+        is_trc_klb, is_trc_pdb, is_ppe, is_ops, post_type, post_kelurahan_id, hazard_mask, note, photo_file_id, photo_frame, ${user.id}
       FROM officer_records WHERE fiscal_year_id = ${src.id}`);
 
     const inv = (table: 'equipment' | 'logistics_stock', extra: string) =>
