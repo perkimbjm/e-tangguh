@@ -1,7 +1,8 @@
 import { EMPLOYMENT_STATUSES, OFFICER_POSITIONS, POST_TYPES } from '@etangguh/shared';
 import { sql } from 'drizzle-orm';
-import { boolean, check, index, pgEnum, pgTable, smallint, text, unique, uuid } from 'drizzle-orm/pg-core';
+import { boolean, check, index, pgEnum, pgTable, smallint, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
 import { createdBy, id, timestamps } from './_columns';
+import { files } from './files';
 import { fiscalYears } from './fiscal-years';
 import { persons } from './persons';
 import { regions } from './regions';
@@ -32,6 +33,11 @@ export const officerRecords = pgTable(
     hazardMask: smallint('hazard_mask').notNull().default(0),
     note: text('note'),
     importBatchId: uuid('import_batch_id'),
+    /** Foto profil kartu identitas (berkas jenis `foto`). */
+    photoFileId: uuid('photo_file_id').references(() => files.id),
+    /** Kode verifikasi kartu identitas, acak dan unik; dibuat saat kartu pertama diterbitkan. */
+    cardCode: text('card_code').unique(),
+    cardIssuedAt: timestamp('card_issued_at', { withTimezone: true }),
     createdBy: createdBy(),
     ...timestamps(),
   },

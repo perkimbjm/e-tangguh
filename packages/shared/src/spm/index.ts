@@ -17,3 +17,4 @@ export * from './emergency-status';
 export * from './events';
 export * from './inventory';
 export * from './dashboard';
+export * from './id-card';

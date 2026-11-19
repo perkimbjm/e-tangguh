@@ -9,6 +9,8 @@ import { EventDetailPage } from '../features/spm/events/EventDetailPage';
 import { EventsPage } from '../features/spm/events/EventsPage';
 import { InventoryPage } from '../features/spm/inventory/InventoryPage';
 import { FiscalYearsPage } from '../features/spm/fiscal-years/FiscalYearsPage';
+import { IdCardPage } from '../features/spm/id-card/IdCardPage';
+import { VerifyPage } from '../features/spm/id-card/VerifyPage';
 import { OfficerComparePage } from '../features/spm/officers/OfficerComparePage';
 import { OfficerDetailPage } from '../features/spm/officers/OfficerDetailPage';
 import { OfficersPage } from '../features/spm/officers/OfficersPage';
@@ -24,6 +26,7 @@ import { RequireRole } from './RequireRole';
 export const router = createBrowserRouter([
   { path: '/', element: <LandingPage /> },
   { path: '/masuk', element: <LoginPage /> },
+  { path: '/verifikasi/:code', element: <VerifyPage /> },
   {
     path: '/app',
     element: (
@@ -44,6 +47,14 @@ export const router = createBrowserRouter([
         element: (
           <RequireRole roles={BPBD_ROLES}>
             <OfficerComparePage />
+          </RequireRole>
+        ),
+      },
+      {
+        path: 'petugas/:id/kartu',
+        element: (
+          <RequireRole roles={BPBD_ROLES}>
+            <IdCardPage />
           </RequireRole>
         ),
       },

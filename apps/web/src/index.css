@@ -20,3 +20,29 @@ html {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Kartu identitas: kilau hologram, bayangan pratinjau, wadah ekspor/cetak berukuran asli. */
+@keyframes etg-holo {
+  0% { background-position: 0 120%; }
+  100% { background-position: 0 -120%; }
+}
+.etg-holo { animation: etg-holo 5s linear infinite; }
+.etg-exporting .etg-holo { animation: none; background-position: 0 40%; }
+@media (prefers-reduced-motion: reduce) {
+  .etg-holo { animation: none; background-position: 0 40%; }
+}
+.etg-card-shadow { box-shadow: 0 24px 50px -18px rgba(4, 34, 43, 0.55), 0 0 0 1px rgba(4, 34, 43, 0.08); }
+.etg-print-area { position: fixed; left: -10000px; top: 0; pointer-events: none; }
+.etg-print-sheet { display: flex; gap: 10mm; flex-wrap: wrap; }
+.etg-print-item { display: flex; flex-direction: column; align-items: center; gap: 2mm; font-size: 8pt; color: #475569; }
+.etg-print-item > div { outline: 0.2mm dashed #94a3b8; outline-offset: 1.5mm; border-radius: 12px; }
+.etg-print-note { margin-top: 6mm; font-size: 8pt; color: #64748b; }
+@media print {
+  @page { size: A4; margin: 15mm; }
+  html, body, #root { background: #fff !important; }
+  body * { visibility: hidden; }
+  .etg-print-area, .etg-print-area * { visibility: visible; }
+  .etg-print-area { position: absolute; left: 0; top: 0; }
+  .etg-card, .etg-card * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .etg-holo { animation: none; background-position: 0 40%; }
+}

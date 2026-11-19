@@ -1,5 +1,5 @@
 import { ATTRIBUTE_CODES, ATTRIBUTE_LABEL, variationLabel } from '@etangguh/shared';
-import { ArrowLeft, Info } from 'lucide-react';
+import { ArrowLeft, IdCard, Info } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { RadarChart } from '../../../components/charts/RadarChart';
 import { useFiscalYear } from '../../../lib/fiscal-year';
@@ -36,6 +36,12 @@ export function OfficerDetailPage() {
       <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
         <div className="space-y-4">
           <OfficerCard card={card} year={year} />
+          <Link
+            to={`/app/petugas/${card.id}/kartu?ta=${year}`}
+            className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-senja-400 to-senja-300 font-bold text-sungai-950 shadow-md hover:brightness-105"
+          >
+            <IdCard className="h-5 w-5" aria-hidden /> Kartu identitas digital
+          </Link>
           <dl className="grid grid-cols-3 gap-2 rounded-2xl border border-slate-200 bg-white p-4 text-center">
             <div>
               <dt className="text-xs text-slate-500">Sertifikat</dt>
