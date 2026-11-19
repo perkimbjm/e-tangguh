@@ -14,6 +14,15 @@ export interface ResidentFilter {
   /** Kelompok umur rentan = selain dewasa. */
   vulnerableAge?: boolean;
   isFamilyHead?: boolean;
+  /** Khusus ukuran `officers`: `kelurahanId` = kelurahan wilayah tugas, `hazardBit` = jenis bencana yang ditangani. */
+  employmentStatus?: 'pns' | 'tni' | 'polri' | 'satlinmas' | 'kontrak' | 'non_aparatur';
+  position?: 'kasi_trantibumlinmas' | 'babinsa' | 'bhabinkamtibmas' | 'linmas' | 'relawan' | 'lainnya';
+  isTrcPdb?: boolean;
+  isTrcKlb?: boolean;
+  isPpe?: boolean;
+  isOps?: boolean;
+  /** Petugas dengan minimal satu penugasan (TRC PDB, TRC KLB, PPE, operasi). */
+  anyDuty?: boolean;
 }
 
 /** `persons` = jumlah warga; `families` = KK berbeda; `zoneKelurahan` = kelurahan berbeda pada kawasan rawan; `officers` = petugas (US3). */

@@ -19,6 +19,7 @@ import { RegionsRepository, normalizeRegionName } from '../../regions/regions.re
 import type { FiscalYearRow } from '../fiscal-years/fiscal-years.repository';
 import { FiscalYearsService } from '../fiscal-years/fiscal-years.service';
 import { HazardImportValidator } from './hazard-import.validator';
+import { OfficerImport } from './officer-import';
 import { ImportApply } from './import-apply';
 import { ImportCleanup } from './import-cleanup';
 import { ImportValidator, type ValidationResult } from './import-validator';
@@ -38,17 +39,19 @@ export class ImportsService {
     private readonly regions: RegionsRepository,
     private readonly validator: ImportValidator,
     private readonly hazardValidator: HazardImportValidator,
+    private readonly officerImport: OfficerImport,
     private readonly apply: ImportApply,
     private readonly cleanup: ImportCleanup,
     private readonly cipher: FieldCipher,
   ) {}
 
   private formCode(code: string): ImportFormCode {
-    if (!(IMPORT_FORM_CODES as readonly string[]).includes(code)) throw ApiException.validation({ formCode: 'Formulir impor harus 5.A.1 atau 5.A.2' });
+    if (!(IMPORT_FORM_CODES as readonly string[]).includes(code)) throw ApiException.validation({ formCode: 'Formulir impor harus 5.A.1, 5.A.2, atau 5.A.5' });
     return code as ImportFormCode;
   }
 
   private runValidation(formCode: ImportFormCode, rows: { rowNumber: number; values: Record<string, CellValue> }[], fy: FiscalYearRow, user: SessionUser, choices: RegionChoice[]) {
+    if (formCode === '5.A.5') return this.officerImport.validate(rows, fy, user, choices);
     return formCode === '5.A.1' ? this.validator.validateResidents(rows, fy, user, choices) : this.hazardValidator.validate(rows, fy, user);
   }
 
@@ -79,6 +82,8 @@ export class ImportsService {
 
   async upload(year: number, formCodeRaw: string, file: { buffer: Buffer; originalname?: string } | undefined, sheetName: string | undefined, user: SessionUser): Promise<ImportPreview> {
     const formCode = this.formCode(formCodeRaw);
+    // Data petugas hanya untuk peran BPBD (contracts/api.md).
+    if (formCode === '5.A.5' && user.role === 'pendata_kelurahan') throw ApiException.forbidden('Impor petugas hanya untuk peran BPBD');
     const fy = await this.years.assertWritable(year);
     if (!file?.buffer?.length) throw ApiException.validation({ file: 'Pilih berkas .xlsx' });
     const stored = await this.files.save({ data: file.buffer, kind: 'impor', ownerUserId: user.id, allowed: [XLSX], maxBytes: IMPORT_MAX_BYTES });
@@ -180,6 +185,7 @@ export class ImportsService {
     const idByRow = new Map(stored.map((s) => [s.rowNumber, s.id]));
     const withIds = result.rows.map((r) => ({ ...r, id: idByRow.get(r.rowNumber)! }));
     if (batch.formCode === '5.A.1') await this.apply.applyResidents(withIds, batch, fy, user);
+    else if (batch.formCode === '5.A.5') await this.officerImport.apply(result.rows, batch, fy, user);
     else await this.apply.applyHazards(result.rows, batch, user);
     await this.cleanup.purgeBatch(batch.id, batch.fileId);
     const done = await this.repo.updateBatch(batch.id, { status: 'dikonfirmasi', confirmedAt: new Date() });

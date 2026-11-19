@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { HazardZoneDto } from '@etangguh/shared';
-import { and, asc, eq } from 'drizzle-orm';
+import { and, asc, eq, sql } from 'drizzle-orm';
 import { DbService } from '../../../db/db.module';
 import { hazardZones, regions } from '../../../db/schema';
 
@@ -60,6 +60,16 @@ export class HazardZonesRepository {
 
   async delete(id: string): Promise<void> {
     await this.db.executor().delete(hazardZones).where(eq(hazardZones.id, id));
+  }
+
+  /** Gabungan jenis bencana seluruh kawasan rawan di satu kelurahan (bawaan jenis bencana petugas). */
+  async maskUnion(fiscalYearId: string, kelurahanId: string): Promise<number> {
+    const [row] = await this.db
+      .executor()
+      .select({ m: sql<number>`coalesce(bit_or(${hazardZones.hazardMask}), 0)` })
+      .from(hazardZones)
+      .where(and(eq(hazardZones.fiscalYearId, fiscalYearId), eq(hazardZones.kelurahanId, kelurahanId)));
+    return Number(row?.m ?? 0);
   }
 
   /** Memuat seluruh kawasan satu tahun sekali; dipakai validasi impor ribuan baris. */

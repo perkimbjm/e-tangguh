@@ -36,6 +36,13 @@
       "when": 1795060980602,
       "tag": "0004_import_region_choices",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795066841837,
+      "tag": "0005_spm_officers",
+      "breakpoints": true
     }
   ]
 }

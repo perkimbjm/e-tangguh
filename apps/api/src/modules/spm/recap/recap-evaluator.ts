@@ -1,8 +1,8 @@
 import type { CellDefinition, MeasureCell, RecapContext, RecapSpec } from '@etangguh/shared';
 
 import type { DbService } from '../../../db/db.module';
-import { hazardZones, residentRecords } from '../../../db/schema';
-import { compileResidentFilter, compileZoneFilter, filterSignature, measureExpr, residentBase, zoneBase } from './recap-query.builder';
+import { hazardZones, officerRecords, residentRecords } from '../../../db/schema';
+import { compileOfficerFilter, compileResidentFilter, compileZoneFilter, filterSignature, measureExpr, officerBase, residentBase, zoneBase } from './recap-query.builder';
 
 type Measured = CellDefinition & MeasureCell;
 
@@ -14,13 +14,17 @@ export async function evaluateMeasures(db: DbService, cells: Measured[], fiscalY
   const values = new Map<string, number>();
   const key = (c: { rowKey: string; colKey: string }) => `${c.rowKey}|${c.colKey}`;
 
-  for (const source of ['residents', 'zones'] as const) {
-    const relevant = cells.filter((c) => c.measure !== 'officers' && (c.measure === 'zoneKelurahan') === (source === 'zones'));
+  const sources = {
+    residents: { table: residentRecords, base: residentBase(fiscalYearId, scope), compile: compileResidentFilter, kelCol: residentRecords.kelurahanId },
+    zones: { table: hazardZones, base: zoneBase(fiscalYearId, scope), compile: compileZoneFilter, kelCol: hazardZones.kelurahanId },
+    officers: { table: officerRecords, base: officerBase(fiscalYearId, scope), compile: compileOfficerFilter, kelCol: officerRecords.dutyKelurahanId },
+  } as const;
+  const sourceOf = (c: Measured) => (c.measure === 'zoneKelurahan' ? 'zones' : c.measure === 'officers' ? 'officers' : 'residents');
+
+  for (const source of ['residents', 'zones', 'officers'] as const) {
+    const relevant = cells.filter((c) => sourceOf(c) === source);
     if (!relevant.length) continue;
-    const table = source === 'zones' ? hazardZones : residentRecords;
-    const base = source === 'zones' ? zoneBase(fiscalYearId, scope) : residentBase(fiscalYearId, scope);
-    const compile = source === 'zones' ? compileZoneFilter : compileResidentFilter;
-    const kelCol = source === 'zones' ? hazardZones.kelurahanId : residentRecords.kelurahanId;
+    const { table, base, compile, kelCol } = sources[source];
 
     // Dikelompokkan per kelurahan.
     const grouped = relevant.filter((c) => c.filter.kelurahanId !== undefined);
@@ -50,7 +54,6 @@ export async function evaluateMeasures(db: DbService, cells: Measured[], fiscalY
       flat.forEach((c, i) => values.set(key(c), Number(row?.[`m${i}`] ?? 0)));
     }
   }
-  for (const c of cells) if (c.measure === 'officers') values.set(key(c), 0);
   return values;
 }
 

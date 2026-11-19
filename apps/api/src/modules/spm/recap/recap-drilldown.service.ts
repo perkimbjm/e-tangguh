@@ -7,6 +7,8 @@ import {
   RECAP_SPECS,
   type RecapContext,
   type SessionUser,
+  EMPLOYMENT_LABEL,
+  POSITION_LABEL,
   decodeCellKey,
   maskIdNumber,
 } from '@etangguh/shared';
@@ -14,11 +16,11 @@ import { and, asc, eq, sql } from 'drizzle-orm';
 import { ApiException } from '../../../common/errors/api-exception';
 import { KelurahanScope } from '../../../common/guards/kelurahan-scope';
 import { DbService } from '../../../db/db.module';
-import { families, hazardZones, persons, regions, residentRecords } from '../../../db/schema';
+import { families, hazardZones, officerRecords, persons, regions, residentRecords } from '../../../db/schema';
 import { AuditContext } from '../../audit/audit-context';
 import { FiscalYearsService } from '../fiscal-years/fiscal-years.service';
 import { RecapContextLoader } from './recap-context';
-import { compileResidentFilter, compileZoneFilter, residentBase, zoneBase } from './recap-query.builder';
+import { compileOfficerFilter, compileResidentFilter, compileZoneFilter, officerBase, residentBase, zoneBase } from './recap-query.builder';
 
 const LIMIT = 2000;
 
@@ -41,6 +43,8 @@ export class RecapDrilldownService {
     const spec = RECAP_SPECS[decoded.formCode];
     const def = spec.cell(decoded.rowKey, decoded.colKey, ctx);
     if (!def) throw ApiException.notFound('Sel ini bukan angka');
+    // Daftar petugas hanya untuk peran BPBD (data-model.md, tabel visibilitas).
+    if (scope && this.involvesOfficers(def, ctx)) throw ApiException.forbidden('Daftar petugas hanya dapat dibuka peran BPBD');
 
     const rows: DrillRow[] = [];
     const total = await this.collect(def, ctx, fy.id, scope, rows, undefined);
@@ -60,6 +64,14 @@ export class RecapDrilldownService {
     const rows = await this.measureRows(def, fyId, scope);
     for (const r of rows) out.push(component ? { ...r, component } : r);
     return rows.length;
+  }
+
+  private involvesOfficers(def: CellDefinition, ctx: RecapContext): boolean {
+    if (def.kind === 'measure') return def.measure === 'officers';
+    return def.parts.some((p) => {
+      const part = RECAP_SPECS[def.formCode].cell(p.rowKey, p.colKey, ctx);
+      return part ? this.involvesOfficers(part, ctx) : false;
+    });
   }
 
   private componentLabel(rowKey: string, colKey: string, ctx: RecapContext): string {
@@ -106,8 +118,16 @@ export class RecapDrilldownService {
           .orderBy(asc(regions.name));
         return rows.map((r) => ({ key: r.id, label: r.name, detail: 'Kelurahan dengan kawasan rawan jenis bencana ini' }));
       }
-      case 'officers':
-        return [];
+      case 'officers': {
+        const rows = await db
+          .select({ id: officerRecords.id, name: persons.fullName, position: officerRecords.position, status: officerRecords.employmentStatus, kel: regions.name })
+          .from(officerRecords)
+          .innerJoin(persons, eq(persons.id, officerRecords.personId))
+          .leftJoin(regions, eq(regions.id, officerRecords.dutyKelurahanId))
+          .where(and(officerBase(fyId, scope), compileOfficerFilter(def.filter)))
+          .orderBy(asc(persons.fullName));
+        return rows.map((r) => ({ key: r.id, label: r.name, detail: `${POSITION_LABEL[r.position]} · ${EMPLOYMENT_LABEL[r.status]} · tugas di ${r.kel ?? '-'}` }));
+      }
     }
   }
 }

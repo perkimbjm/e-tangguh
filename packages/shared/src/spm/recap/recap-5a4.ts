@@ -1,15 +1,13 @@
 import { kelurahanRowFilter, kelurahanRowParts, kelurahanRows } from './rows';
 import type { CellDefinition, MeasureCell, RecapColumn, RecapContext, RecapRowDef } from './types';
 
-const PENDING_OFFICERS = 'Menunggu data petugas (US3)';
-
-/** Kolom 4-13 Form 5.A.4 (contracts/forms.md). Kolom 4-8 dihitung dari petugas pada US3. */
+/** Kolom 4-13 Form 5.A.4 (contracts/forms.md). Kolom 4-8 = petugas menurut kelurahan wilayah tugas. Kolom 14 diisi layanan rekap. */
 const COLUMNS: (RecapColumn & { cell?: Omit<MeasureCell, 'kind'> })[] = [
-  { key: 'c4', number: 4, label: 'PNS', group: 'APARATUR', cell: { measure: 'officers', filter: {}, pending: PENDING_OFFICERS } },
-  { key: 'c5', number: 5, label: 'TNI', group: 'APARATUR', cell: { measure: 'officers', filter: {}, pending: PENDING_OFFICERS } },
-  { key: 'c6', number: 6, label: 'POLRI', group: 'APARATUR', cell: { measure: 'officers', filter: {}, pending: PENDING_OFFICERS } },
-  { key: 'c7', number: 7, label: 'SATLINMAS', group: 'APARATUR', cell: { measure: 'officers', filter: {}, pending: PENDING_OFFICERS } },
-  { key: 'c8', number: 8, label: 'TENAGA KONTRAK', group: 'APARATUR', cell: { measure: 'officers', filter: {}, pending: PENDING_OFFICERS } },
+  { key: 'c4', number: 4, label: 'PNS', group: 'APARATUR', cell: { measure: 'officers', filter: { employmentStatus: 'pns' } } },
+  { key: 'c5', number: 5, label: 'TNI', group: 'APARATUR', cell: { measure: 'officers', filter: { employmentStatus: 'tni' } } },
+  { key: 'c6', number: 6, label: 'POLRI', group: 'APARATUR', cell: { measure: 'officers', filter: { employmentStatus: 'polri' } } },
+  { key: 'c7', number: 7, label: 'SATLINMAS', group: 'APARATUR', cell: { measure: 'officers', filter: { employmentStatus: 'satlinmas' } } },
+  { key: 'c8', number: 8, label: 'TENAGA KONTRAK', group: 'APARATUR', cell: { measure: 'officers', filter: { employmentStatus: 'kontrak' } } },
   { key: 'c9', number: 9, label: 'JIWA', group: 'WARGA NEGARA', cell: { measure: 'persons', filter: {} } },
   { key: 'c10', number: 10, label: 'KK', group: 'WARGA NEGARA', cell: { measure: 'families', filter: {} } },
   { key: 'c11', number: 11, label: 'KK MISKIN', group: 'KERENTANAN', cell: { measure: 'families', filter: { isFamilyHead: true, isPoor: true } } },

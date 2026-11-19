@@ -8,12 +8,13 @@ import { AuditContext } from '../../audit/audit-context';
 import { FiscalYearsService } from '../fiscal-years/fiscal-years.service';
 import { Form5A1Provider } from './providers/form-5a1.provider';
 import { Form5A2Provider } from './providers/form-5a2.provider';
+import { Form5A5Provider } from './providers/form-5a5.provider';
 import { RecapProvider } from './providers/recap.provider';
 import { writePdf } from './pdf-writer';
 import { writeXlsx } from './xlsx-writer';
 
 export type ExportFormat = 'xlsx' | 'pdf';
-export const EXPORT_FORM_CODES = ['5.A.1', '5.A.2', '5.A.3', '5.A.4', '5.A.6'] as const;
+export const EXPORT_FORM_CODES = ['5.A.1', '5.A.2', '5.A.3', '5.A.4', '5.A.5', '5.A.6'] as const;
 const PERSONAL_FORMS = new Set(['5.A.1', '5.A.2']);
 const MIME: Record<ExportFormat, string> = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -33,12 +34,14 @@ export class ExportsService {
     private readonly years: FiscalYearsService,
     private readonly f5a1: Form5A1Provider,
     private readonly f5a2: Form5A2Provider,
+    private readonly f5a5: Form5A5Provider,
     private readonly recap: RecapProvider,
   ) {}
 
   async data(formCode: string, fiscalYearId: string, year: number, kelurahanId: string | null, maskIds: boolean): Promise<ReportData> {
     if (formCode === '5.A.1') return this.f5a1.build({ fiscalYearId, year, kelurahanId, maskIds });
     if (formCode === '5.A.2') return this.f5a2.build({ fiscalYearId, year, kelurahanId, maskIds });
+    if (formCode === '5.A.5') return this.f5a5.build({ fiscalYearId, year, kelurahanId, maskIds });
     if ((RECAP_FORM_CODES as readonly string[]).includes(formCode)) return this.recap.build(formCode as RecapFormCode, fiscalYearId, year, kelurahanId);
     throw ApiException.notFound(`Ekspor Form ${formCode} belum tersedia`);
   }

@@ -29,15 +29,16 @@ describe('definisi sel rekap', () => {
     expect(rows).toEqual(['kel:k1', 'kel:k2', 'kec:c1', 'kel:k3', 'kec:c2', 'total']);
   });
 
-  it('5.A.4: KK miskin = KK berbeda dengan kepala keluarga miskin; kolom aparatur menunggu US3', () => {
+  it('5.A.4: KK miskin = KK berbeda dengan kepala keluarga miskin; aparatur menurut status kepegawaian', () => {
     expect(RECAP_5A4.cell('kel:k1', 'c11', ctx)).toMatchObject({ measure: 'families', filter: { kelurahanId: 'k1', isFamilyHead: true, isPoor: true } });
     expect(RECAP_5A4.cell('kel:k1', 'c13', ctx)).toMatchObject({ measure: 'persons', filter: { vulnerableAge: true } });
-    expect(RECAP_5A4.cell('kel:k1', 'c4', ctx)).toMatchObject({ measure: 'officers', pending: expect.any(String) });
+    expect(RECAP_5A4.cell('kel:k1', 'c5', ctx)).toMatchObject({ measure: 'officers', filter: { kelurahanId: 'k1', employmentStatus: 'tni' } });
   });
 
   it('5.A.6: baris jenis bencana memakai bit; kolom 11 = kolom 4 + kolom 10', () => {
     expect(RECAP_5A6.rows()).toHaveLength(10);
     expect(RECAP_5A6.cell('hazard:banjir', 'c3')).toMatchObject({ measure: 'persons', filter: { hazardBit: 2 } });
+    expect(RECAP_5A6.cell('hazard:banjir', 'c10')).toMatchObject({ measure: 'officers', filter: { anyDuty: true, hazardBit: 2 } });
     expect(RECAP_5A6.cell('hazard:banjir', 'c11')).toMatchObject({ kind: 'sum', parts: [{ colKey: 'c4' }, { colKey: 'c10' }] });
   });
 });

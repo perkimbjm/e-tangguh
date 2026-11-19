@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { RowError } from './validation/error-codes';
 
-export const IMPORT_FORM_CODES = ['5.A.1', '5.A.2'] as const;
+export const IMPORT_FORM_CODES = ['5.A.1', '5.A.2', '5.A.5'] as const;
 export type ImportFormCode = (typeof IMPORT_FORM_CODES)[number];
 export const IMPORT_MAX_BYTES = 10 * 1024 * 1024;
 export const IMPORT_MAX_ROWS = 20_000;

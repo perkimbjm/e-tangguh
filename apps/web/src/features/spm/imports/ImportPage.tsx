@@ -1,6 +1,9 @@
 import type { ImportPreview as Preview } from '@etangguh/shared';
 import { useQueryClient } from '@tanstack/react-query';
+import { BPBD_ROLES } from '@etangguh/shared';
 import { useState, type FormEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useSession } from '../../../lib/session';
 import { useToast } from '../../../components/Toast';
 import { ApiError } from '../../../lib/api-client';
 import { useFiscalYear } from '../../../lib/fiscal-year';
@@ -15,7 +18,10 @@ export function ImportPage() {
   const qc = useQueryClient();
   const upload = useUploadImport(year);
   const action = useImportAction(year);
-  const [formCode, setFormCode] = useState('5.A.1');
+  const { user } = useSession();
+  const [params] = useSearchParams();
+  const isBpbd = !!user && (BPBD_ROLES as readonly string[]).includes(user.role);
+  const [formCode, setFormCode] = useState(params.get('form') === '5.A.5' && isBpbd ? '5.A.5' : '5.A.1');
   const [preview, setPreview] = useState<Preview | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -66,6 +72,7 @@ export function ImportPage() {
           <select value={formCode} onChange={(e) => setFormCode(e.target.value)} className="mt-1 block rounded-md border border-slate-300 px-2 py-1.5">
             <option value="5.A.1">5.A.1 Daftar warga</option>
             <option value="5.A.2">5.A.2 Kerawanan tempat tinggal</option>
+            {isBpbd && <option value="5.A.5">5.A.5 Petugas operasi</option>}
           </select>
         </label>
         <a href={templateUrl(formCode, year)} className="rounded-md border border-slate-300 px-3 py-2 text-sm">

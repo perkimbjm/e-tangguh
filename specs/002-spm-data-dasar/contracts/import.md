@@ -51,6 +51,14 @@ pemeriksaan kawasan rawan per RT/RW. Karena itu:
 - Bila NIK kosong, alasan diambil dari kolom bantu; teks tanpa angka pada sel NIK (mis. "belum ada")
   juga diterima sebagai alasan.
 - Impor Form 5.A.2 hanya memperbarui jenis kerawanan warga yang sudah tercatat pada Form 5.A.1.
+- Form 5.A.5 resmi tidak memiliki kolom jabatan maupun kelurahan wilayah tugas, padahal Form 5.A.4
+  menghitung aparatur menurut kelurahan tugas. Templat menambah kolom bantu `JABATAN` dan
+  `KELURAHAN TUGAS`. Tanpa kolom bantu: jabatan diturunkan dari status (TNI → Babinsa, POLRI →
+  Bhabinkamtibmas, Satlinmas → Linmas, lainnya → `lainnya`) dan kelurahan tugas = kelurahan domisili
+  (kolom 9) dengan peringatan. Impor 5.A.5 hanya untuk peran BPBD.
+- Kolom 8 dan 11-14 Form 5.A.5 (alamat, kondisi ekonomi, kebutuhan khusus, umur rentan) tidak
+  disimpan dari impor; ekspor mengisinya dari data warga bila petugas juga tercatat sebagai warga
+  (data-model.md, minimisasi data).
 
 ## Kode galat per baris
 

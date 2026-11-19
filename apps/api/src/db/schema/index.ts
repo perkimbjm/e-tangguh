@@ -14,3 +14,4 @@ export * from './import-batches';
 export * from './import-rows';
 export * from './resident-records';
 export * from './data-corrections';
+export * from './officer-records';

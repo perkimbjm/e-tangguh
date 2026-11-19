@@ -10,6 +10,7 @@ const FORMS = [
   { code: '5.A.2', title: 'Kerawanan tempat tinggal warga', personal: true },
   { code: '5.A.3', title: 'Rekapitulasi kelompok warga menurut kelompok kerawanan' },
   { code: '5.A.4', title: 'Rekapitulasi aparatur dan warga di kawasan rawan' },
+  { code: '5.A.5', title: 'Daftar petugas operasi' },
   { code: '5.A.6', title: 'Rekapitulasi warga dan petugas per jenis bencana' },
 ];
 
@@ -63,7 +64,7 @@ export function ExportsPage() {
           </li>
         ))}
       </ul>
-      <p className="text-xs text-slate-600">Form 5.A.5 dan 5.A.7-5.A.12 tersedia setelah modul petugas, kejadian, dan inventaris selesai.</p>
+      <p className="text-xs text-slate-600">Form 5.A.7-5.A.12 tersedia setelah modul kejadian dan inventaris selesai.</p>
     </section>
   );
 }

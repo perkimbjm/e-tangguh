@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { RECAP_5A3, RECAP_FORM_CODES, RECAP_SPECS, type RecapFormCode, type RecapTable, type SessionUser, encodeCellKey } from '@etangguh/shared';
 import { ApiException } from '../../../common/errors/api-exception';
 import { KelurahanScope } from '../../../common/guards/kelurahan-scope';
+import { and, count, eq } from 'drizzle-orm';
 import { DbService } from '../../../db/db.module';
+import { officerRecords } from '../../../db/schema';
 import { FiscalYearsService } from '../fiscal-years/fiscal-years.service';
 import { RecapContextLoader } from './recap-context';
 import { collectMeasureCells, evaluateMeasures, resolveCell } from './recap-evaluator';
@@ -63,9 +65,29 @@ export class RecapService {
         }
       }
     }
+    if (formCode === '5.A.4') await this.fillVolunteerNotes(rows, ctx, fiscalYearId, scope);
     const notes = ['Hanya data warga berstatus disetujui dan aktif yang dihitung.'];
-    if (formCode !== '5.A.3') notes.push('Kolom petugas/aparatur bernilai 0 sampai data petugas tersedia (US3).');
+    if (formCode === '5.A.4') {
+      notes.push('Aparatur dihitung menurut kelurahan wilayah tugas. Kolom 14 memuat jumlah relawan (formulir tidak memiliki kolom relawan; tafsir penyusun, perlu dikonfirmasi BPBD).');
+    }
     if (formCode === '5.A.6') notes.push('Kolom 11 mengikuti rumus kepala kolom formulir: kolom 4 + kolom 10 (perlu dikonfirmasi BPBD).');
     return { formCode, year, columns, rows, variations, notes };
+  }
+
+  /** Kolom 14 Form 5.A.4: "Relawan: n orang" = petugas berjabatan relawan di kelurahan tugas itu. */
+  private async fillVolunteerNotes(rows: RecapTable['rows'], ctx: { kelurahan: { id: string; kecamatanId: string | null }[] }, fiscalYearId: string, scope: string | null) {
+    const counts = await this.db
+      .executor()
+      .select({ kel: officerRecords.dutyKelurahanId, n: count() })
+      .from(officerRecords)
+      .where(and(eq(officerRecords.fiscalYearId, fiscalYearId), eq(officerRecords.position, 'relawan'), scope ? eq(officerRecords.dutyKelurahanId, scope) : undefined))
+      .groupBy(officerRecords.dutyKelurahanId);
+    const byKel = new Map(counts.map((c) => [c.kel, Number(c.n)]));
+    for (const row of rows) {
+      const kels =
+        row.key === 'total' ? ctx.kelurahan : row.key.startsWith('kec:') ? ctx.kelurahan.filter((k) => `kec:${k.kecamatanId ?? 'tanpa'}` === row.key) : ctx.kelurahan.filter((k) => `kel:${k.id}` === row.key);
+      const n = kels.reduce((a, k) => a + (byKel.get(k.id) ?? 0), 0);
+      row.cells.c14 = { text: n > 0 ? `Relawan: ${n} orang` : '' };
+    }
   }
 }

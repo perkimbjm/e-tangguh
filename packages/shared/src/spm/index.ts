@@ -11,3 +11,5 @@ export * from './validation/cell-values';
 export * from './validation/resident-row';
 export * from './validation/hazard-row';
 export * from './recap';
+export * from './officers';
+export * from './validation/officer-row';

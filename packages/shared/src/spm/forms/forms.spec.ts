@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { FORM_5A1, FORM_5A2, FORM_5A4, FORM_5A6, buildForm5A3 } from './index';
+import { FORM_5A1, FORM_5A2, FORM_5A4, FORM_5A5, FORM_5A6, buildForm5A3 } from './index';
 import type { FormDefinition } from './types';
 
 const REF_DIR = path.resolve(__dirname, '../../../../../specs/002-spm-data-dasar/reference/form-headers');
@@ -12,6 +12,7 @@ describe('definisi formulir = rujukan kepala resmi', () => {
     ['form-5a1', FORM_5A1],
     ['form-5a2', FORM_5A2],
     ['form-5a4', FORM_5A4],
+    ['form-5a5', FORM_5A5],
     ['form-5a6', FORM_5A6],
   ])('%s', (name, def) => {
     const r = ref(name);

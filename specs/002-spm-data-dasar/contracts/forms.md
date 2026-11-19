@@ -93,8 +93,12 @@ dicatat untuk dikonfirmasi BPBD.
 - Form 5.A.3: kelompok kolom diberi label konkret "VARIASI 1 … VARIASI k" (rujukan menulis
   "VARIASI n" untuk kelompok terakhir). Variasi diurutkan menurut nilai bitmask.
 - Warga tanpa nomor KK terhitung pada kolom jiwa, tetapi tidak pada kolom KK.
-- Kolom petugas/aparatur (5.A.2 kol. 21-22, 5.A.4 kol. 4-8 dan 14, 5.A.6 kol. 6-10) bernilai 0 atau
-  kosong sampai modul petugas (US3) tersedia; layar rekap menandainya dengan "*".
+- Kolom petugas (US3): 5.A.4 kol. 4-8 = petugas menurut status kepegawaian dan kelurahan wilayah
+  tugas, hanya untuk kelurahan yang memiliki kawasan rawan atau warga; kol. 14 = "Relawan: n orang"
+  (jabatan relawan). 5.A.6 kol. 6-9 = petugas dengan penanda TRC PDB, TRC KLB, PPE, operasi yang
+  menangani jenis bencana itu; kol. 10 = petugas unik dengan minimal satu penugasan. Jenis bencana
+  petugas bawaannya gabungan jenis bencana kawasan rawan di kelurahan tugasnya.
+- Penelusuran sel petugas hanya untuk peran BPBD; pendata kelurahan tetap melihat angkanya.
 - Ekspor Form 5.A.1/5.A.2 oleh pendata kelurahan menyamarkan NIK dan nomor KK (empat digit
   terakhir), mengikuti tabel visibilitas data-model.md.
 - PDF memakai tanda "√" untuk kolom centang karena font tertanam tidak memuat "✓"; XLSX memakai "✓".

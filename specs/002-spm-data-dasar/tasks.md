@@ -203,17 +203,17 @@ manual, dan kepala berkas ekspor sama dengan templat resmi.
 
 ### Tests for User Story 3
 
-- [ ] T091 [P] [US3] Uji integrasi petugas di `apps/api/test/spm/officers.int.spec.ts`: NIK yang sudah tercatat sebagai warga memakai `persons` yang sama; petugas terhitung pada kolom aparatur 5.A.4 dan kolom petugas 5.A.6
+- [X] T091 [P] [US3] Uji integrasi petugas di `apps/api/test/spm/officers.int.spec.ts`: NIK yang sudah tercatat sebagai warga memakai `persons` yang sama; petugas terhitung pada kolom aparatur 5.A.4 dan kolom petugas 5.A.6
 
 ### Implementation for User Story 3
 
-- [ ] T092 [US3] Buat skema `officer_records` di `apps/api/src/db/schema/officer-records.ts`: unik `(fiscal_year_id, person_id)`; `volunteer_id nullable`; `position` enum `kasi_trantibumlinmas | babinsa | bhabinkamtibmas | linmas | relawan | lainnya`; `employment_status` enum `pns | tni | polri | satlinmas | kontrak | non_aparatur` (diisi otomatis dari jabatan: kasi → pns, babinsa → tni, bhabinkamtibmas → polri, linmas → satlinmas, relawan → non_aparatur); `duty_kelurahan_id` (wajib kecuali jabatan `lainnya`); `certifications text`; `is_trc_klb`, `is_trc_pdb`, `is_ppe`, `is_ops`; `post_type` enum `posko | pos_lapangan` nullable; `post_kelurahan_id`; `hazard_mask`; `note`; migrasi dan pemicu kunci tahun
-- [ ] T093 [P] [US3] Definisikan Form 5.A.5 di `packages/shared/src/spm/forms/form-5a5.ts` dan skema baris impor petugas di `packages/shared/src/spm/validation/officer-row.ts`
-- [ ] T094 [US3] Implementasikan modul petugas di `apps/api/src/modules/spm/officers/` (`officers.controller.ts`, `officers.service.ts`, `officers.repository.ts`): jalur `/:fy/officers*`; data diri diambil dari `persons`
-- [ ] T095 [US3] Implementasikan antarmuka sumber relawan di `apps/api/src/modules/spm/officers/volunteer-source.ts` (`VolunteerSource.getVerified(volunteerId) → { personId, certifications }`) dan `POST /:fy/officers/from-volunteer/:volunteerId`; implementasi nyata disambungkan saat modul relawan fitur 001 tersedia, sementara mengembalikan 501 dengan pesan jelas
-- [ ] T096 [P] [US3] Tambahkan impor Form 5.A.5 di `apps/api/src/modules/spm/imports/officer-import.ts` memakai pembaca dan alur pratinjau US1
-- [ ] T097 [P] [US3] Tambahkan penyedia ekspor di `apps/api/src/modules/spm/exports/providers/form-5a5.provider.ts` dan lengkapi predikat petugas pada `recap-5a4.ts` dan `recap-5a6.ts`: kolom 4-8 Form 5.A.4 dihitung menurut `duty_kelurahan_id`, kolom 14 diisi "Relawan: n orang" dari jabatan `relawan`
-- [ ] T098 [P] [US3] Buat layar petugas di `apps/web/src/features/spm/officers/OfficersPage.tsx`, `OfficerForm.tsx`, `PickVolunteerDialog.tsx`
+- [X] T092 [US3] Buat skema `officer_records` di `apps/api/src/db/schema/officer-records.ts`: unik `(fiscal_year_id, person_id)`; `volunteer_id nullable`; `position` enum `kasi_trantibumlinmas | babinsa | bhabinkamtibmas | linmas | relawan | lainnya`; `employment_status` enum `pns | tni | polri | satlinmas | kontrak | non_aparatur` (diisi otomatis dari jabatan: kasi → pns, babinsa → tni, bhabinkamtibmas → polri, linmas → satlinmas, relawan → non_aparatur); `duty_kelurahan_id` (wajib kecuali jabatan `lainnya`); `certifications text`; `is_trc_klb`, `is_trc_pdb`, `is_ppe`, `is_ops`; `post_type` enum `posko | pos_lapangan` nullable; `post_kelurahan_id`; `hazard_mask`; `note`; migrasi dan pemicu kunci tahun
+- [X] T093 [P] [US3] Definisikan Form 5.A.5 di `packages/shared/src/spm/forms/form-5a5.ts` dan skema baris impor petugas di `packages/shared/src/spm/validation/officer-row.ts`
+- [X] T094 [US3] Implementasikan modul petugas di `apps/api/src/modules/spm/officers/` (`officers.controller.ts`, `officers.service.ts`, `officers.repository.ts`): jalur `/:fy/officers*`; data diri diambil dari `persons`
+- [X] T095 [US3] Implementasikan antarmuka sumber relawan di `apps/api/src/modules/spm/officers/volunteer-source.ts` (`VolunteerSource.getVerified(volunteerId) → { personId, certifications }`) dan `POST /:fy/officers/from-volunteer/:volunteerId`; implementasi nyata disambungkan saat modul relawan fitur 001 tersedia, sementara mengembalikan 501 dengan pesan jelas
+- [X] T096 [P] [US3] Tambahkan impor Form 5.A.5 di `apps/api/src/modules/spm/imports/officer-import.ts` memakai pembaca dan alur pratinjau US1
+- [X] T097 [P] [US3] Tambahkan penyedia ekspor di `apps/api/src/modules/spm/exports/providers/form-5a5.provider.ts` dan lengkapi predikat petugas pada `recap-5a4.ts` dan `recap-5a6.ts`: kolom 4-8 Form 5.A.4 dihitung menurut `duty_kelurahan_id`, kolom 14 diisi "Relawan: n orang" dari jabatan `relawan`
+- [X] T098 [P] [US3] Buat layar petugas di `apps/web/src/features/spm/officers/OfficersPage.tsx`, `OfficerForm.tsx`, `PickVolunteerDialog.tsx`
 
 **Checkpoint**: US3 berfungsi (quickstart skenario 10)
 

@@ -31,7 +31,7 @@ export class TemplateBuilder {
 
   async build(formCode: string, user: SessionUser, year?: number): Promise<{ buffer: Buffer; filename: string }> {
     const def = getFormDefinition(formCode);
-    if (!def || !['5.A.1', '5.A.2'].includes(def.formCode)) throw ApiException.notFound('Templat formulir tidak tersedia');
+    if (!def || !['5.A.1', '5.A.2', '5.A.5'].includes(def.formCode)) throw ApiException.notFound('Templat formulir tidak tersedia');
     const kelurahanId = KelurahanScope.resolve(user);
     const allKelurahan = await this.regions.list('kelurahan');
     const kelurahan = kelurahanId ? allKelurahan.filter((k) => k.id === kelurahanId) : allKelurahan;
@@ -109,7 +109,14 @@ export class TemplateBuilder {
             'Kolom 15 (kelompok umur rentan) dihitung sistem; boleh dikosongkan.',
             'Hanya warga di RT/RW kawasan rawan (lihat daftar di kiri) yang diterima.',
           ]
-        : ['Isi "v" pada jenis kerawanan tempat tinggal.', 'Warga harus sudah tercatat pada Form 5.A.1 tahun yang sama.', 'Kolom 19-22 dihitung sistem.'];
+        : def.formCode === '5.A.5'
+          ? [
+              'Centang tepat satu status petugas (kolom 15-20).',
+              'Kolom JABATAN (kuning): kasi_trantibumlinmas, babinsa, bhabinkamtibmas, linmas, relawan, lainnya.',
+              'Kolom KELURAHAN TUGAS (kuning) menentukan hitungan aparatur Form 5.A.4; bila kosong dipakai kelurahan domisili.',
+              'Alamat, kondisi ekonomi, dan kebutuhan khusus diambil dari data warga bila petugas tercatat sebagai warga.',
+            ]
+          : ['Isi "v" pada jenis kerawanan tempat tinggal.', 'Warga harus sudah tercatat pada Form 5.A.1 tahun yang sama.', 'Kolom 19-22 dihitung sistem.'];
     notes.forEach((n, i) => (ref.getCell(`H${i + 2}`).value = n));
     for (const [c, w] of [['A', 24], ['C', 22], ['D', 6], ['E', 12], ['F', 40], ['H', 80]] as const) ref.getColumn(c).width = w;
     for (const addr of ['A1', 'C1', 'H1']) ref.getCell(addr).font = { bold: true };
