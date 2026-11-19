@@ -3,6 +3,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './app/router';
+import { ToastProvider } from './components/Toast';
 import { SessionProvider } from './lib/session';
 import './index.css';
 
@@ -17,7 +18,9 @@ createRoot(root).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <RouterProvider router={router} />
+        <ToastProvider>
+          <RouterProvider router={router} />
+        </ToastProvider>
       </SessionProvider>
     </QueryClientProvider>
   </StrictMode>,

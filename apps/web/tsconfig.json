@@ -6,6 +6,7 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "noEmit": true,
+    "declaration": false,
     "types": ["vite/client"],
     "paths": { "@etangguh/shared": ["../../packages/shared/src/index.ts"] }
   },

@@ -102,9 +102,9 @@ Monorepo pnpm: `apps/api` (NestJS), `apps/web` (React + Vite), `packages/shared`
 
 ### Kerangka antarmuka
 
-- [ ] T040 [P] Buat klien API di `apps/web/src/lib/api-client.ts` (fetch + CSRF + pemetaan galat) dan penyedia sesi di `apps/web/src/lib/session.tsx`
-- [ ] T041 [P] Buat kerangka aplikasi di `apps/web/src/app/` (`router.tsx`, `AppLayout.tsx`, `RequireRole.tsx`) dan halaman masuk di `apps/web/src/features/auth/LoginPage.tsx`
-- [ ] T042 [P] Buat komponen dasar aksesibel di `apps/web/src/components/` (`DataTable.tsx`, `FormField.tsx`, `ConfirmDialog.tsx`, `Toast.tsx`, `FiscalYearSwitcher.tsx`), masing-masing satu berkas
+- [X] T040 [P] Buat klien API di `apps/web/src/lib/api-client.ts` (fetch + CSRF + pemetaan galat) dan penyedia sesi di `apps/web/src/lib/session.tsx`
+- [X] T041 [P] Buat kerangka aplikasi di `apps/web/src/app/` (`router.tsx`, `AppLayout.tsx`, `RequireRole.tsx`) dan halaman masuk di `apps/web/src/features/auth/LoginPage.tsx`
+- [X] T042 [P] Buat komponen dasar aksesibel di `apps/web/src/components/` (`DataTable.tsx`, `FormField.tsx`, `ConfirmDialog.tsx`, `Toast.tsx`, `FiscalYearSwitcher.tsx`), masing-masing satu berkas
 - [X] T043 Uji integrasi fondasi di `apps/api/test/foundation/` (`auth.int.spec.ts`, `roles-default-deny.int.spec.ts`, `audit-immutable.int.spec.ts`): rute tanpa `@Roles` mengembalikan 403; `UPDATE`/`DELETE` pada `audit_log` ditolak basis data
 
 **Checkpoint**: fondasi siap; user story dapat dimulai
