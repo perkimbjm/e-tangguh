@@ -31,7 +31,7 @@ export function Photo({
     >
       <div
         className="h-full w-full overflow-hidden"
-        style={{ borderRadius: radius, background: '#0b5566' }}
+        style={{ borderRadius: radius, background: '#0f3d8c' }}
       >
         {url ? (
           <img src={url} alt="" className="h-full w-full object-cover" />

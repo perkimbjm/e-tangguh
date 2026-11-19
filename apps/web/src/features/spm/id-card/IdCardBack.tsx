@@ -21,7 +21,7 @@ export function IdCardBack({ card, orientation, qrSvg, seed = 2 }: FaceProps) {
   );
   const body = (
     <>
-      <p className="text-[6.6px] leading-[1.35] text-[#e6f9fc]">
+      <p className="text-[6.6px] leading-[1.35] text-[#eaf2ff]">
         Pemegang kartu ini adalah <strong className="text-white">{role}</strong> dalam binaan{' '}
         {s.agencyName}. Keaslian kartu dapat diperiksa dengan memindai kode QR.
       </p>
@@ -46,14 +46,14 @@ export function IdCardBack({ card, orientation, qrSvg, seed = 2 }: FaceProps) {
         </div>
       )}
       {card.hazards.length > 0 && (
-        <p className="mt-[3px] text-[5.6px] text-[#cff4f9]">
+        <p className="mt-[3px] text-[5.6px] text-[#d3e4ff]">
           Siaga: {card.hazards.slice(0, 4).join(' · ')}
         </p>
       )}
     </>
   );
   const footer = (
-    <div className="text-[5.4px] leading-[1.35] text-[#cff4f9]">
+    <div className="text-[5.4px] leading-[1.35] text-[#d3e4ff]">
       <p>
         Bila ditemukan, kembalikan ke {s.agencyName}
         {s.address ? `, ${s.address}` : ''}
@@ -65,7 +65,7 @@ export function IdCardBack({ card, orientation, qrSvg, seed = 2 }: FaceProps) {
     </div>
   );
   const signature = s.signatoryTitle ? (
-    <div className="text-center text-[5.4px] text-[#cff4f9]">
+    <div className="text-center text-[5.4px] text-[#d3e4ff]">
       <p>{s.signatoryTitle}</p>
       <div className="my-[2px] h-[14px] w-[64px] border-b border-white/40" />
       <p className="font-semibold text-white">{s.signatoryName ?? ''}</p>

@@ -1,5 +1,5 @@
 import type { IdCardDto } from '@etangguh/shared';
-import { CardBackground, Chip, HoloStrip, Shield, THEME } from './CardArt';
+import { AccentStripe, CardBackground, Chip, HoloStrip, Shield, THEME } from './CardArt';
 import { type Orientation, size } from './geometry';
 import { Photo } from './Photo';
 
@@ -22,7 +22,7 @@ function Ribbon({ card }: { card: IdCardDto }) {
   const t = THEME[card.category];
   return (
     <span
-      className="inline-block rounded-[3px] px-[6px] py-[2px] text-[6.4px] font-extrabold tracking-[0.14em] text-[#04222b]"
+      className="inline-block rounded-[3px] px-[6px] py-[2px] text-[6.4px] font-extrabold tracking-[0.14em] text-[#050f2a]"
       style={{ background: t.ribbon }}
     >
       {t.label}
@@ -35,7 +35,7 @@ function Header({ card }: { card: IdCardDto }) {
     <div className="flex items-center gap-[5px]">
       <Shield size={20} />
       <div className="leading-[1.05]">
-        <p className="text-[5.6px] font-semibold uppercase tracking-[0.2em] text-[#6fd6e6]">
+        <p className="text-[5.6px] font-semibold uppercase tracking-[0.2em] text-[#ffb85c]">
           Binaan
         </p>
         <p className="text-[8px] font-extrabold uppercase tracking-[0.06em] text-white">
@@ -77,6 +77,13 @@ export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps
       }}
     >
       <CardBackground w={w} h={h} category={card.category} seed={seed} />
+      <AccentStripe
+        style={
+          landscape
+            ? { right: 52, top: -20, width: 3, height: h + 40, transform: 'rotate(14deg)' }
+            : { right: 36, top: -20, width: 2.5, height: h + 40, transform: 'rotate(10deg)' }
+        }
+      />
       <HoloStrip
         style={
           landscape
@@ -107,7 +114,7 @@ export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps
               </span>
             </div>
             <div className="flex min-w-0 flex-1 flex-col">
-              <p className="text-[5.6px] font-semibold uppercase tracking-[0.2em] text-[#6fd6e6]">
+              <p className="text-[5.6px] font-semibold uppercase tracking-[0.2em] text-[#ffb85c]">
                 Nama
               </p>
               <p className="text-[13px] font-extrabold leading-[1.1] tracking-tight">
@@ -116,7 +123,7 @@ export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps
               <p className="mt-[3px] text-[7.4px] font-semibold" style={{ color: t.accentSoft }}>
                 {card.positionLabel}
               </p>
-              <p className="text-[6.4px] text-[#cff4f9]">
+              <p className="text-[6.4px] text-[#d3e4ff]">
                 {card.dutyKelurahanName
                   ? `Wilayah tugas · Kel. ${card.dutyKelurahanName}`
                   : card.employmentLabel}
@@ -126,13 +133,13 @@ export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps
               </div>
               <div className="mt-auto flex items-end justify-between">
                 <div>
-                  <p className="text-[5.2px] uppercase tracking-[0.2em] text-[#6fd6e6]">
+                  <p className="text-[5.2px] uppercase tracking-[0.2em] text-[#ffb85c]">
                     No. kartu
                   </p>
                   <p className="font-mono text-[7.6px] font-bold tracking-[0.06em]">
                     {card.cardNumber}
                   </p>
-                  <p className="text-[5.6px] text-[#cff4f9]">
+                  <p className="text-[5.6px] text-[#d3e4ff]">
                     Berlaku s.d. {fmtDate(card.validUntil)}
                   </p>
                 </div>
@@ -163,7 +170,7 @@ export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps
           <p className="mt-[2px] text-[7.4px] font-semibold" style={{ color: t.accentSoft }}>
             {card.positionLabel}
           </p>
-          <p className="text-[6.4px] text-[#cff4f9]">
+          <p className="text-[6.4px] text-[#d3e4ff]">
             {card.dutyKelurahanName
               ? `Wilayah tugas · Kel. ${card.dutyKelurahanName}`
               : card.employmentLabel}
@@ -172,11 +179,11 @@ export function IdCardFront({ card, orientation, photoUrl, seed = 1 }: FaceProps
             <Duties card={card} />
           </div>
           <div className="mt-auto w-full rounded-[6px] border border-white/15 bg-black/20 px-[7px] py-[5px] text-left">
-            <p className="text-[5.2px] uppercase tracking-[0.2em] text-[#6fd6e6]">
+            <p className="text-[5.2px] uppercase tracking-[0.2em] text-[#ffb85c]">
               No. kartu · TA {card.year}
             </p>
             <p className="font-mono text-[7.6px] font-bold tracking-[0.06em]">{card.cardNumber}</p>
-            <p className="text-[5.6px] text-[#cff4f9]">Berlaku s.d. {fmtDate(card.validUntil)}</p>
+            <p className="text-[5.6px] text-[#d3e4ff]">Berlaku s.d. {fmtDate(card.validUntil)}</p>
           </div>
         </div>
       )}

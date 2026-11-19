@@ -55,7 +55,7 @@ export function IdCardPage() {
       type: 'svg',
       margin: 0,
       errorCorrectionLevel: 'M',
-      color: { dark: '#04222b', light: '#ffffff' },
+      color: { dark: '#050f2a', light: '#ffffff' },
     }).then(setQrSvg);
   }, [card]);
 
