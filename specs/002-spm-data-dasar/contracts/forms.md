@@ -117,3 +117,12 @@ dicatat untuk dikonfirmasi BPBD.
 - 5.A.9 dan 5.A.11: alamat, KK, kondisi ekonomi, dan kebutuhan khusus terisi bila orang tersebut
   tercatat sebagai warga kawasan rawan pada tahun yang sama; korban dari luar kawasan rawan hanya
   memuat data diri minimum.
+
+## Catatan implementasi US5 (perlu dikonfirmasi BPBD)
+
+- Form 5.A.7 kolom 11-12 (kondisi baik/rusak): catatan templat menyebut "checklist", tetapi data
+  disimpan sebagai jumlah (data-model.md) karena sebagian unit bisa baik dan sebagian rusak.
+  Ekspor 5.A.7 dan 5.A.8 menulis jumlahnya.
+- Kolom 3 "JUMLAH/SATUAN" ditulis sebagai satu teks, mis. "12 unit" atau "150,5 lembar".
+- Jumlah baik + rusak tidak boleh melebihi jumlah tersedia (validasi antarmuka, layanan, dan
+  CHECK basis data).

@@ -15,3 +15,4 @@ export * from './officers';
 export * from './validation/officer-row';
 export * from './emergency-status';
 export * from './events';
+export * from './inventory';

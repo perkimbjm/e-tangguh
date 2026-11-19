@@ -253,11 +253,11 @@ aktif; Form 5.A.9-5.A.12 dapat diekspor.
 
 **Independent Test**: tambah lima peralatan dan lima barang logistik; keduanya dapat diekspor.
 
-- [ ] T110 [P] [US5] Buat skema `equipment` dan `logistics_stock` di `apps/api/src/db/schema/equipment.ts` dan `logistics-stock.ts` dengan CHECK `qty_good + qty_broken ≤ quantity`; migrasi dan pemicu kunci tahun
-- [ ] T111 [US5] Implementasikan modul inventaris di `apps/api/src/modules/spm/inventory/` (`equipment.controller.ts`, `logistics.controller.ts`, `inventory.service.ts`, `inventory.repository.ts`) untuk jalur `/:fy/equipment*` dan `/:fy/logistics*`
-- [ ] T112 [P] [US5] Definisikan Form 5.A.7 dan 5.A.8 di `packages/shared/src/spm/forms/form-5a7.ts`, `form-5a8.ts` dan penyedia ekspor di `apps/api/src/modules/spm/exports/providers/inventory.provider.ts`
-- [ ] T113 [P] [US5] Buat layar inventaris di `apps/web/src/features/spm/inventory/EquipmentPage.tsx`, `LogisticsPage.tsx`, `InventoryForm.tsx`
-- [ ] T114 [P] [US5] Uji integrasi inventaris di `apps/api/test/spm/inventory.int.spec.ts`: jumlah baik + rusak melebihi ketersediaan ditolak
+- [X] T110 [P] [US5] Buat skema `equipment` dan `logistics_stock` di `apps/api/src/db/schema/equipment.ts` dan `logistics-stock.ts` dengan CHECK `qty_good + qty_broken ≤ quantity`; migrasi dan pemicu kunci tahun
+- [X] T111 [US5] Implementasikan modul inventaris di `apps/api/src/modules/spm/inventory/` (`equipment.controller.ts`, `logistics.controller.ts`, `inventory.service.ts`, `inventory.repository.ts`) untuk jalur `/:fy/equipment*` dan `/:fy/logistics*`
+- [X] T112 [P] [US5] Definisikan Form 5.A.7 dan 5.A.8 di `packages/shared/src/spm/forms/form-5a7.ts`, `form-5a8.ts` dan penyedia ekspor di `apps/api/src/modules/spm/exports/providers/inventory.provider.ts`
+- [X] T113 [P] [US5] Buat layar inventaris di `apps/web/src/features/spm/inventory/EquipmentPage.tsx`, `LogisticsPage.tsx`, `InventoryForm.tsx`
+- [X] T114 [P] [US5] Uji integrasi inventaris di `apps/api/test/spm/inventory.int.spec.ts`: jumlah baik + rusak melebihi ketersediaan ditolak
 
 **Checkpoint**: US5 berfungsi
 

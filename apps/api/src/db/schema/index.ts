@@ -19,3 +19,5 @@ export * from './disaster-events';
 export * from './affected-persons';
 export * from './affected-status-history';
 export * from './event-officers';
+export * from './equipment';
+export * from './logistics-stock';

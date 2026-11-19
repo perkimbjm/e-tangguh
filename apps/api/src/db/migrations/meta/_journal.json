@@ -50,6 +50,13 @@
       "when": 1795067389844,
       "tag": "0006_spm_events",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795068494939,
+      "tag": "0007_spm_inventory",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,11 @@ import { Form5A1Provider } from './exports/providers/form-5a1.provider';
 import { Form5A2Provider } from './exports/providers/form-5a2.provider';
 import { Form5A5Provider } from './exports/providers/form-5a5.provider';
 import { OfficerImport } from './imports/officer-import';
+import { InventoryProvider } from './exports/providers/inventory.provider';
+import { EquipmentController } from './inventory/equipment.controller';
+import { InventoryRepository } from './inventory/inventory.repository';
+import { InventoryService } from './inventory/inventory.service';
+import { LogisticsController } from './inventory/logistics.controller';
 import { EventPeopleQuery } from './exports/providers/event-people.query';
 import { EventsProvider } from './exports/providers/events.provider';
 import { AffectedService } from './events/affected.service';
@@ -57,6 +62,8 @@ import { ResidentsService } from './residents/residents.service';
     ExportsController,
     OfficersController,
     EventsController,
+    EquipmentController,
+    LogisticsController,
   ],
   providers: [
     HazardZonesRepository,
@@ -92,6 +99,9 @@ import { ResidentsService } from './residents/residents.service';
     EventOfficersService,
     EventPeopleQuery,
     EventsProvider,
+    InventoryRepository,
+    InventoryService,
+    InventoryProvider,
     { provide: VolunteerSource, useClass: UnavailableVolunteerSource },
   ],
   exports: [HazardZonesService, ResidentsRepository, RecapService, ExportsService],
