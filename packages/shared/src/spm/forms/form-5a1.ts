@@ -1,0 +1,42 @@
+import { REGULATION_REF, type FormDefinition } from './types';
+
+export const FORM_5A1: FormDefinition = {
+  formCode: '5.A.1',
+  version: 1,
+  regulationRef: REGULATION_REF,
+  title: 'FORM 5.A.1 DAFTAR WARGA NEGARA YANG BERADA DI KAWASAN RAWAN BENCANA',
+  sheetName: '5.A.1 DAFTAR WARGA NEGARA YANG',
+  headerLastRow: 4,
+  cells: {
+    A1: 'FORM 5.A.1 DAFTAR WARGA NEGARA YANG BERADA DI KAWASAN RAWAN BENCANA',
+    A2: 'NO.', B2: 'NAMA LENGKAP', D2: 'NIK', E2: 'NOMOR KK', F2: 'JENIS KELAMIN (L/P)', G2: 'TEMPAT LAHIR',
+    H2: 'TANGGAL LAHIR (dd/mm/yyyy)', I2: 'ALAMAT', J2: 'DESA/ KELURAHAN', K2: 'KECAMATAN',
+    L2: 'KONDISI EKONOMI (miskin/ tidak miskin)', M2: 'BERKEBUTUHAN KHUSUS (ya/tidak)',
+    N2: 'JENIS KEBUTUHAN KHUSUS (jika ya)', O2: 'KELOMPOK UMUR RENTAN',
+    B3: 'NAMA KEPALA KELUARGA', C3: 'NAMA ANGGOTA KELUARGA',
+    A4: '1', B4: '2', C4: '3', D4: '4', E4: '5', F4: '6', G4: '7', H4: '8', I4: '9', J4: '10', K4: '11', L4: '12', M4: '13', N4: '14', O4: '15',
+  },
+  merged: ['A1:O1', 'A2:A3', 'B2:C2', 'D2:D3', 'E2:E3', 'F2:F3', 'G2:G3', 'H2:H3', 'I2:I3', 'J2:J3', 'K2:K3', 'L2:L3', 'M2:M3', 'N2:N3', 'O2:O3'],
+  columns: [
+    { letter: 'A', number: 1, key: 'no', label: 'No.', kind: 'no', width: 6 },
+    { letter: 'B', number: 2, key: 'headName', label: 'Nama kepala keluarga', kind: 'text', width: 26 },
+    { letter: 'C', number: 3, key: 'memberName', label: 'Nama anggota keluarga', kind: 'text', width: 26 },
+    { letter: 'D', number: 4, key: 'nik', label: 'NIK', kind: 'id16', width: 20 },
+    { letter: 'E', number: 5, key: 'kk', label: 'Nomor KK', kind: 'id16', width: 20 },
+    { letter: 'F', number: 6, key: 'gender', label: 'Jenis kelamin', kind: 'choice', width: 9 },
+    { letter: 'G', number: 7, key: 'birthPlace', label: 'Tempat lahir', kind: 'text', width: 16 },
+    { letter: 'H', number: 8, key: 'birthDate', label: 'Tanggal lahir', kind: 'date', width: 14 },
+    { letter: 'I', number: 9, key: 'address', label: 'Alamat', kind: 'text', width: 32 },
+    { letter: 'J', number: 10, key: 'kelurahan', label: 'Desa/kelurahan', kind: 'text', width: 18 },
+    { letter: 'K', number: 11, key: 'kecamatan', label: 'Kecamatan', kind: 'text', width: 18 },
+    { letter: 'L', number: 12, key: 'economy', label: 'Kondisi ekonomi', kind: 'choice', width: 14 },
+    { letter: 'M', number: 13, key: 'specialNeedsFlag', label: 'Berkebutuhan khusus', kind: 'choice', width: 13 },
+    { letter: 'N', number: 14, key: 'specialNeeds', label: 'Jenis kebutuhan khusus', kind: 'text', width: 20 },
+    { letter: 'O', number: 15, key: 'vulnerableAge', label: 'Kelompok umur rentan', kind: 'check', derived: true, width: 12 },
+  ],
+  helperColumns: [
+    { key: 'rt', label: 'RT', aliases: ['rt', 'no rt', 'nomor rt'] },
+    { key: 'rw', label: 'RW', aliases: ['rw', 'no rw', 'nomor rw'] },
+    { key: 'noNikReason', label: 'ALASAN TANPA NIK', aliases: ['alasan tanpa nik', 'alasan nik kosong', 'alasan belum ada nik'] },
+  ],
+};

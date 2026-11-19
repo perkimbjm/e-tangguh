@@ -1,8 +1,7 @@
 import type { FiscalYearDto } from '@etangguh/shared';
-import { useQuery } from '@tanstack/react-query';
 import { useId } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { api } from '../lib/api-client';
+import { useFiscalYears } from '../lib/fiscal-year';
 
 const STATUS_LABEL: Record<FiscalYearDto['status'], string> = { terbuka: 'terbuka', final: 'final (terkunci)', revisi: 'revisi' };
 
@@ -10,11 +9,7 @@ const STATUS_LABEL: Record<FiscalYearDto['status'], string> = { terbuka: 'terbuk
 export function FiscalYearSwitcher() {
   const id = useId();
   const [params, setParams] = useSearchParams();
-  const { data } = useQuery({
-    queryKey: ['fiscal-years'],
-    queryFn: ({ signal }) => api.get<{ items: FiscalYearDto[] }>('/spm/fiscal-years', signal),
-  });
-  const items = data?.items ?? [];
+  const { data: items = [] } = useFiscalYears();
   const current = params.get('ta') ?? (items[0] ? String(items[0].year) : '');
 
   return (

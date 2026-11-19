@@ -39,6 +39,19 @@ Baris dari pendata kelurahan berstatus `menunggu`; dari operator/admin BPBD `dis
 Padanan wilayah: kemiripan ≥ 0,9 dipetakan otomatis; 0,5-0,9 ditawarkan untuk dipilih; di bawah
 itu galat. Pilihan operator berlaku untuk seluruh baris dengan ejaan yang sama.
 
+## Kolom bantu di luar formulir resmi (keputusan implementasi, perlu dikonfirmasi BPBD)
+
+Form 5.A.1 resmi tidak memiliki kolom RT/RW maupun alasan NIK kosong, padahal FR-027 mewajibkan
+pemeriksaan kawasan rawan per RT/RW. Karena itu:
+
+- Templat sistem menambahkan kolom bantu tanpa nomor di kanan kolom 15: `RT`, `RW`, dan
+  `ALASAN TANPA NIK`. Kolom bantu dikenali dari teks kepalanya; susunan kolom resmi tidak berubah.
+- Bila kolom bantu RT/RW tidak ada, RT/RW diurai dari kolom 9 (alamat), mis. "RT 05 RW 02" atau
+  "RT.005/RW.002".
+- Bila NIK kosong, alasan diambil dari kolom bantu; teks tanpa angka pada sel NIK (mis. "belum ada")
+  juga diterima sebagai alasan.
+- Impor Form 5.A.2 hanya memperbarui jenis kerawanan warga yang sudah tercatat pada Form 5.A.1.
+
 ## Kode galat per baris
 
 | Kode | Arti |
@@ -55,6 +68,8 @@ itu galat. Pilihan operator berlaku untuk seluruh baris dengan ejaan yang sama.
 | `DI_LUAR_KAWASAN_RAWAN` | RT/RW belum ditetapkan sebagai kawasan rawan |
 | `PILIHAN_TIDAK_SAH` | nilai pilihan di luar daftar |
 | `KEBUTUHAN_KHUSUS_KOSONG` | "ya" tanpa jenis kebutuhan khusus |
+| `RT_RW_TIDAK_TERBACA` | RW tidak ada pada kolom bantu RT/RW maupun pada teks alamat (ditambahkan saat implementasi) |
+| `WARGA_BELUM_TERCATAT` | baris Form 5.A.2 untuk orang yang belum tercatat pada Form 5.A.1 tahun yang sama (ditambahkan saat implementasi) |
 
 Setiap galat memuat nomor baris lembar kerja, nomor kolom formulir, kode, dan pesan bahasa
 Indonesia. Peringatan (tidak menolak baris): KK yang sama di kelurahan berbeda; kemungkinan
@@ -76,5 +91,7 @@ disertakan pada lembar rujukan.
 
 - Tidak ada baris ditolak tanpa kode galat, nomor baris, dan nomor kolom.
 - Berkas campuran (benar + salah) menyimpan tepat baris yang benar.
-- NIK/KK pada `import_rows` terhapus setelah konfirmasi, pembatalan, atau 7 hari.
+- NIK/KK pada `import_rows` terhapus setelah konfirmasi, pembatalan, atau 7 hari. Selama masih
+  ada, nilai NIK, KK, alamat, jenis kebutuhan khusus, dan alasan tanpa NIK disimpan terenkripsi
+  (`FieldCipher`); berkas unggahan dihapus pada saat yang sama.
 - Impor 1.000 baris selesai tervalidasi dalam ≤ 15 detik pada lingkungan uji.

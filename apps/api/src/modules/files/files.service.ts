@@ -74,6 +74,12 @@ export class FilesService {
     return row;
   }
 
+  /** Menghapus isi berkas dan catatannya (mis. berkas impor berisi data warga setelah diproses). */
+  async remove(row: FileRow): Promise<void> {
+    await this.db.executor().delete(files).where(eq(files.id, row.id));
+    await this.storage.remove(row.storageKey);
+  }
+
   read(row: FileRow): Promise<Buffer> {
     return this.storage.read(row.storageKey);
   }

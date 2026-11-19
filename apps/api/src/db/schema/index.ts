@@ -9,3 +9,8 @@ export * from './families';
 export * from './fiscal-years';
 export * from './hazard-types';
 export * from './form-definitions';
+export * from './hazard-zones';
+export * from './import-batches';
+export * from './import-rows';
+export * from './resident-records';
+export * from './data-corrections';

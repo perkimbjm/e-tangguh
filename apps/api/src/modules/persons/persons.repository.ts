@@ -64,6 +64,11 @@ export class PersonsRepository {
     return row!;
   }
 
+  async updateIdentity(id: string, values: Partial<Pick<PersonInsert, 'fullName' | 'gender' | 'birthPlace' | 'birthDate'>>): Promise<void> {
+    if (Object.keys(values).length === 0) return;
+    await this.db.executor().update(persons).set(values).where(eq(persons.id, id));
+  }
+
   async setFamilyHead(familyId: string, personId: string): Promise<void> {
     await this.db.executor().update(families).set({ headPersonId: personId }).where(eq(families.id, familyId));
   }

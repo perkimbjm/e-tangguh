@@ -1,5 +1,5 @@
-import { ROLE_LABELS } from '@etangguh/shared';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { BPBD_ROLES, ROLE_LABELS } from '@etangguh/shared';
+import { NavLink, Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { FiscalYearSwitcher } from '../components/FiscalYearSwitcher';
 import { useSession } from '../lib/session';
 
@@ -11,6 +11,17 @@ const navClass = ({ isActive }: { isActive: boolean }) =>
 export function AppLayout() {
   const { user, logout } = useSession();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const ta = params.get('ta');
+  const isBpbd = !!user && (BPBD_ROLES as readonly string[]).includes(user.role);
+  const links = [
+    { to: '/app', label: 'Beranda', end: true },
+    { to: '/app/warga', label: 'Data warga' },
+    { to: '/app/impor', label: 'Unggah lembar kerja' },
+    ...(isBpbd ? [{ to: '/app/persetujuan', label: 'Persetujuan' }] : []),
+    { to: '/app/kelengkapan', label: 'Kelengkapan' },
+    { to: '/app/kawasan-rawan', label: 'Kawasan rawan' },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -36,11 +47,13 @@ export function AppLayout() {
       <div className="mx-auto grid max-w-6xl gap-4 px-4 py-4 md:grid-cols-[200px_1fr]">
         <nav aria-label="Menu utama">
           <ul className="flex gap-1 overflow-x-auto md:flex-col">
-            <li>
-              <NavLink to="/app" end className={navClass}>
-                Beranda
-              </NavLink>
-            </li>
+            {links.map((l) => (
+              <li key={l.to}>
+                <NavLink to={ta ? `${l.to}?ta=${ta}` : l.to} end={l.end} className={navClass}>
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </nav>
         <main id="konten" tabIndex={-1}>

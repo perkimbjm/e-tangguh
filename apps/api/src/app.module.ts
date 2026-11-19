@@ -11,10 +11,11 @@ import { FilesModule } from './modules/files/files.module';
 import { RegionsModule } from './modules/regions/regions.module';
 import { PersonsModule } from './modules/persons/persons.module';
 import { FiscalYearsModule } from './modules/spm/fiscal-years/fiscal-years.module';
+import { SpmModule } from './modules/spm/spm.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [DbModule, CryptoModule, AuditModule, AuthModule, FilesModule, RegionsModule, UsersModule, PersonsModule, FiscalYearsModule],
+  imports: [DbModule, CryptoModule, AuditModule, AuthModule, FilesModule, RegionsModule, UsersModule, PersonsModule, FiscalYearsModule, SpmModule],
   providers: [
     { provide: APP_FILTER, useClass: ApiExceptionFilter },
     // Urutan penting: sesi dulu, lalu peran (default ditolak).

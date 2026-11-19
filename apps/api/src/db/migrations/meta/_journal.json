@@ -22,6 +22,20 @@
       "when": 1795059816511,
       "tag": "0002_spm_year_lock",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795060750183,
+      "tag": "0003_spm_residents",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795060980602,
+      "tag": "0004_import_region_choices",
+      "breakpoints": true
     }
   ]
 }
