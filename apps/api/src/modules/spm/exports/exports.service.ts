@@ -9,12 +9,14 @@ import { FiscalYearsService } from '../fiscal-years/fiscal-years.service';
 import { Form5A1Provider } from './providers/form-5a1.provider';
 import { Form5A2Provider } from './providers/form-5a2.provider';
 import { Form5A5Provider } from './providers/form-5a5.provider';
+import { EventsProvider } from './providers/events.provider';
 import { RecapProvider } from './providers/recap.provider';
 import { writePdf } from './pdf-writer';
 import { writeXlsx } from './xlsx-writer';
 
 export type ExportFormat = 'xlsx' | 'pdf';
-export const EXPORT_FORM_CODES = ['5.A.1', '5.A.2', '5.A.3', '5.A.4', '5.A.5', '5.A.6'] as const;
+export const EXPORT_FORM_CODES = ['5.A.1', '5.A.2', '5.A.3', '5.A.4', '5.A.5', '5.A.6', '5.A.9', '5.A.10', '5.A.11', '5.A.12'] as const;
+const EVENT_FORMS = new Set(['5.A.9', '5.A.10', '5.A.11', '5.A.12']);
 const PERSONAL_FORMS = new Set(['5.A.1', '5.A.2']);
 const MIME: Record<ExportFormat, string> = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -35,10 +37,12 @@ export class ExportsService {
     private readonly f5a1: Form5A1Provider,
     private readonly f5a2: Form5A2Provider,
     private readonly f5a5: Form5A5Provider,
+    private readonly events: EventsProvider,
     private readonly recap: RecapProvider,
   ) {}
 
-  async data(formCode: string, fiscalYearId: string, year: number, kelurahanId: string | null, maskIds: boolean): Promise<ReportData> {
+  async data(formCode: string, fiscalYearId: string, year: number, kelurahanId: string | null, maskIds: boolean, eventId: string | null = null): Promise<ReportData> {
+    if (EVENT_FORMS.has(formCode)) return this.events.build(formCode as '5.A.9', fiscalYearId, year, eventId);
     if (formCode === '5.A.1') return this.f5a1.build({ fiscalYearId, year, kelurahanId, maskIds });
     if (formCode === '5.A.2') return this.f5a2.build({ fiscalYearId, year, kelurahanId, maskIds });
     if (formCode === '5.A.5') return this.f5a5.build({ fiscalYearId, year, kelurahanId, maskIds });
@@ -50,7 +54,7 @@ export class ExportsService {
     return format === 'pdf' ? writePdf(data) : writeXlsx(data);
   }
 
-  async exportOne(year: number, formCode: string, formatRaw: string, kelurahan: string | undefined, user: SessionUser): Promise<ExportFile> {
+  async exportOne(year: number, formCode: string, formatRaw: string, kelurahan: string | undefined, user: SessionUser, eventId?: string): Promise<ExportFile> {
     const format = formatRaw === 'pdf' ? 'pdf' : formatRaw === 'xlsx' || !formatRaw ? 'xlsx' : null;
     if (!format) throw ApiException.validation({ format: 'Format harus xlsx atau pdf' });
     const isPendata = user.role === 'pendata_kelurahan';
@@ -58,9 +62,10 @@ export class ExportsService {
     if (isPendata && !PERSONAL_FORMS.has(formCode)) throw ApiException.forbidden('Pendata kelurahan hanya dapat mengekspor Form 5.A.1 dan 5.A.2');
     const scope = KelurahanScope.resolve(user, kelurahan || undefined);
     const fy = await this.years.get(year);
-    const data = await this.data(formCode, fy.id, year, scope, isPendata);
+    if (eventId && !/^[0-9a-f-]{36}$/i.test(eventId)) throw ApiException.validation({ event: 'ID kejadian tidak sah' });
+    const data = await this.data(formCode, fy.id, year, scope, isPendata, eventId ?? null);
     const buffer = await this.render(data, format);
-    AuditContext.annotate({ entityId: formCode, detail: { year, format, kelurahanId: scope, rows: data.rows.length } });
+    AuditContext.annotate({ entityId: formCode, detail: { year, format, kelurahanId: scope, eventId: eventId ?? null, rows: data.rows.length } });
     return { buffer, filename: `form-${formCode.replace(/\./g, '').toLowerCase()}-${year}${scope ? '-kel' : ''}.${format}`, mime: MIME[format] };
   }
 

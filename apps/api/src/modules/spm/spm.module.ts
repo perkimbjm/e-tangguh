@@ -5,6 +5,13 @@ import { Form5A1Provider } from './exports/providers/form-5a1.provider';
 import { Form5A2Provider } from './exports/providers/form-5a2.provider';
 import { Form5A5Provider } from './exports/providers/form-5a5.provider';
 import { OfficerImport } from './imports/officer-import';
+import { EventPeopleQuery } from './exports/providers/event-people.query';
+import { EventsProvider } from './exports/providers/events.provider';
+import { AffectedService } from './events/affected.service';
+import { EventOfficersService } from './events/event-officers.service';
+import { EventsController } from './events/events.controller';
+import { EventsRepository } from './events/events.repository';
+import { EventsService } from './events/events.service';
 import { OfficersController } from './officers/officers.controller';
 import { OfficersRepository } from './officers/officers.repository';
 import { OfficersService } from './officers/officers.service';
@@ -49,6 +56,7 @@ import { ResidentsService } from './residents/residents.service';
     RecapController,
     ExportsController,
     OfficersController,
+    EventsController,
   ],
   providers: [
     HazardZonesRepository,
@@ -78,6 +86,12 @@ import { ResidentsService } from './residents/residents.service';
     OfficersRepository,
     OfficersService,
     OfficerImport,
+    EventsRepository,
+    EventsService,
+    AffectedService,
+    EventOfficersService,
+    EventPeopleQuery,
+    EventsProvider,
     { provide: VolunteerSource, useClass: UnavailableVolunteerSource },
   ],
   exports: [HazardZonesService, ResidentsRepository, RecapService, ExportsService],

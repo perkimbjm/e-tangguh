@@ -228,20 +228,20 @@ aktif; Form 5.A.9-5.A.12 dapat diekspor.
 
 ### Tests for User Story 4
 
-- [ ] T099 [P] [US4] Uji integrasi kejadian di `apps/api/test/spm/events.int.spec.ts`: kategori status darurat (tanpa penetapan, 10 jam, 30 jam setelah laporan); perubahan status korban menambah riwayat; korban baru tanpa catatan membuat `persons`
+- [X] T099 [P] [US4] Uji integrasi kejadian di `apps/api/test/spm/events.int.spec.ts`: kategori status darurat (tanpa penetapan, 10 jam, 30 jam setelah laporan); perubahan status korban menambah riwayat; korban baru tanpa catatan membuat `persons`
 
 ### Implementation for User Story 4
 
-- [ ] T100 [P] [US4] Buat skema `disaster_events` di `apps/api/src/db/schema/disaster-events.ts`: `occurred_at`, `reported_at` (≥ `occurred_at`), `location_text`, `kelurahan_id nullable`, `location geography(Point,4326) nullable`, `emergency_declared_at nullable` (null = tidak dikeluarkan), `emergency_doc_file_id`
-- [ ] T101 [P] [US4] Buat skema `affected_persons` dan `affected_status_history` di `apps/api/src/db/schema/affected-persons.ts` dan `affected-status-history.ts`: unik `(event_id, person_id)`; `status` enum `meninggal | hilang | medis_darurat | medis_lanjut | selamat`; `is_displaced`; riwayat hanya-tambah
-- [ ] T102 [P] [US4] Buat skema `event_officers` di `apps/api/src/db/schema/event-officers.ts`: unik `(event_id, officer_record_id)`; penanda penugasan; `post_type`; `post_kecamatan_id`; `post_kelurahan_id`
-- [ ] T103 [US4] Buat migrasi untuk T100-T102 dengan pemicu kunci tahun di `apps/api/src/db/migrations/`
-- [ ] T104 [P] [US4] Implementasikan turunan status darurat di `packages/shared/src/spm/emergency-status.ts` (`tidak_dikeluarkan | kurang_24_jam | lebih_24_jam` dari `reported_at` dan `emergency_declared_at`) dengan uji unit
-- [ ] T105 [US4] Implementasikan modul kejadian di `apps/api/src/modules/spm/events/` (`events.controller.ts`, `events.service.ts`, `events.repository.ts`): jalur `/:fy/events*`
-- [ ] T106 [US4] Implementasikan warga terdampak di `apps/api/src/modules/spm/events/affected.controller.ts` dan `affected.service.ts`: ambil data diri dari `persons`; buat orang baru dengan data minimum bila belum ada; tulis riwayat tiap perubahan status
-- [ ] T107 [P] [US4] Implementasikan petugas aktif di `apps/api/src/modules/spm/events/event-officers.controller.ts` dan `event-officers.service.ts`
-- [ ] T108 [P] [US4] Definisikan Form 5.A.9-5.A.12 di `packages/shared/src/spm/forms/form-5a9.ts`, `form-5a10.ts`, `form-5a11.ts`, `form-5a12.ts` dan penyedia ekspornya di `apps/api/src/modules/spm/exports/providers/events.provider.ts`; formulir kosong diekspor dengan keterangan "nihil"
-- [ ] T109 [P] [US4] Buat layar kejadian di `apps/web/src/features/spm/events/EventsPage.tsx`, `EventForm.tsx`, `EventDetailPage.tsx`, `AffectedTable.tsx`, `EventOfficersTable.tsx`
+- [X] T100 [P] [US4] Buat skema `disaster_events` di `apps/api/src/db/schema/disaster-events.ts`: `occurred_at`, `reported_at` (≥ `occurred_at`), `location_text`, `kelurahan_id nullable`, `location geography(Point,4326) nullable`, `emergency_declared_at nullable` (null = tidak dikeluarkan), `emergency_doc_file_id`
+- [X] T101 [P] [US4] Buat skema `affected_persons` dan `affected_status_history` di `apps/api/src/db/schema/affected-persons.ts` dan `affected-status-history.ts`: unik `(event_id, person_id)`; `status` enum `meninggal | hilang | medis_darurat | medis_lanjut | selamat`; `is_displaced`; riwayat hanya-tambah
+- [X] T102 [P] [US4] Buat skema `event_officers` di `apps/api/src/db/schema/event-officers.ts`: unik `(event_id, officer_record_id)`; penanda penugasan; `post_type`; `post_kecamatan_id`; `post_kelurahan_id`
+- [X] T103 [US4] Buat migrasi untuk T100-T102 dengan pemicu kunci tahun di `apps/api/src/db/migrations/`
+- [X] T104 [P] [US4] Implementasikan turunan status darurat di `packages/shared/src/spm/emergency-status.ts` (`tidak_dikeluarkan | kurang_24_jam | lebih_24_jam` dari `reported_at` dan `emergency_declared_at`) dengan uji unit
+- [X] T105 [US4] Implementasikan modul kejadian di `apps/api/src/modules/spm/events/` (`events.controller.ts`, `events.service.ts`, `events.repository.ts`): jalur `/:fy/events*`
+- [X] T106 [US4] Implementasikan warga terdampak di `apps/api/src/modules/spm/events/affected.controller.ts` dan `affected.service.ts`: ambil data diri dari `persons`; buat orang baru dengan data minimum bila belum ada; tulis riwayat tiap perubahan status
+- [X] T107 [P] [US4] Implementasikan petugas aktif di `apps/api/src/modules/spm/events/event-officers.controller.ts` dan `event-officers.service.ts`
+- [X] T108 [P] [US4] Definisikan Form 5.A.9-5.A.12 di `packages/shared/src/spm/forms/form-5a9.ts`, `form-5a10.ts`, `form-5a11.ts`, `form-5a12.ts` dan penyedia ekspornya di `apps/api/src/modules/spm/exports/providers/events.provider.ts`; formulir kosong diekspor dengan keterangan "nihil"
+- [X] T109 [P] [US4] Buat layar kejadian di `apps/web/src/features/spm/events/EventsPage.tsx`, `EventForm.tsx`, `EventDetailPage.tsx`, `AffectedTable.tsx`, `EventOfficersTable.tsx`
 
 **Checkpoint**: US4 berfungsi (quickstart skenario 11-12)
 

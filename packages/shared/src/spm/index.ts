@@ -13,3 +13,5 @@ export * from './validation/hazard-row';
 export * from './recap';
 export * from './officers';
 export * from './validation/officer-row';
+export * from './emergency-status';
+export * from './events';

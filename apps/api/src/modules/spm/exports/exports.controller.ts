@@ -34,7 +34,8 @@ export class ExportsController {
     @Res({ passthrough: true }) res: Response,
     @Query('format') format = 'xlsx',
     @Query('kelurahan') kelurahan?: string,
+    @Query('event') event?: string,
   ): Promise<StreamableFile> {
-    return send(res, await this.exports.exportOne(fy, formCode, format, kelurahan, user));
+    return send(res, await this.exports.exportOne(fy, formCode, format, kelurahan, user, event || undefined));
   }
 }

@@ -15,3 +15,7 @@ export * from './import-rows';
 export * from './resident-records';
 export * from './data-corrections';
 export * from './officer-records';
+export * from './disaster-events';
+export * from './affected-persons';
+export * from './affected-status-history';
+export * from './event-officers';

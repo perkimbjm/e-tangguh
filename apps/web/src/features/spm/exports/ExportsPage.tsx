@@ -12,6 +12,10 @@ const FORMS = [
   { code: '5.A.4', title: 'Rekapitulasi aparatur dan warga di kawasan rawan' },
   { code: '5.A.5', title: 'Daftar petugas operasi' },
   { code: '5.A.6', title: 'Rekapitulasi warga dan petugas per jenis bencana' },
+  { code: '5.A.9', title: 'Daftar warga negara yang menjadi korban bencana (seluruh kejadian)' },
+  { code: '5.A.10', title: 'Daftar status korban bencana (seluruh kejadian)' },
+  { code: '5.A.11', title: 'Daftar petugas aktif pada kejadian bencana (seluruh kejadian)' },
+  { code: '5.A.12', title: 'Daftar kejadian bencana' },
 ];
 
 export function ExportsPage() {
@@ -64,7 +68,7 @@ export function ExportsPage() {
           </li>
         ))}
       </ul>
-      <p className="text-xs text-slate-600">Form 5.A.7-5.A.12 tersedia setelah modul kejadian dan inventaris selesai.</p>
+      <p className="text-xs text-slate-600">Form 5.A.7-5.A.8 tersedia setelah modul inventaris selesai. Form 5.A.9-5.A.11 per kejadian dapat diunduh dari halaman kejadian.</p>
     </section>
   );
 }

@@ -5,6 +5,8 @@ import { DashboardPage } from '../features/dashboard/DashboardPage';
 import { LandingPage } from '../features/landing/LandingPage';
 import { ExportsPage } from '../features/spm/exports/ExportsPage';
 import { RecapPage } from '../features/spm/recap/RecapPage';
+import { EventDetailPage } from '../features/spm/events/EventDetailPage';
+import { EventsPage } from '../features/spm/events/EventsPage';
 import { OfficersPage } from '../features/spm/officers/OfficersPage';
 import { HazardZonesPage } from '../features/spm/hazard-zones/HazardZonesPage';
 import { ImportPage } from '../features/spm/imports/ImportPage';
@@ -38,6 +40,22 @@ export const router = createBrowserRouter([
         element: (
           <RequireRole roles={BPBD_ROLES}>
             <OfficersPage />
+          </RequireRole>
+        ),
+      },
+      {
+        path: 'kejadian',
+        element: (
+          <RequireRole roles={BPBD_ROLES}>
+            <EventsPage />
+          </RequireRole>
+        ),
+      },
+      {
+        path: 'kejadian/:id',
+        element: (
+          <RequireRole roles={BPBD_ROLES}>
+            <EventDetailPage />
           </RequireRole>
         ),
       },

@@ -103,3 +103,17 @@ dicatat untuk dikonfirmasi BPBD.
   terakhir), mengikuti tabel visibilitas data-model.md.
 - PDF memakai tanda "√" untuk kolom centang karena font tertanam tidak memuat "✓"; XLSX memakai "✓".
 - Paket ekspor seluruh formulir (ZIP) memuat berkas `SHA256SUMS.txt`.
+
+## Catatan implementasi US4 (perlu dikonfirmasi BPBD)
+
+- Form 5.A.9-5.A.11 diekspor per kejadian (`?event=`). Tanpa parameter itu (dan dalam paket ZIP),
+  seluruh kejadian tahun itu digabung dengan baris pemisah "Kejadian: <nama> (<tanggal>)".
+- Form 5.A.10 mengikuti templat apa adanya: kelompok "KORBAN" membawahi kolom 8-10 (meninggal,
+  hilang, medis darurat) dan "PENGUNGSI" membawahi kolom 11-12 (medis lanjut, selamat). Penanda
+  `is_displaced` (mengungsi) tetap dicatat tetapi tidak memiliki kolom tersendiri pada templat.
+- Kolom peran 5.A.10 (13-18) diambil dari data warga dan petugas tahun yang sama.
+- Form 5.A.12: tanggal dan jam dalam WITA (Asia/Makassar); bila laporan diterima pada hari yang
+  berbeda dengan kejadian, tanggal laporan ikut ditulis. Selisih tepat 24 jam termasuk "< 24 jam".
+- 5.A.9 dan 5.A.11: alamat, KK, kondisi ekonomi, dan kebutuhan khusus terisi bila orang tersebut
+  tercatat sebagai warga kawasan rawan pada tahun yang sama; korban dari luar kawasan rawan hanya
+  memuat data diri minimum.

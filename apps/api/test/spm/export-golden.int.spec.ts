@@ -82,7 +82,7 @@ describe('berkas emas ekspor XLSX', () => {
     expect((pdf.body as Buffer).subarray(0, 5).toString()).toBe('%PDF-');
     const zip = await op.agent.get(`/api/v1/spm/${y.year}/forms/export-all`).buffer(true).parse(binary).expect(200);
     const files = unzipSync(new Uint8Array(zip.body as Buffer));
-    expect(Object.keys(files)).toHaveLength(13); // 6 formulir × (XLSX + PDF) + SHA256SUMS.txt
+    expect(Object.keys(files)).toHaveLength(21); // 10 formulir × (XLSX + PDF) + SHA256SUMS.txt
     expect(strFromU8(files['SHA256SUMS.txt']!)).toMatch(/form-5a1-2027\.xlsx/);
     const pendata = await loginAs(t, 'pendata_kelurahan', y.sungaiMiai);
     await pendata.agent.get(`/api/v1/spm/${y.year}/forms/export-all`).expect(403);

@@ -43,6 +43,13 @@
       "when": 1795066841837,
       "tag": "0005_spm_officers",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795067389844,
+      "tag": "0006_spm_events",
+      "breakpoints": true
     }
   ]
 }
